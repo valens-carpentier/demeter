@@ -19,7 +19,7 @@ contract FarmToken is ERC20, Ownable {
         uint256 _farmId,
         address _farmFactory,
         uint256 _pricePerToken
-    ) ERC20(name, symbol) {
+    ) ERC20(name, symbol) Ownable(msg.sender) {
         farmId = _farmId;
         farmFactory = _farmFactory;
         pricePerToken = _pricePerToken;
