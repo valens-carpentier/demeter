@@ -1,0 +1,49 @@
+demeter/
+├── contracts/                     # Solidity smart contracts
+│   ├── interfaces/               # Contract interfaces
+│   ├── FarmFactory.sol
+│   ├── FarmToken.sol
+│   └── tests/                    # Contract tests
+│
+├── build/                        # Compiled contract artifacts
+│   └── contracts/               # JSON ABI and bytecode
+│
+├── migrations/                   # Contract migration scripts
+│   ├── 1_initial_migration.js
+│   ├── 2_deploy_farm_factory.js
+│   └── 3_deploy_farm_token.js
+│
+├── frontend/                     # Next.js frontend application
+│   ├── app/                      # Next.js 13+ app directory
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── marketplace/         # Marketplace pages
+│   │   ├── portfolio/          # Portfolio pages
+│   │   └── farm/               # Farm management pages
+│   ├── components/              # Reusable React components
+│   │   ├── auth/               # Authentication components
+│   │   ├── marketplace/        # Marketplace components
+│   │   └── portfolio/          # Portfolio components
+│   ├── hooks/                   # Custom React hooks
+│   ├── services/               # API and blockchain services
+│   │   ├── safe/              # Safe Protocol integration
+│   │   └── contracts/         # Contract interaction services
+│   └── types/                  # TypeScript type definitions
+│
+├── backend/                     # NestJS backend application
+│   ├── src/
+│   │   ├── main.ts
+│   │   ├── app.module.ts
+│   │   ├── auth/              # Authentication module
+│   │   ├── farms/             # Farms module
+│   │   ├── users/             # Users module
+│   │   └── blockchain/        # Blockchain interaction module
+│   └── test/                  # Backend tests
+│
+├── scripts/                    # Deployment and utility scripts
+│   ├── deploy/               # Contract deployment scripts
+│   └── verify/               # Contract verification scripts
+│
+├── test/                      # Integration tests
+│
+└── package.json
