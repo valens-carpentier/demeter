@@ -39,7 +39,7 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Framework: NestJS
 - Language: TypeScript
 
-## User Flow
+## Core features
 
 1. **Authentication**
    - Passwordless login using passkeys
@@ -72,24 +72,32 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Basic portfolio management
 
 ## User Flow
-1. Register with Safe Passkey
-a. As a user, I want to register to the platform using passkeys with Safe AA
-2. Login with Passkeys
-a. As a user, I want to login to the platform using Safe AA passkeys
-3. Marketplace
-a. As a user, I want to browse the marketplace to view available farm tokens for purchase
-4. Purchase Farm Token
-a. As a user, I want to purchase a farm token to become a fractional owner of a farm
-5. Portfolio
-a. As a user, I want to view my portfolio of farm tokens and track my investment
-b. As a user, I want to sell my farm token to other users
+
+### 1. Register with Safe Passkey
+- As a user, I want to register to the platform using passkeys with Safe AA
+
+### 2. Login with Passkeys
+- As a user, I want to login to the platform using Safe AA passkeys
+
+### 3. Marketplace
+- As a user, I want to browse the marketplace to view available farm tokens for purchase
+
+### 4. Purchase Farm Token
+- As a user, I want to purchase a farm token to become a fractional owner of a farm
+
+### 5. Portfolio
+- As a user, I want to view my portfolio of farm tokens and track my investment
+- As a user, I want to sell my farm token to other users
 
 ## Owner Flow
-1. Login with Safe Passkey
-a. As an owner, I want to login to the platform using Safe AA passkeys
-2. Create Farm
-a. As an owner, I want to create a farm to tokenize my farm with a farm token 
-b. As an owner, I want to see all farms I generated
-3. Manage Farm
-a. As an owner, I want to manage my farm and track my investment
-b. As an owner, I want to change the price of my farm token if needed
+
+### 1. Login with Safe Passkey
+- As an owner, I want to login to the platform using Safe AA passkeys
+
+### 2. Create Farm
+- As an owner, I want to create a farm to tokenize my farm with a farm token 
+- As an owner, I want to see all farms I generated
+
+### 3. Manage Farm
+- As an owner, I want to manage my farm and track my investment
+- As an owner, I want to change the price of my farm token if needed
