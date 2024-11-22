@@ -14,9 +14,3 @@ export const ENTRY_POINT_ADDRESS = '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789'
 export const CALL_GAS_LIMIT = BigInt('0x27867')          // 160,871
 export const VERIFICATION_GAS_LIMIT = BigInt('0x3d3d94')  // 4,000,148
 export const PRE_VERIFICATION_GAS = BigInt('0x2e8b5')     // 190,645
-
-// Add these console logs to verify environment variables
-console.log('Environment check:', {
-  BUNDLER_URL,
-  hasApiKey: !!process.env.NEXT_PUBLIC_PIMLICO_API_KEY
-})
