@@ -36,7 +36,8 @@ function SafeAccountDetails({ passkey }: props) {
         bundlerUrl: BUNDLER_URL,
         options: {
           owners: [],
-          threshold: 1
+          threshold: 1,
+          salt: BigInt('0x' + passkey.rawId)
         }
       })
 
@@ -50,7 +51,8 @@ function SafeAccountDetails({ passkey }: props) {
         bundlerUrl: BUNDLER_URL,
         options: {
           owners: [signerAddress],
-          threshold: 1
+          threshold: 1,
+          salt: BigInt('0x' + passkey.rawId)
         }
       })
 

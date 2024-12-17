@@ -1,69 +1,90 @@
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
-import { Button, Divider, Paper, Stack, Typography } from '@mui/material'
+import { Button, Paper, Stack, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { loadPasskeysFromLocalStorage } from '../lib/passkeys'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 type props = {
-  handleCreatePasskey: () => {}
   handleSelectPasskey: (passkey: PasskeyArgType) => {}
 }
 
-function LoginWithPasskey({ handleCreatePasskey, handleSelectPasskey }: props) {
+function LoginWithPasskey({ handleSelectPasskey }: props) {
+  const [passkeys, setPasskeys] = useState<PasskeyArgType[]>([])
+  const [selectedPasskeyId, setSelectedPasskeyId] = useState<string>('')
+
+  useEffect(() => {
+    const storedPasskeys = loadPasskeysFromLocalStorage()
+    setPasskeys(storedPasskeys)
+  }, [])
+
+  const handleLogin = () => {
+    const passkey = passkeys.find(p => p.rawId === selectedPasskeyId)
+    if (passkey) {
+      handleSelectPasskey(passkey)
+    }
+  }
+
   return (
-    <Paper
-      sx={{
-        margin: '32px auto 0'
-      }}
-    >
-      <Stack padding={4}>
+    <Paper sx={{ 
+      margin: '32px auto 0',
+      position: 'absolute',
+      top: '30%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '100%',
+      maxWidth: '500px'  // Adjust this value based on your needs
+    }}>
+      <Stack padding={4} spacing={3}>
         <Typography textAlign={'center'} variant="h1" color={'primary'}>
           Connect to your account
         </Typography>
 
-        <Typography
-          textAlign={'center'}
-          marginBottom={8}
-          marginTop={8}
-          variant="h4"
-        >
-          Create a new account using passkeys
-        </Typography>
+        {passkeys.length > 0 ? (
+          <>
+            <FormControl fullWidth>
+              <InputLabel id="passkey-select-label">Select a Passkey</InputLabel>
+              <Select
+                labelId="passkey-select-label"
+                id="passkey-select"
+                value={selectedPasskeyId}
+                label="Select a Passkey"
+                onChange={(e) => setSelectedPasskeyId(e.target.value)}
+              >
+                {passkeys.map((passkey, index) => (
+                  <MenuItem key={passkey.rawId} value={passkey.rawId}>
+                    Passkey {index + 1} - ID: {passkey.rawId.slice(0, 10)}...
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-        <Button
-          onClick={handleCreatePasskey}
-          startIcon={<FingerprintIcon />}
-          variant="outlined"
-          sx={{ marginBottom: '24px' }}
-        >
-          Create a new passkey
-        </Button>
-
-        <Divider sx={{ marginTop: '32px' }}>
-          <Typography variant="caption" color="GrayText">
-            OR
+            <Button
+              startIcon={<FingerprintIcon />}
+              variant="contained"
+              onClick={handleLogin}
+              disabled={!selectedPasskeyId}
+              fullWidth
+            >
+              Login with Passkey
+            </Button>
+          </>
+        ) : (
+          <Typography textAlign="center" color="GrayText">
+            No passkeys found. Please create an account first.
           </Typography>
-        </Divider>
+        )}
 
-        <Typography
-          textAlign={'center'}
-          marginBottom={8}
-          marginTop={8}
-          variant="h4"
+        <Typography 
+          textAlign={'center'} 
+          variant="body2" 
+          color="GrayText"
         >
-          Connect existing account using an existing passkey
+          Don&apos;t have an account?{' '}
+          <Link href="/signup" style={{ cursor: 'pointer', textDecoration: 'underline' }}>
+            Sign up
+          </Link>
         </Typography>
-
-        <Button
-          startIcon={<FingerprintIcon />}
-          variant="contained"
-          onClick={async () => {
-            const passkeys = loadPasskeysFromLocalStorage()
-
-            handleSelectPasskey(passkeys[0])
-          }}
-        >
-          Use an existing passkey
-        </Button>
       </Stack>
     </Paper>
   )

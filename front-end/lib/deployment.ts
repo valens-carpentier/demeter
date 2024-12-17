@@ -80,8 +80,9 @@ export const executeSafeDeployment = async ({
       signer,
       bundlerUrl: BUNDLER_URL,
       options: {
-        owners: [],  // Initialize with empty owners first
-        threshold: 1
+        owners: [],
+        threshold: 1,
+        salt: BigInt('0x' + signer.rawId)
       }
     })
 
@@ -95,7 +96,8 @@ export const executeSafeDeployment = async ({
       bundlerUrl: BUNDLER_URL,
       options: {
         owners: [signerAddress],
-        threshold: 1
+        threshold: 1,
+        salt: BigInt('0x' + signer.rawId)
       }
     })
 

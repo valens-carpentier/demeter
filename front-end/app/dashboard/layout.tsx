@@ -16,12 +16,23 @@ export default function DashboardLayout({
   const [passkey, setPasskey] = useState<PasskeyArgType>()
 
   useEffect(() => {
-    const passkeys = loadPasskeysFromLocalStorage()
-    if (!passkeys || passkeys.length === 0) {
+    const searchParams = new URLSearchParams(window.location.search)
+    const passkeyRawId = searchParams.get('passkeyId')
+    
+    if (!passkeyRawId) {
       router.push('/')
       return
     }
-    setPasskey(passkeys[0])
+
+    const passkeys = loadPasskeysFromLocalStorage()
+    const selectedPasskey = passkeys.find(p => p.rawId === passkeyRawId)
+    
+    if (!selectedPasskey) {
+      router.push('/')
+      return
+    }
+    
+    setPasskey(selectedPasskey)
   }, [router])
 
   if (!passkey) {

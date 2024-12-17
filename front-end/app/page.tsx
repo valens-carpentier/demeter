@@ -25,17 +25,21 @@ function Create4337SafeAccount() {
 
   async function handleSelectPasskey(passkey: PasskeyArgType) {
     setSelectedPasskey(passkey)
-    router.push('/dashboard')
+    router.push(`/dashboard?passkeyId=${passkey.rawId}`)
   }
 
   return (
     <SafeThemeProvider>
       {(safeTheme: Theme) => (
         <ThemeProvider theme={safeTheme}>
-          <LoginWithPasskey
-            handleCreatePasskey={handleCreatePasskey}
-            handleSelectPasskey={handleSelectPasskey}
-          />
+          {selectedPasskey ? (
+            <SafeAccountDetails passkey={selectedPasskey} />
+          ) : (
+            <LoginWithPasskey
+              handleCreatePasskey={handleCreatePasskey}
+              handleSelectPasskey={handleSelectPasskey}
+            />
+          )}
         </ThemeProvider>
       )}
     </SafeThemeProvider>
