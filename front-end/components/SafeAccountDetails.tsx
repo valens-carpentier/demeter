@@ -1,4 +1,3 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import {
   Button,
   CircularProgress,
@@ -13,6 +12,7 @@ import { Safe4337Pack } from '@safe-global/relay-kit'
 import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
 import { executeSafeDeployment } from '../lib/deployment'
+import styles from '@/styles/safeaccountdetails.module.css'
 
 type props = {
   passkey: PasskeyArgType
@@ -94,17 +94,21 @@ function SafeAccountDetails({ passkey }: props) {
   const jiffscanLink = `https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`
 
   return (
-    <Paper sx={{ margin: '32px auto 0', minWidth: '320px' }}>
-      <Stack padding={4} alignItems={'center'}>
-        <Typography textAlign={'center'} variant="h1" color={'primary'}>
-          Your Account
+    <Paper className={styles.container}>
+      <Stack className={styles.stack}>
+        <Typography className={styles.balanceTitle}>
+          Balance
+        </Typography>
+
+        <Typography className={styles.balanceValue}>
+          $0.00
         </Typography>
 
         {isLoading || !safeAddress ? (
-          <CircularProgress sx={{ margin: '24px 0' }} />
+          <CircularProgress className={styles.loading} size={16} />
         ) : (
           <>
-            <Typography textAlign={'center'}>
+            <Typography textAlign={'center'} fontSize="0.875rem">
               <Link
                 href={safeLink}
                 target="_blank"
@@ -112,17 +116,9 @@ function SafeAccountDetails({ passkey }: props) {
                 color="text"
               >
                 <Tooltip title={safeAddress}>
-                  <Stack
-                    component={'span'}
-                    padding={4}
-                    direction={'row'}
-                    alignItems={'center'}
-                  >
-                    <span style={{ margin: '0 8px' }}>
-                      {splitAddress(safeAddress)}
-                    </span>
-                    <OpenInNewIcon />
-                  </Stack>
+                  <span className={styles.addressContainer}>
+                    {splitAddress(safeAddress)}
+                  </span>
                 </Tooltip>
               </Link>
             </Typography>
@@ -134,10 +130,10 @@ function SafeAccountDetails({ passkey }: props) {
                   variant="contained"
                   onClick={handleDeploy}
                   disabled={isDeploying}
-                  sx={{ mt: 2 }}
+                  className={styles.deployButton}
                 >
                   {isDeploying ? (
-                    <CircularProgress size={24} color="inherit" />
+                    <CircularProgress size={4} color="inherit" />
                   ) : (
                     'Deploy Safe'
                   )}
@@ -146,22 +142,16 @@ function SafeAccountDetails({ passkey }: props) {
             )}
 
             {userOp && (
-              <Typography textAlign={'center'}>
+              <Typography textAlign={'center'} fontSize="0.875rem">
                 <Link
                   href={jiffscanLink}
                   target="_blank"
                   underline="hover"
                   color="text"
                 >
-                  <Stack
-                    component={'span'}
-                    padding={4}
-                    direction={'row'}
-                    alignItems={'center'}
-                  >
+                  <span className={styles.addressContainer}>
                     {userOp}
-                    <OpenInNewIcon />
-                  </Stack>
+                  </span>
                 </Link>
               </Typography>
             )}
@@ -188,18 +178,8 @@ function splitAddress(
 
 function PendingDeploymentLabel() {
   return (
-    <div style={{ margin: '12px auto' }}>
-      <span
-        style={{
-          marginRight: '8px',
-          borderRadius: '4px',
-          padding: '4px 12px',
-          border: '1px solid rgb(255, 255, 255)',
-          whiteSpace: 'nowrap',
-          backgroundColor: 'rgb(240, 185, 11)',
-          color: 'rgb(0, 20, 40)'
-        }}
-      >
+    <div className={styles.pendingLabel}>
+      <span className={styles.pendingLabelText}>
         Deployment pending
       </span>
     </div>

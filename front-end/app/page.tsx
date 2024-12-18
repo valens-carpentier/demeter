@@ -10,6 +10,7 @@ import LoginWithPasskey from '@/components/LoginwithPasskey'
 import SafeAccountDetails from '@/components/SafeAccountDetails'
 import SafeThemeProvider from '@/components/ThemeProvider'
 import { createPasskey, storePasskeyInLocalStorage } from '../lib/passkeys'
+import styles from '@/styles/page.module.css'
 
 function Create4337SafeAccount() {
   const router = useRouter()

@@ -1,11 +1,13 @@
 'use client'
 
-import { Box } from '@mui/material'
 import { ReactNode, useEffect, useState } from 'react'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { loadPasskeysFromLocalStorage } from '@/lib/passkeys'
 import SafeAccountDetails from '@/components/SafeAccountDetails'
 import { useRouter } from 'next/navigation'
+import Sidebar from '@/components/Sidebar'
+import styles from '@/styles/sidebar.module.css'
+import '@/styles/globals.css'
 
 export default function DashboardLayout({
   children
@@ -40,9 +42,15 @@ export default function DashboardLayout({
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '20px' }}>
-      <SafeAccountDetails passkey={passkey} />
-      {children}
-    </Box>
+    <div className={styles.layoutWrapper}>
+      <div className={styles.sidebarContainer}>
+        <Sidebar>
+          <SafeAccountDetails passkey={passkey} />
+        </Sidebar>
+      </div>
+      <div className={styles.mainContent}>
+        {children}
+      </div>
+    </div>
   )
 }

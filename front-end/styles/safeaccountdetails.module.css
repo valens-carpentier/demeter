@@ -1,0 +1,71 @@
+.container {
+  padding: 24px;
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Ubuntu, sans-serif;
+}
+
+.stack {
+  gap: 16px;
+}
+
+.balanceTitle {
+  color: #2C3E2D !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.balanceValue {
+  color: #2C3E2D !important;
+  font-size: 14px !important;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.loading {
+  margin: 4px auto;
+  color: #5C745D !important;
+  font-size: 14px;
+}
+
+.addressStack {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #5C745D;
+}
+
+.addressContainer {
+  font-family: monospace;
+  color: #5C745D;
+  font-size: 12px;
+}
+
+.pendingLabel {
+  background-color: #F5F2EA;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+.pendingLabelText {
+  color: #5C745D;
+  font-size: 4px;
+  font-weight: 500;
+}
+
+.deployButton {
+  width: 50%;
+  color: #FFFFFF !important;
+  background-color: #4CAF50 !important;
+}
+
+.deployButton:hover {
+  background-color: #2E7D32 !important;
+} 
