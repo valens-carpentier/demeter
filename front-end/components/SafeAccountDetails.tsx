@@ -27,6 +27,7 @@ function SafeAccountDetails({ passkey }: props) {
   const [userOp, setUserOp] = useState<string>()
   const [balance, setBalance] = useState<string>()
   const [balanceLoading, setBalanceLoading] = useState<boolean>(false)
+  const [balanceUSD, setBalanceUSD] = useState<string>()
 
   const showSafeInfo = useCallback(async () => {
     setIsLoading(true)
@@ -114,6 +115,26 @@ function SafeAccountDetails({ passkey }: props) {
     fetchBalance()
   }, [safeAddress])
 
+  useEffect(() => {
+    const balanceETHValueUSD = async () => {
+      try {
+        if (!balance) return
+
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
+        const data = await response.json();
+        const ethPriceUSD = data.ethereum.usd;
+        
+        const balanceUSD = (Number(balance) * ethPriceUSD).toFixed(2);
+        setBalanceUSD(balanceUSD);
+      } catch (error) {
+        console.error('Failed to fetch ETH price:', error);
+        setBalanceUSD('0.00');
+      }
+    }
+
+    balanceETHValueUSD()
+  }, [balance])
+
   return (
     <Paper className={styles.container}>
       <Stack className={styles.stack}>
@@ -125,7 +146,7 @@ function SafeAccountDetails({ passkey }: props) {
           {isLoading || balanceLoading ? (
             <CircularProgress className={styles.loading}/>
           ) : (
-            `${balance || '0.00'} ETH`
+            `$${balanceUSD || '0.00'}`
           )}
         </Typography>
 
