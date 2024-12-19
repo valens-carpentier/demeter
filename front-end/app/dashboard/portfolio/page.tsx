@@ -2,11 +2,11 @@
 
 import { Box, Typography, Paper } from '@mui/material'
 
-export default function Marketplace() {
+export default function Portfolio() {
   return (
     <Box sx={{ padding: 3 }}>
       <Typography variant="h4" sx={{ mb: 3 }}>
-        Marketplace
+        Portfolio
       </Typography>
 
       <Paper sx={{ 

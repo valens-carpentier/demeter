@@ -7,7 +7,7 @@
 }
 
 .stack {
-  gap: 16px;
+  gap: 8px;
 }
 
 .balanceTitle {
@@ -21,24 +21,27 @@
 
 .balanceValue {
   color: #2C3E2D !important;
-  font-size: 14px !important;
+  font-size: 12px !important;
   line-height: 28px;
   font-weight: 600;
   letter-spacing: -0.01em;
   text-align: center;
-  margin-bottom: 16px;
+  box-sizing: border-box;
+  margin-bottom: 3px;
 }
 
 .loading {
   margin: 4px auto;
   color: #5C745D !important;
-  font-size: 14px;
+  font-size: 12px;
+  width: 12px !important;
+  height: 12px !important;
 }
 
 .addressStack {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   color: #5C745D;
 }
 

@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
 import { executeSafeDeployment } from '../lib/deployment'
 import styles from '@/styles/safeaccountdetails.module.css'
+import { getBalance } from '@/lib/balanceUtils'
 
 type props = {
   passkey: PasskeyArgType
@@ -24,6 +25,8 @@ function SafeAccountDetails({ passkey }: props) {
   const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>(false)
   const [isDeploying, setIsDeploying] = useState<boolean>(false)
   const [userOp, setUserOp] = useState<string>()
+  const [balance, setBalance] = useState<string>()
+  const [balanceLoading, setBalanceLoading] = useState<boolean>(false)
 
   const showSafeInfo = useCallback(async () => {
     setIsLoading(true)
@@ -74,7 +77,7 @@ function SafeAccountDetails({ passkey }: props) {
 
   const handleDeploy = async () => {
     if (!safeAddress) return
-    
+
     try {
       setIsDeploying(true)
       const hash = await executeSafeDeployment({
@@ -92,6 +95,24 @@ function SafeAccountDetails({ passkey }: props) {
 
   const safeLink = `https://app.safe.global/home?safe=basesep:${safeAddress}`
   const jiffscanLink = `https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`
+  
+  useEffect(() => {
+    const fetchBalance = async () => {
+      if (!safeAddress) return
+      try {
+        setBalanceLoading(true)
+        const balance = await getBalance(safeAddress)
+        setBalance(balance)
+      } catch (error) {
+        console.error('Failed to fetch balance:', error)
+        setBalance('0.00') // Fallback value
+      } finally {
+        setBalanceLoading(false)
+      }
+    }
+
+    fetchBalance()
+  }, [safeAddress])
 
   return (
     <Paper className={styles.container}>
@@ -101,11 +122,15 @@ function SafeAccountDetails({ passkey }: props) {
         </Typography>
 
         <Typography className={styles.balanceValue}>
-          $0.00
+          {isLoading || balanceLoading ? (
+            <CircularProgress className={styles.loading}/>
+          ) : (
+            `${balance || '0.00'} ETH`
+          )}
         </Typography>
 
-        {isLoading || !safeAddress ? (
-          <CircularProgress className={styles.loading} size={16} />
+        {isLoading ? (
+          <CircularProgress className={styles.loading}/>
         ) : (
           <>
             <Typography textAlign={'center'} fontSize="0.875rem">
