@@ -1,0 +1,99 @@
+.holding-list-container {
+  padding: 24px !important;
+  background-color: #FFFFFF !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
+  height: fit-content !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.holding-list-title {
+  color: #2C3E2D;
+  font-size: 24px !important;
+  font-weight: 600 !important;
+  margin-bottom: 24px !important;
+  letter-spacing: -0.025em !important;
+}
+
+.holding-name {
+  color: #2C3E2D;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+  letter-spacing: -0.01em !important;
+  text-align: center !important;
+}
+
+.holding-view-details-button {
+  color: #4CAF50 !important;
+  border: 2px solid #4CAF50 !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+  height: fit-content !important;
+  white-space: nowrap !important;
+  border-radius: 6px !important;
+  margin-left: 24px !important;
+}
+
+.holding-view-details-button:hover {
+  background-color: #4CAF50 !important;
+  color: #FFFFFF !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2) !important;
+}
+
+.holding-view-details-button:active {
+  transform: translateY(0) !important;
+  box-shadow: none !important;
+}
+
+.holding-view-details-button:disabled {
+  color: #A5B5A6 !important;
+  border-color: #A5B5A6 !important;
+  transform: none !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+}
+
+.no-holdings-message {
+  margin-top: 24px !important;
+  text-align: center !important;
+  color: #5C745D !important;
+  font-size: 16px !important;
+}
+
+.holding-label {
+  color: #5C745D;
+  font-size: 14px !important;
+  margin-bottom: 4px !important;
+  font-weight: 500 !important;
+}
+
+.holding-value {
+  color: #2C3E2D;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.total-value-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.total-value-container .holding-label {
+    margin-right: 8px;
+}
+
+.holding-details-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.holding-grid {
+    flex: 1;
+}
