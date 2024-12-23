@@ -1,0 +1,159 @@
+.farm-list-container {
+  padding: 24px !important;
+  background-color: #FFFFFF !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  padding-left: 50px !important;
+  padding-right: 50px !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.farm-list-title {
+  color: #2C3E2D !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  margin-bottom: 24px !important;
+  letter-spacing: -0.025em !important;
+}
+
+.farm-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 24px !important;
+}
+
+.farm-name {
+  color: #2C3E2D;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+  letter-spacing: -0.01em !important;
+}
+
+.farm-item {
+  color: #5C745D;
+  font-size: 15px !important;
+  margin-bottom: 8px !important;
+}
+
+.farm-status-chip {
+  margin-top: 16px !important;
+}
+
+.farm-view-details-button {
+  color: #4CAF50 !important;
+  border: 2px solid #4CAF50 !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  padding: 8px 16px !important;
+}
+
+.farm-view-details-button:hover {
+  background-color: #4CAF50 !important;
+  color: #FFFFFF !important;
+}
+
+.farm-view-details-button:disabled {
+  color: #A5B5A6 !important;
+  border-color: #A5B5A6 !important;
+}
+
+.no-farms-message {
+  margin-top: 24px !important;
+  text-align: center !important;
+  color: #5C745D !important;
+  font-size: 16px !important;
+}
+
+/* Add subtle hover effect to cards */
+.farm-list-grid .MuiCard-root {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.farm-list-grid .MuiCardContent-root {
+  flex-grow: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+}
+
+.farm-list-grid .MuiCard-root:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.farm-investment-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  margin: 16px 0 !important;
+  padding-bottom: 16px !important;
+  border-bottom: 1px solid #E0E0E0 !important;
+}
+
+.investment-label {
+  font-size: 0.75rem !important;
+  color: #5C745D !important;
+  margin-bottom: 4px !important;
+}
+
+.investment-value {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #2C3E2D !important;
+}
+
+.token-price {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #4CAF50 !important;
+}
+
+.farm-metrics {
+  margin-top: auto !important;
+}
+
+.metrics-button-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 16px !important;
+}
+
+.metrics-content {
+  flex: 1 !important;
+}
+
+.metric-label {
+  font-size: 0.75rem !important;
+  color: #5C745D !important;
+  font-weight: 500 !important;
+}
+
+.metric-value {
+  font-size: 1rem !important;
+  color: #2C3E2D !important;
+  font-weight: 700 !important;
+}
+
+.metric-subtitle {
+  font-size: 0.75rem !important;
+  color: #666 !important;
+  font-style: italic !important;
+}
+
+.view-property-button {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 25px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  margin-left: 16px !important;
+}
+
+.view-property-button:hover {
+  background-color: #2E7D32 !important;
+}

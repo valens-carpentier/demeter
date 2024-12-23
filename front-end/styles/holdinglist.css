@@ -85,6 +85,7 @@
 
 .total-value-container .holding-label {
     margin-right: 8px;
+    margin-bottom: 0 !important;
 }
 
 .holding-details-container {

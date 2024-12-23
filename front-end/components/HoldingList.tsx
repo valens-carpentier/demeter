@@ -14,17 +14,11 @@ export default function HoldingList() {
     return (
         <>
             <Paper className="holding-list-container">
-                <Typography className="holding-list-title">
-                    My Holdings
-                </Typography>
+                <Typography className="holding-list-title">My Holdings</Typography>
 
                 <Box className="total-value-container">
-                    <Typography className="holding-label">
-                        Total Holdings Value:
-                    </Typography>
-                    <Typography className="holding-value">
-                        $13,455.53
-                    </Typography>
+                    <Typography className="holding-label">Total Holdings Value:</Typography>
+                    <Typography className="holding-value">$13,455.53</Typography>
                 </Box>
 
                 <Grid2 container spacing={3}>

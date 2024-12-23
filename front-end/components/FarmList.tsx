@@ -7,10 +7,14 @@ import {
     CardContent, 
     CardActions,
     Button, 
-    Chip
+    Chip,
+    Box,
+    Divider
 } from '@mui/material'
 
 import loadFarms from '../lib/farmsUtils'
+
+import '@/styles/farmlist.css'
 
 // Define the Farm type based on the struct in the smart contract
 type Farm = {
@@ -58,68 +62,78 @@ export default function FarmList() {
     }, [])
 
     return (
-        <Paper sx={{ padding: '24px' }}>
-          <Typography variant="h4" color="primary" gutterBottom>
-            Available Farms
+        <Paper className="farm-list-container">
+          <Typography className="farm-list-title">
+            Available Farms ({farms.length})
           </Typography>
           
-          <Grid2 container spacing={3}>
+          <Grid2 container spacing={3} className="farm-list-grid">
             {farms.map((farm, index) => (
-              <Grid2 item xs={12} sm={6} md={4} key={index}>
+              <Grid2 item xs={12} sm={6} md={4} lg={4} key={index}>
                 <Card>
+                  
                   <CardContent>
-                    <Typography variant="h6" gutterBottom>
+                    <Typography className="farm-name">
                       {farm.name}
                     </Typography>
                     
-                    <Typography variant="body2" color="text.secondary">
-                      Size: {farm.sizeInAcres} acres
-                    </Typography>
+                    <Box className="farm-investment-row">
+                      <div>
+                        <Typography className="investment-label">Valuation</Typography>
+                        <Typography className="investment-value">
+                          ${farm.valuation.toLocaleString()}
+                        </Typography>
+                      </div>
+                      <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
+                      <div>
+                        <Typography className="investment-label">Token Price</Typography>
+                        <Typography className="token-price">
+                          ${(farm.valuation / farm.totalTokenSupply).toFixed(2)}
+                        </Typography>
+                      </div>
+                    </Box>
                     
-                    <Typography variant="body2" color="text.secondary">
-                      Valuation: ${farm.valuation}
-                    </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary">
-                      Expected Return: {farm.expectedOutcomePercentage}%
-                    </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary">
-                      Total Supply: {farm.totalTokenSupply} tokens
-                    </Typography>
-
-                    <Typography variant="body2" color="text.secondary">
-                        Price per token: ${farm.valuation / farm.totalTokenSupply}
-                    </Typography>
-                    
-                    <Chip 
-                      label={farm.isActive ? 'Active' : 'Inactive'}
-                      color={farm.isActive ? 'success' : 'error'}
-                      size="small"
-                      sx={{ mt: 1 }}
-                    />
+                    <Box className="farm-metrics">
+                      <div className="metrics-button-container">
+                        <div className="metrics-content">
+                          <Typography className="metric-label">
+                            Expected Valuation Growth
+                          </Typography>
+                          <Typography className="metric-value">
+                            {farm.expectedOutcomePercentage}%
+                          </Typography>
+                        </div>
+                        <Button 
+                          variant="contained"
+                          className="view-property-button"
+                          disabled={!farm.isActive}
+                          href={`/farms/${index}`}
+                        >
+                          {farm.isActive ? 'View details' : 'Sold'}
+                        </Button>
+                      </div>
+                    </Box>
                   </CardContent>
-                  
-                  <CardActions>
-                    <Button 
-                      size="small" 
-                      variant="contained"
-                      disabled={!farm.isActive}
-                      href={`/farms/${index}`}
-                    >
-                      View Details
-                    </Button>
-                  </CardActions>
                 </Card>
               </Grid2>
             ))}
           </Grid2>
           
+          <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="outlined"
+              className="farm-view-details-button"
+              href="/farms"
+            >
+              See all farms
+            </Button>
+          </Box>
+          
           {farms.length === 0 && (
-            <Typography variant="body1" textAlign="center" sx={{ mt: 3 }}>
+            <Typography className="no-farms-message">
               No farms available yet.
             </Typography>
           )}
         </Paper>
-      )
+    )
 }
