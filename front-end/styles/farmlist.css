@@ -3,8 +3,6 @@
   background-color: #FFFFFF !important;
   max-width: 1200px !important;
   margin: 0 auto !important;
-  padding-left: 50px !important;
-  padding-right: 50px !important;
   border-radius: 8px !important;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
 }
@@ -70,7 +68,7 @@
 .farm-list-grid .MuiCard-root {
   height: 100% !important;
   display: flex !important;
-  flex-direction: column !important;
+  flex-direction: row !important;
 }
 
 .farm-list-grid .MuiCardContent-root {
