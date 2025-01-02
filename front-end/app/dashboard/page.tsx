@@ -1,18 +1,24 @@
 'use client'
 
+import { useContext } from 'react'
 import FarmList from '@/components/FarmList'
-import { Paper, Typography } from '@mui/material'
+import HoldingList from '@/components/HoldingList'
+import '@/styles/dashboard.page.css'
+import { SafeAddressContext } from './layout'
 
 export default function DashboardPage() {
+  const safeAddress = useContext(SafeAddressContext)
+  
   return (
-    <Paper sx={{ padding: '24px' }}>
-      <Typography variant="h4" color="primary" gutterBottom>
-        Dashboard
-      </Typography>
-      <Typography variant="body1">
-        Welcome to your farm token dashboard. Here you can manage your farm tokens and track your investments.
-      </Typography>
-      <FarmList />
-    </Paper>
+    <div className="dashboard-container">
+      <div className="dashboard-stack">
+        <section className="holdings-section">
+          <HoldingList />
+        </section>
+        <section className="farms-section">
+          <FarmList safeAddress={safeAddress} />
+        </section>
+      </div>
+    </div>
   )
 }

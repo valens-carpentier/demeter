@@ -17,9 +17,10 @@ import { getBalance } from '@/lib/balanceUtils'
 
 type props = {
   passkey: PasskeyArgType
+  onSafeAddress: (address: string) => void
 }
 
-function SafeAccountDetails({ passkey }: props) {
+function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [safeAddress, setSafeAddress] = useState<string>()
   const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>(false)
@@ -64,13 +65,14 @@ function SafeAccountDetails({ passkey }: props) {
       const isSafeDeployed = await safe4337PackWithOwner.protocolKit.isSafeDeployed()
 
       setSafeAddress(safeAddress)
+      onSafeAddress(safeAddress)
       setIsSafeDeployed(isSafeDeployed)
       setIsLoading(false)
     } catch (error) {
       console.error('Failed to initialize Safe:', error)
       setIsLoading(false)
     }
-  }, [passkey])
+  }, [passkey, onSafeAddress])
 
   useEffect(() => {
     showSafeInfo()

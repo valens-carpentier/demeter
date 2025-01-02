@@ -1,6 +1,6 @@
 'use client'
 
-import { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { loadPasskeysFromLocalStorage } from '@/lib/passkeys'
 import SafeAccountDetails from '@/components/SafeAccountDetails'
@@ -9,6 +9,10 @@ import Sidebar from '@/components/Sidebar'
 import styles from '@/styles/sidebar.module.css'
 import '@/styles/globals.css'
 
+// Create contexts for both safe address and passkey
+export const SafeAddressContext = React.createContext<string | undefined>(undefined)
+export const PasskeyContext = React.createContext<PasskeyArgType | undefined>(undefined)
+
 export default function DashboardLayout({
   children
 }: {
@@ -16,6 +20,7 @@ export default function DashboardLayout({
 }) {
   const router = useRouter()
   const [passkey, setPasskey] = useState<PasskeyArgType>()
+  const [safeAddress, setSafeAddress] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -42,15 +47,24 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className={styles.layoutWrapper}>
-      <div className={styles.sidebarContainer}>
-        <Sidebar>
-          <SafeAccountDetails passkey={passkey} />
-        </Sidebar>
-      </div>
-      <div className={styles.mainContent}>
-        {children}
-      </div>
-    </div>
+    <PasskeyContext.Provider value={passkey}>
+      <SafeAddressContext.Provider value={safeAddress}>
+        <div className={styles.layoutWrapper}>
+          <div className={styles.sidebarContainer}>
+            <Sidebar>
+              <SafeAccountDetails 
+                passkey={passkey} 
+                onSafeAddress={(address) => {
+                  setSafeAddress(address)
+                }}
+              />
+            </Sidebar>
+          </div>
+          <div className={styles.mainContent}>
+            {children}
+          </div>
+        </div>
+      </SafeAddressContext.Provider>
+    </PasskeyContext.Provider>
   )
 }
