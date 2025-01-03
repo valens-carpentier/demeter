@@ -3,7 +3,8 @@ import { ethers} from 'ethers'
 import FarmFactory from '../../build/contracts/FarmFactory.json'
 
 import { RPC_URL } from './constants'
-const FARM_FACTORY_ADDRESS = "0x24829794aCA3e34a3300e66A25f42261b0203bfD";
+
+import { FARM_FACTORY_ADDRESS } from './constants'
 
 const loadFarms = async () => {
     try {
