@@ -145,7 +145,7 @@
 .view-property-button {
   background-color: #4CAF50 !important;
   color: white !important;
-  border-radius: 25px !important;
+  border-radius: 6px !important;
   padding: 12px 24px !important;
   font-weight: 600 !important;
   text-transform: none !important;
@@ -154,4 +154,16 @@
 
 .view-property-button:hover {
   background-color: #2E7D32 !important;
+}
+
+.buy-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
 }

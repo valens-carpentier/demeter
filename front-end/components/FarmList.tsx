@@ -7,10 +7,10 @@ import {
     CardContent, 
     Button,
     Box,
-    Divider,
-    Modal,
-    TextField
+    Divider
 } from '@mui/material'
+import { useRouter } from 'next/navigation'
+import BuyFarmModal from './BuyFarmModal'
 
 import loadFarms from '../lib/farmsUtils'
 import { buyFarmTokens } from '../lib/tokenUtils'
@@ -40,6 +40,8 @@ export default function FarmList() {
     const [buyAmount, setBuyAmount] = useState<string>('')
     const [isBuying, setIsBuying] = useState(false)
     const [openBuyModal, setOpenBuyModal] = useState(false)
+    const [transactionHash, setTransactionHash] = useState<string>('')
+    const router = useRouter()
 
     useEffect(() => {
         const fetchFarms = async () => {
@@ -85,13 +87,11 @@ export default function FarmList() {
                 amount,
                 passkey
             )
-            setOpenBuyModal(false)
-            setBuyAmount('')
-            // Show success message with transaction hash
-            alert(`Transaction submitted! Hash: ${hash}`)
+            setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to buy tokens:', error)
             alert(error.message || 'Failed to buy tokens. Please try again.')
+            setOpenBuyModal(false)
         } finally {
             setIsBuying(false)
         }
@@ -160,7 +160,11 @@ export default function FarmList() {
                     <Button
                         variant="outlined"
                         className="farm-view-details-button"
-                        href="/farms"
+                        onClick={() => {
+                            if (passkey) {
+                                router.push(`/dashboard/marketplace?passkeyId=${passkey.rawId}`)
+                            }
+                        }}
                     >
                         See all farms
                     </Button>
@@ -173,38 +177,20 @@ export default function FarmList() {
                 )}
             </Paper>
 
-            {/* Buy Modal */}
-            <Modal
+            <BuyFarmModal 
                 open={openBuyModal}
-                onClose={() => setOpenBuyModal(false)}
-                aria-labelledby="buy-token-modal"
-            >
-                <Box className="buy-modal">
-                    <Typography variant="h6" component="h2">
-                        Buy Farm Tokens
-                    </Typography>
-                    <Typography sx={{ mt: 2 }}>
-                        Farm: {selectedFarm?.name}
-                    </Typography>
-                    <TextField
-                        fullWidth
-                        type="number"
-                        label="Amount of tokens"
-                        value={buyAmount}
-                        onChange={(e) => setBuyAmount(e.target.value)}
-                        sx={{ mt: 2 }}
-                    />
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        onClick={handleBuyConfirm}
-                        disabled={isBuying || !buyAmount}
-                        sx={{ mt: 2 }}
-                    >
-                        {isBuying ? 'Processing...' : 'Confirm Purchase'}
-                    </Button>
-                </Box>
-            </Modal>
+                onClose={() => {
+                    setOpenBuyModal(false)
+                    setTransactionHash('')
+                    setBuyAmount('')
+                }}
+                selectedFarm={selectedFarm}
+                buyAmount={buyAmount}
+                onBuyAmountChange={(value) => setBuyAmount(value)}
+                onBuyConfirm={handleBuyConfirm}
+                isBuying={isBuying}
+                transactionHash={transactionHash}
+            />
         </>
     )
 }
