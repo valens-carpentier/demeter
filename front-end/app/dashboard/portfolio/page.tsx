@@ -7,7 +7,8 @@ import {
   Paper, 
   Grid, 
   Link as MuiLink, 
-  Divider 
+  Divider, 
+  CircularProgress 
 } from '@mui/material'
 import { SafeAddressContext, PasskeyContext } from '../layout'
 import { getUserHoldings, getTotalHoldingsValue } from '../../../lib/holdingsUtils'
@@ -67,9 +68,22 @@ export default function Portfolio() {
       <Paper className="wallet-card">
         <Box sx={{ p: 3 }}>
           <Box className="wallet-container">
-            <Typography className="wallet-address">
-              Base Sepolia: {safeAddress}
-            </Typography>
+            {loading ? (
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2 
+              }}>
+                <CircularProgress size={20} sx={{ color: '#5C745D' }} />
+                <Typography className="wallet-address">
+                  Loading address...
+                </Typography>
+              </Box>
+            ) : (
+              <Typography className="wallet-address">
+                Base Sepolia: {safeAddress}
+              </Typography>
+            )}
             <Box className="wallet-links">
               <MuiLink 
                 href={`https://app.safe.global/base-sepolia:${safeAddress}`}
@@ -93,7 +107,6 @@ export default function Portfolio() {
         </Box>
       </Paper>
 
-      {/* Assets Card */}
       <Typography variant="h6" sx={{ mb: 2 }} className="title">Your Holdings</Typography>
       <Paper className="assets-card">
         <Box className="assets-header">
@@ -103,28 +116,39 @@ export default function Portfolio() {
           <Typography className="header-cell">Your Holdings</Typography>
         </Box>
         
-        {holdings.length > 0 ? (
-          holdings.map((holding, index) => (
-            <Box key={index} className="asset-row">
-              <Typography className="asset-cell">{holding.farmName}</Typography>
-              <Typography className="asset-cell">
-                ${holding.tokenPrice}
-              </Typography>
-              <Typography className="asset-cell">
-                {holding.tokenBalance}
-              </Typography>
-              <Typography className="asset-cell">
-              ${holding.userShare.toLocaleString(undefined, {
-                     minimumFractionDigits: 2,
-                     maximumFractionDigits: 2
-                        })}
-              </Typography>
-            </Box>
-          ))
+        {loading ? (
+          <Box sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            p: 4 
+          }}>
+            <CircularProgress size={24} sx={{ color: '#5C745D' }} />
+          </Box>
         ) : (
-          <Typography className="no-assets-message">
-            No assets found in your portfolio
-          </Typography>
+          holdings.length > 0 ? (
+            holdings.map((holding, index) => (
+              <Box key={index} className="asset-row">
+                <Typography className="asset-cell">{holding.farmName}</Typography>
+                <Typography className="asset-cell">
+                  ${holding.tokenPrice}
+                </Typography>
+                <Typography className="asset-cell">
+                  {holding.tokenBalance}
+                </Typography>
+                <Typography className="asset-cell">
+                ${holding.userShare.toLocaleString(undefined, {
+                       minimumFractionDigits: 2,
+                       maximumFractionDigits: 2
+                          })}
+                </Typography>
+              </Box>
+            ))
+          ) : (
+            <Typography className="no-assets-message">
+              No assets found in your portfolio
+            </Typography>
+          )
         )}
       </Paper>
     </Box>
