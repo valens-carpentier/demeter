@@ -10,6 +10,7 @@ export interface UserHolding {
   farmValuation: number;
   userShare: number;
   tokenAddress: string;
+  tokenPrice: number;
 }
 
 export async function getUserHoldings(safeAddress: string): Promise<UserHolding[]> {
@@ -35,9 +36,10 @@ export async function getUserHoldings(safeAddress: string): Promise<UserHolding[
       // If user has tokens, get additional info
       if (tokenBalance > 0) {
         const symbol = await farmToken.symbol()
+        const pricePerToken = await farmToken.pricePerToken()
         
         // Calculate user's share value based on token balance and farm valuation
-        const userShare = (tokenBalance / farm.totalTokenSupply) * farm.valuation
+        const userShare = (tokenBalance * Number(pricePerToken))
         
         return {
           farmName: farm.name,
@@ -45,7 +47,8 @@ export async function getUserHoldings(safeAddress: string): Promise<UserHolding[
           tokenBalance: tokenBalance,
           farmValuation: farm.valuation,
           userShare: userShare,
-          tokenAddress: farm.token
+          tokenAddress: farm.token,
+          tokenPrice: Number(pricePerToken)
         }
       }
       return null
