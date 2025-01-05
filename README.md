@@ -4,12 +4,34 @@ A decentralized platform for fractional farm ownership using tokenization, built
 
 ## Overview
 
-Demeter allows users to purchase tokens representing fractional ownership of farms. The platform leverages Base network for low fees and fast transactions, while utilizing Safe's account abstraction for enhanced security and user experience.
+Demeter allows users to purchase tokens representing fractional ownership of farms. The platform leverages Base network for low fees and fast transactions, while utilizing Safe's account abstraction.
+
+## Screenshots
+
+### Login with Passkeys
+![Login with Passkeys](./screenshots/login-screen.png)
+*Secure authentication using Safe Protocol's passkey integration*
+
+### Dashboard Overview
+![Dashboard](./screenshots/dashboard-screen.png)
+*Main dashboard showing portfolio overview and available farms*
+
+### Farm Token Marketplace
+![Marketplace](./screenshots/marketplace-screen.png)
+*Browse and purchase available farm tokens*
+
+### Buy Farm Token
+![Buy Modal](./screenshots/buy-modal-screen.png)
+*Purchase farm tokens using your Safe Account*
+
+### Portfolio Management
+![Portfolio](./screenshots/portfolio-screen.png)
+*Track your farm token holdings and investments*
 
 ## Key Features
 
 - **Account Abstraction**: Passwordless authentication using ERC-4337 and passkeys
-- **Safe Smart Accounts**: Each user gets a Safe smart account for secure token custody
+- **Safe Smart Accounts**: Each user gets a Safe smart account
 - **Farm Token Trading**: Buy and sell farm tokens using crypto
 - **Asset Dashboard**: Track farm token holdings and portfolio value
 
@@ -34,10 +56,6 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Framework: Next.js
 - Language: TypeScript
 - UI: React
-
-### Backend
-- Framework: NestJS
-- Language: TypeScript
 
 ## Core features
 
@@ -87,9 +105,9 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 
 ### 5. Portfolio
 - As a user, I want to view my portfolio of farm tokens and track my investment
-- As a user, I want to sell my farm token to other users
+- As a user, I want to sell my farm token to other users - Not implemented yet
 
-## Owner Flow
+## Owner Flow (Admin) - Not implemented yet
 
 ### 1. Login with Safe Passkey
 - As an owner, I want to login to the platform using Safe AA passkeys
@@ -101,3 +119,20 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 ### 3. Manage Farm
 - As an owner, I want to manage my farm and track my investment
 - As an owner, I want to change the price of my farm token if needed
+
+## Development Setup
+
+### Environment Configuration
+- Network: Base Sepolia Testnet
+- RPC URL: https://sepolia.base.org
+- Chain ID: 84532
+
+### Deployed Contracts
+- Farm Factory: 0x24829794aCA3e34a3300e66A25f42261b0203bfD
+- Entry Point: 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
+
+### Key Dependencies
+- Material UI for component library
+- Safe Protocol Kit v4.1.0
+- Safe Relay Kit v3.1.0
+- Ethers.js v6
