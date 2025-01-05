@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useContext } from 'react'
+import { useRouter } from 'next/navigation'
 import { 
     Box, 
     Typography, 
@@ -22,12 +23,14 @@ import loadFarms from '../../../lib/farmsUtils'
 import { SafeAddressContext, PasskeyContext } from '../../dashboard/layout'
 import type { Farm } from '../../../types/farm'
 import '../../../styles/marketplace.css'
+import { buyFarmTokens } from '../../../lib/tokenUtils'
 
 type SortOption = 'valuation-high' | 'valuation-low' | 'expected-high' | 'expected-low'
 
 export default function Marketplace() {
     const safeAddress = useContext(SafeAddressContext)
     const passkey = useContext(PasskeyContext)
+    const router = useRouter()
     const [farms, setFarms] = useState<Farm[]>([])
     const [filteredFarms, setFilteredFarms] = useState<Farm[]>([])
     const [loading, setLoading] = useState(true)
@@ -38,6 +41,12 @@ export default function Marketplace() {
     const [isBuying, setIsBuying] = useState(false)
     const [openBuyModal, setOpenBuyModal] = useState(false)
     const [transactionHash, setTransactionHash] = useState<string>('')
+
+    useEffect(() => {
+        if (passkey) {
+            router.push(`/dashboard/marketplace?passkeyId=${passkey.rawId}`)
+        }
+    }, [passkey, router])
 
     useEffect(() => {
         const fetchFarms = async () => {
@@ -55,7 +64,8 @@ export default function Marketplace() {
     }, [])
 
     useEffect(() => {
-        let result = [...farms]
+        // Start with only active farms
+        let result = [...farms].filter(farm => farm.isActive)
         
         // Apply search filter
         if (searchTerm) {
@@ -72,9 +82,9 @@ export default function Marketplace() {
                 case 'valuation-low':
                     return a.valuation - b.valuation
                 case 'expected-high':
-                    return b.expectedOutcomePercentage - a.expectedOutcomePercentage
+                    return b.sizeInAcres - a.sizeInAcres
                 case 'expected-low':
-                    return a.expectedOutcomePercentage - b.expectedOutcomePercentage
+                    return a.sizeInAcres - b.sizeInAcres
                 default:
                     return 0
             }
@@ -158,112 +168,132 @@ export default function Marketplace() {
                 >
                     <MenuItem value="valuation-high">Highest Valuation</MenuItem>
                     <MenuItem value="valuation-low">Lowest Valuation</MenuItem>
-                    <MenuItem value="expected-high">Highest Expected Annual Valuation Growth</MenuItem>
-                    <MenuItem value="expected-low">Lowest Expected Annual Valuation Growth</MenuItem>
+                    <MenuItem value="expected-high">Largest Size</MenuItem>
+                    <MenuItem value="expected-low">Smallest Size</MenuItem>
                 </TextField>
             </Box>
 
-                <Grid2 container spacing={3}>
-                    {filteredFarms.map((farm, index) => (
-                        <Grid2 item xs={12} sm={6} md={4} key={index}>
-                            <Card className="farm-card">
-                                <CardContent>
-                                    <Typography variant="h6" className="farm-name">
-                                        {farm.name}
-                                    </Typography>
-                                    <Box sx={{ my: 2 }}>
+            <Grid2 
+                container 
+                spacing={3} 
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    maxWidth: '1000px',
+                    margin: '0 auto'
+                }}
+            >
+                {filteredFarms.map((farm, index) => (
+                    <Grid2 
+                        item 
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                        key={index}
+                    >
+                        <Card className="farm-card">
+                            <CardContent>
+                                <Typography variant="h6" className="farm-name">
+                                    {farm.name}
+                                </Typography>
+                                <Box sx={{ my: 2 }}>
+                                <div className="farm-stat">
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Farm Size
+                                        </Typography>
+                                        <Typography variant="h6" className="stat-value">
+                                            {farm.sizeInAcres} acres
+                                        </Typography>
+                                    </div>
+                                    <Divider sx={{ my: 1.5 }} />
                                     <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Farm Size
-                                            </Typography>
-                                            <Typography variant="h6" className="stat-value">
-                                                {farm.sizeInAcres} acres
-                                            </Typography>
-                                        </div>
-                                        <Divider sx={{ my: 1.5 }} />
-                                        <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Farm Valuation
-                                            </Typography>
-                                            <Typography variant="h6" className="stat-value">
-                                                ${farm.valuation.toLocaleString()}
-                                            </Typography>
-                                        </div>
-                                        <Divider sx={{ my: 1.5 }} />
-                                        <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Token Price
-                                            </Typography>
-                                            <Typography variant="h6" className="stat-value highlight">
-                                                ${(farm.valuation / farm.totalTokenSupply).toFixed(2)}
-                                            </Typography>
-                                        </div>
-                                        <Divider sx={{ my: 1.5 }} />
-                                        <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Expected Annual Valuation Growth
-                                            </Typography>
-                                            <Typography variant="h6" className="stat-value success">
-                                                {farm.expectedOutcomePercentage}%
-                                            </Typography>
-                                        </div>
-                                        <Divider sx={{ my: 1.5 }} />
-                                        <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Total Supply
-                                            </Typography>
-                                            <Typography variant="h6" className="stat-value">
-                                                {farm.totalTokenSupply.toLocaleString()} tokens
-                                            </Typography>
-                                        </div>
-                                        <Divider sx={{ my: 1.5 }} />
-                                        <div className="farm-stat">
-                                            <Typography color="text.secondary" className="stat-label">
-                                                Token Address
-                                            </Typography>
-                                            <Link
-                                                href={`https://sepolia.basescan.org/address/${farm.token}`}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                style={{ textDecoration: 'none' }}
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Farm Valuation
+                                        </Typography>
+                                        <Typography variant="h6" className="stat-value">
+                                            ${farm.valuation.toLocaleString()}
+                                        </Typography>
+                                    </div>
+                                    <Divider sx={{ my: 1.5 }} />
+                                    <div className="farm-stat">
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Token Price
+                                        </Typography>
+                                        <Typography variant="h6" className="stat-value highlight">
+                                            ${(farm.pricePerToken)}
+                                        </Typography>
+                                    </div>
+                                    <Divider sx={{ my: 1.5 }} />
+                                    <div className="farm-stat">
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Expected Annual Valuation Growth
+                                        </Typography>
+                                        <Typography variant="h6" className="stat-value success">
+                                            {farm.expectedOutcomePercentage}%
+                                        </Typography>
+                                    </div>
+                                    <Divider sx={{ my: 1.5 }} />
+                                    <div className="farm-stat">
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Total Supply
+                                        </Typography>
+                                        <Typography variant="h6" className="stat-value">
+                                            {farm.totalTokenSupply.toLocaleString()} tokens
+                                        </Typography>
+                                    </div>
+                                    <Divider sx={{ my: 1.5 }} />
+                                    <div className="farm-stat">
+                                        <Typography color="text.secondary" className="stat-label">
+                                            Token Address
+                                        </Typography>
+                                        <Link
+                                            href={`https://sepolia.basescan.org/address/${farm.token}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            style={{ textDecoration: 'none' }}
+                                        >
+                                            <Typography 
+                                                variant="h6" 
+                                                className="stat-value" 
+                                                sx={{ 
+                                                    fontSize: '0.8rem',
+                                                    '&:hover': {
+                                                        textDecoration: 'underline'
+                                                    }
+                                                }}
                                             >
-                                                <Typography 
-                                                    variant="h6" 
-                                                    className="stat-value" 
-                                                    sx={{ 
-                                                        fontSize: '0.8rem',
-                                                        '&:hover': {
-                                                            textDecoration: 'underline'
-                                                        }
-                                                    }}
-                                                >
-                                                    {`${farm.token.slice(0, 6)}...${farm.token.slice(-6)}`}
-                                                </Typography>
-                                            </Link>
-                                        </div>
-                                    </Box>
+                                                {`${farm.token.slice(0, 6)}...${farm.token.slice(-6)}`}
+                                            </Typography>
+                                        </Link>
+                                    </div>
+                                </Box>
 
-                                    <Button
-                                        variant="contained"
-                                        fullWidth
-                                        className="buy-button"
-                                        disabled={!farm.isActive || !safeAddress}
-                                        onClick={() => handleBuyClick(farm)}
-                                    >
-                                        {!safeAddress ? 'Connect Safe to Buy' : 
-                                         !farm.isActive ? 'Sold Out' : 'Buy'}
-                                    </Button>
-                                </CardContent>
-                            </Card>
-                        </Grid2>
-                    ))}
-                </Grid2>
+                                <Button
+                                    variant="contained"
+                                    fullWidth
+                                    className="buy-button"
+                                    disabled={!farm.isActive || !safeAddress}
+                                    onClick={() => handleBuyClick(farm)}
+                                >
+                                    {!safeAddress ? 'Connecting Safe...' : 
+                                     !farm.isActive ? 'Sold Out' : 'Buy'}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                    </Grid2>
+                ))}
+            </Grid2>
 
-                {filteredFarms.length === 0 && (
-                    <Typography className="no-results">
-                        No farms match your search criteria.
-                    </Typography>
-                )}
+            {filteredFarms.length === 0 && (
+                <Typography className="no-results">
+                    No farms match your search criteria.
+                </Typography>
+            )}
 
             <BuyFarmModal
                 open={openBuyModal}

@@ -13,12 +13,13 @@
 
 /* Card styles */
 .farm-card {
-    height: 475px !important;
+    height: 500px !important;
     width: 400px !important;
     display: flex !important;
     flex-direction: column !important;
     transition: all 0.2s ease-in-out !important;
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    max-width: 100% !important;
 }
 
 .farm-card .MuiCardContent-root {
@@ -37,7 +38,11 @@
 .farm-name {
     color: #2C3E2D !important;
     font-weight: 600 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: 0 !important;
+    padding: 1rem !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+    width: 100% !important;
+    margin: -16px -16px 1rem -16px !important;
 }
 
 .farm-stat {
