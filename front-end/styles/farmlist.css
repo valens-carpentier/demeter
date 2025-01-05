@@ -1,7 +1,7 @@
 .farm-list-container {
   padding: 24px !important;
   background-color: #FFFFFF !important;
-  max-width: 1200px !important;
+  width: 100% !important;
   margin: 0 auto !important;
   border-radius: 8px !important;
   box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
@@ -17,8 +17,12 @@
 
 .farm-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
-  gap: 24px !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .farm-name {

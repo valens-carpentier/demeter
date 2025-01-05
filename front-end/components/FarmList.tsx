@@ -7,7 +7,8 @@ import {
     CardContent, 
     Button,
     Box,
-    Divider
+    Divider,
+    CircularProgress
 } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import BuyFarmModal from './BuyFarmModal'
@@ -101,11 +102,11 @@ export default function FarmList() {
         <>
             <Paper className="farm-list-container">
                 <Typography className="farm-list-title">
-                    Available Farms ({farms.length})
+                    Available Farms ({farms.filter(farm => farm.isActive).length})
                 </Typography>
                 
                 <Grid2 container spacing={3} className="farm-list-grid">
-                    {farms.map((farm, index) => (
+                    {farms.filter(farm => farm.isActive).map((farm, index) => (
                         <Grid2 item xs={12} sm={6} md={4} lg={4} key={index}>
                             <Card>
                                 <CardContent>
@@ -124,7 +125,7 @@ export default function FarmList() {
                                         <div>
                                             <Typography className="investment-label">Token Price</Typography>
                                             <Typography className="token-price">
-                                                ${(farm.valuation / farm.totalTokenSupply).toFixed(2)}
+                                                ${farm.pricePerToken}
                                             </Typography>
                                         </div>
                                     </Box>
@@ -145,7 +146,10 @@ export default function FarmList() {
                                                 disabled={!farm.isActive || !safeAddress}
                                                 onClick={() => handleBuyClick(farm)}
                                             >
-                                                {!safeAddress ? 'Connecting Safe...' : 
+                                                {!safeAddress ? (
+                                                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                                    <CircularProgress size={16} sx={{ color: 'white' }} /></Box>
+                                                ) : 
                                                  !farm.isActive ? 'Sold Out' : 'Buy'}
                                             </Button>
                                         </div>

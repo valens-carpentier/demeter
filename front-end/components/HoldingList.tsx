@@ -23,6 +23,7 @@ export default function HoldingList() {
             if (!safeAddress) return
             
             try {
+                setLoading(true)
                 const userHoldings = await getUserHoldings(safeAddress)
                 const total = await getTotalHoldingsValue(safeAddress)
                 
@@ -37,10 +38,6 @@ export default function HoldingList() {
 
         fetchHoldings()
     }, [safeAddress])
-
-    if (loading) {
-        return <CircularProgress />
-    }
 
     return (
         <Paper className="holding-list-container">
@@ -57,55 +54,51 @@ export default function HoldingList() {
                 </Box>
             </Box>
 
-            <Grid2 container spacing={3}>
-                {holdings.map((holding, index) => (
-                    <Grid2 key={index} item xs={12} sm={6} md={4}>
-                        <Card>
-                            <CardContent>
-                                <Box className="holding-details-container">
-                                    <Grid2 container spacing={2} className="holding-grid">
-                                        <Grid2 item xs={4}>
-                                            <Typography className="holding-label">
-                                                Farm Token 
-                                            </Typography>
-                                            <Typography className="holding-value">
-                                                {holding.tokenSymbol}
-                                            </Typography>
-                                        </Grid2>
-                                        <Grid2 item xs={4}>
-                                            <Typography className="holding-label">
-                                                Number of Tokens
-                                            </Typography>
-                                            <Typography className="holding-value">
-                                                {holding.tokenBalance.toLocaleString()}
-                                            </Typography>
-                                        </Grid2>
-                                        <Grid2 item xs={4}>
-                                            <Typography className="holding-label">
-                                                Farm Valuation
-                                            </Typography>
-                                            <Typography className="holding-value">
-                                                ${holding.farmValuation.toLocaleString()}
-                                            </Typography>
-                                        </Grid2>
-                                        <Grid2 item xs={4}>
-                                            <Typography className="holding-label">
-                                                Your Share
-                                            </Typography>
-                                            <Typography className="holding-value">
-                                                ${holding.userShare.toLocaleString(undefined, {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                })}
-                                            </Typography>
-                                        </Grid2>
-                                    </Grid2>
-                                </Box>
-                            </CardContent>
-                        </Card>
-                    </Grid2>
-                ))}
-            </Grid2>
+            <Box className="assets-header">
+                <Typography className="header-cell">Farm Name</Typography>
+                <Typography className="header-cell">Farm Token</Typography>
+                <Typography className="header-cell">Number of Tokens</Typography>
+                <Typography className="header-cell">Farm Valuation</Typography>
+                <Typography className="header-cell">Your Share</Typography>
+            </Box>
+
+            {loading ? (
+                <Box sx={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    p: 4 
+                }}>
+                    <CircularProgress color="inherit" size={24} />
+                </Box>
+            ) : (
+                <>
+                    {holdings.length > 0 ? (
+                        holdings.map((holding, index) => (
+                            <Box key={index} className="asset-row">
+                                <Typography className="asset-cell">{holding.farmName}</Typography>
+                                <Typography className="asset-cell">{holding.tokenSymbol}</Typography>
+                                <Typography className="asset-cell">
+                                    {holding.tokenBalance.toLocaleString()}
+                                </Typography>
+                                <Typography className="asset-cell">
+                                    ${holding.farmValuation.toLocaleString()}
+                                </Typography>
+                                <Typography className="asset-cell">
+                                    ${holding.userShare.toLocaleString(undefined, {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    })}
+                                </Typography>
+                            </Box>
+                        ))
+                    ) : (
+                        <Typography className="no-assets-message">
+                            No holdings yet...
+                        </Typography>
+                    )}
+                </>
+            )}
         </Paper>
     )
 }

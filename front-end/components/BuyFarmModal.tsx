@@ -105,7 +105,7 @@ export default function BuyFarmModal({
                     <Box className="buy-modal-row">
                         <Typography className="buy-modal-label">Total Price:</Typography>
                         <Typography className="buy-modal-value">
-                            ${selectedFarm && buyAmount ? ((selectedFarm.valuation / selectedFarm.totalTokenSupply) * Number(buyAmount)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}
+                            ${selectedFarm && buyAmount ? (selectedFarm.pricePerToken * Number(buyAmount)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : '0.00'}
                         </Typography>
                     </Box>
                 </Box>
