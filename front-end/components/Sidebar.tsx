@@ -2,6 +2,7 @@ import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box } from 
 import { Dashboard, AccountBalance, Work, Settings, Logout } from '@mui/icons-material'
 import { useRouter, usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
+import styles from '@/styles/sidebar.module.css'
 
 interface SidebarProps {
   children?: ReactNode;
@@ -23,53 +24,39 @@ export default function Sidebar({ children }: SidebarProps) {
   ]
 
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      height: '100vh',
-      position: 'relative'
-    }}>
-      <Box sx={{ width: '100%', mb: 2 }}>
+    <Box className={styles.sidebarWrapper}>
+      <Box className={styles.childrenContainer}>
         {children}
       </Box>
-      <List sx={{ flex: '1 1 auto' }}>
-        {menuItems.map((item) => (
-          <ListItem key={item.text} disablePadding>
+      <Box className={styles.menuContainer}>
+        <List>
+          {menuItems.map((item) => (
+            <ListItem key={item.text} disablePadding>
+              <ListItemButton 
+                className={`${styles.menuItem} ${pathname === item.path ? styles.menuItemActive : ''}`}
+                onClick={() => router.push(item.path)}
+                disabled={item.disabled}
+              >
+                <ListItemIcon className={styles.menuItemIcon}>{item.icon}</ListItemIcon>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+        <List className={styles.logoutContainer}>
+          <ListItem disablePadding>
             <ListItemButton 
-              selected={pathname === item.path}
-              onClick={() => router.push(item.path)}
-              disabled={item.disabled}
+              className={styles.menuItem}
+              onClick={handleLogout}
             >
-              <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemIcon className={styles.menuItemIcon}>
+                <Logout />
+              </ListItemIcon>
+              <ListItemText primary="Logout" />
             </ListItemButton>
           </ListItem>
-        ))}
-      </List>
-      <List sx={{ 
-        position: 'absolute',
-        bottom: 32,
-        left: 0,
-        width: '100%',
-        pb: 2
-      }}>
-        <ListItem disablePadding>
-          <ListItemButton onClick={handleLogout}>
-            <ListItemIcon>
-              <Logout sx={{ color: 'black' }} />
-            </ListItemIcon>
-            <ListItemText 
-              primary="Logout" 
-              sx={{ 
-                '& .MuiListItemText-primary': { 
-                  color: 'white',
-                  fontWeight: 500
-                } 
-              }} 
-            />
-          </ListItemButton>
-        </ListItem>
-      </List>
+        </List>
+      </Box>
     </Box>
   )
 }

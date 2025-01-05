@@ -50,3 +50,20 @@
 .menuItemActive .menuItemIcon {
   color: #4CAF50;
 }
+
+.sidebarWrapper {
+  height: 97vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.menuContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logoutContainer {
+  margin-bottom: 32px;
+}

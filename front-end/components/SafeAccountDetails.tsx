@@ -14,6 +14,7 @@ import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
 import { executeSafeDeployment } from '../lib/deployment'
 import styles from '@/styles/safeaccountdetails.module.css'
 import { getBalance } from '@/lib/balanceUtils'
+import { InfoOutlined } from '@mui/icons-material'
 
 type props = {
   passkey: PasskeyArgType
@@ -140,22 +141,23 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   return (
     <Paper className={styles.container}>
       <Stack className={styles.stack}>
-        <Typography className={styles.balanceTitle}>
-          Balance
-        </Typography>
+        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+          <Typography className={styles.balanceTitle}>
+            Balance
+          </Typography>
+          <Tooltip title="This is your balance available to buy farm tokens">
+            <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
+          </Tooltip>
+        </Stack>
 
-        <Typography className={styles.balanceValue}>
-          {isLoading || balanceLoading ? (
-            <CircularProgress className={styles.loading}/>
-          ) : (
-            `$${balanceUSD || '0.00'}`
-          )}
-        </Typography>
-
-        {isLoading ? (
+        {isLoading || balanceLoading ? (
           <CircularProgress className={styles.loading}/>
         ) : (
           <>
+            <Typography className={styles.balanceValue}>
+              ${balanceUSD || '0.00'}
+            </Typography>
+
             <Typography textAlign={'center'} fontSize="0.875rem">
               <Link
                 href={safeLink}
@@ -172,8 +174,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
             </Typography>
 
             {!isSafeDeployed && (
-              <>
-                <PendingDeploymentLabel />
+              <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <Button
                   variant="contained"
                   onClick={handleDeploy}
@@ -183,10 +184,13 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
                   {isDeploying ? (
                     <CircularProgress size={4} color="inherit" />
                   ) : (
-                    'Deploy Safe'
+                    'Deploy your Wallet'
                   )}
                 </Button>
-              </>
+                <Tooltip title="Please send ETH to the wallet address then click on 'Deploy your Wallet' button">
+                  <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
+                </Tooltip>
+              </Stack>
             )}
 
             {userOp && (
@@ -222,14 +226,4 @@ function splitAddress(
   const lastPart = address.slice(address.length - charDisplayed)
 
   return `${firstPart}...${lastPart}`
-}
-
-function PendingDeploymentLabel() {
-  return (
-    <div className={styles.pendingLabel}>
-      <span className={styles.pendingLabelText}>
-        Deployment pending
-      </span>
-    </div>
-  )
 }

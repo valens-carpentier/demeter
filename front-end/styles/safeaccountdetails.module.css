@@ -39,7 +39,7 @@
 }
 
 .addressStack {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 4px;
   color: #5C745D;
@@ -64,7 +64,6 @@
 }
 
 .deployButton {
-  width: 50%;
   color: #FFFFFF !important;
   background-color: #4CAF50 !important;
 }
