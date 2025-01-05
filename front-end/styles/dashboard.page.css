@@ -16,11 +16,13 @@
 }
 
 .holdings-section {
-  width: fit-content;
+  width: 100%;
+  max-width: 1200px;
 }
 
 .farms-section {
-  width: fit-content;
+  width: 100%;
+  max-width: 1200px;
 }
 
   
