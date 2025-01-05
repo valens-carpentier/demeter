@@ -1,0 +1,132 @@
+.portfolio-container {
+  padding: 24px !important;
+  background-color: #FFFFFF !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+  border-radius: 8px !important;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.portfolio-title {
+  color: #2C3E2D !important;
+  font-size: 24px !important;
+  font-weight: 700 !important;
+  margin-bottom: 24px !important;
+  letter-spacing: -0.025em !important;
+}
+
+.wallet-card {
+  background-color: #FFFFFF !important;
+  border-radius: 8px !important;
+  margin-bottom: 24px !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.wallet-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.wallet-address {
+  font-family: monospace !important;
+  color: #5C745D !important;
+  font-size: 14px !important;
+  padding: 8px 12px !important;
+  background-color: #F5F2EA !important;
+  border-radius: 6px !important;
+  max-width: fit-content !important;
+  margin-right: 24px !important;
+}
+
+.wallet-links {
+  display: flex !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.wallet-link {
+  color: #4CAF50 !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.wallet-link:hover {
+  text-decoration: underline !important;
+}
+
+.assets-card {
+  background-color: #FFFFFF !important;
+  border-radius: 8px !important;
+  margin-top: 24px !important;
+}
+
+.assets-header {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  padding: 16px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+  background-color: #F5F2EA !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.header-cell {
+  color: #5C745D !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 8px !important;
+}
+
+.asset-row {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  padding: 16px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.asset-row:hover {
+  background-color: #F5F2EA !important;
+}
+
+.asset-cell {
+  color: #2C3E2D !important;
+  font-size: 14px !important;
+  padding: 8px !important;
+  font-weight: 600 !important;
+}
+
+.token-price {
+  color: #4CAF50 !important;
+  font-weight: 600 !important;
+}
+
+.token-balance {
+  font-family: monospace !important;
+}
+
+.holdings-value {
+  font-weight: 600 !important;
+  color: #2C3E2D !important;
+}
+
+.no-assets-message {
+  text-align: center !important;
+  color: #5C745D !important;
+  padding: 32px !important;
+  font-size: 16px !important;
+}
+
+.divider {
+  margin: 0 8px !important;
+  background-color: #E0E0E0 !important;
+}
+
+.title {
+    color: #2C3E2D;
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.025em !important;
+    margin: 0 !important;
+}
