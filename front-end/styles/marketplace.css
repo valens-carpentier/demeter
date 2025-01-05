@@ -1,0 +1,97 @@
+/* Global styles */
+* {
+    font-family: 'Roboto', sans-serif !important;
+}
+
+/* Marketplace header */
+.marketplace-title {
+    color: #2C3E2D !important;
+    font-weight: 700 !important;
+    font-size: 2rem !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Card styles */
+.farm-card {
+    height: 475px !important;
+    width: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    transition: all 0.2s ease-in-out !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+.farm-card .MuiCardContent-root {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+}
+
+.farm-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+/* Farm content */
+.farm-name {
+    color: #2C3E2D !important;
+    font-weight: 600 !important;
+    margin-bottom: 1rem !important;
+}
+
+.farm-stat {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    padding: 0.25rem 0 !important;
+}
+
+/* Typography */
+.stat-label {
+    font-size: 0.875rem !important;
+    color: #5C745D !important;
+    font-weight: 500 !important;
+}
+
+.stat-value {
+    font-weight: 600 !important;
+    color: #2C3E2D !important;
+    font-size: 0.75rem !important;
+}
+
+.stat-value.highlight {
+    color: #4CAF50 !important;
+}
+
+.stat-value.success {
+    color: #2E7D32 !important;
+}
+
+/* Button styles */
+.buy-button {
+    background-color: #4CAF50 !important;
+    color: white !important;
+    font-weight: 600 !important;
+    text-transform: none !important;
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+    margin-top: 1rem !important;
+}
+
+.buy-button:hover {
+    background-color: #2E7D32 !important;
+}
+
+.buy-button:disabled {
+    background-color: #E0E0E0 !important;
+    opacity: 0.7 !important;
+}
+
+/* Empty state */
+.no-results {
+    text-align: center !important;
+    color: #5C745D !important;
+    padding: 3rem !important;
+    font-size: 1.1rem !important;
+}

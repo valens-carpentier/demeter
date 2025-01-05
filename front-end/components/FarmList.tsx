@@ -145,8 +145,8 @@ export default function FarmList() {
                                                 disabled={!farm.isActive || !safeAddress}
                                                 onClick={() => handleBuyClick(farm)}
                                             >
-                                                {!safeAddress ? 'Safe not connected' : 
-                                                 !farm.isActive ? 'Sold' : 'Buy'}
+                                                {!safeAddress ? 'Connecting Safe...' : 
+                                                 !farm.isActive ? 'Sold Out' : 'Buy'}
                                             </Button>
                                         </div>
                                     </Box>
