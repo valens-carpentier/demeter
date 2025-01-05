@@ -13,8 +13,8 @@ module.exports = async function(callback) {
     // Iterate through all farms
     for (let i = 0; i < totalFarms; i++) {
       const farm = await farmFactory.getFarm(i);
-      if (farm.name === "Ferme du Quennelet") {
-        console.log(`Found Ferme du Quennelet!`);
+      if (farm.name === "My Farm") {
+        console.log(`Found My Farm!`);
         console.log(`Farm ID: ${i}`);
         console.log(`Token Address: ${farm.token}`);
         console.log(`Owner: ${farm.owner}`);
