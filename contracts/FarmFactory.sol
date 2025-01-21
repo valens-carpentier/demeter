@@ -24,8 +24,16 @@ contract FarmFactory {
     // Keep track of all farm IDs
     bytes32[] public allFarmIds;
 
-    event FarmCreated(bytes32 indexed farmId, address owner, string name, uint256 timestamp);
-    event FarmDeactivated(bytes32 indexed farmId, uint256 timestamp);
+    event FarmCreated(
+        bytes32 indexed farmId,
+        address indexed owner,
+        string name,
+        uint256 indexed timestamp
+    );
+    event FarmDeactivated(
+        bytes32 indexed farmId,
+        uint256 indexed timestamp
+    );
 
     modifier onlyFarmOwner(bytes32 _farmId) {
         require(farms[_farmId].owner == msg.sender, "Not the farm owner");
