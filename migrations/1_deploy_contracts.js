@@ -1,19 +1,17 @@
-const FarmFactory = artifacts.require("FarmFactory");
+const { ethers } = require("hardhat");
 
-module.exports = async function(deployer) {
-  // Deploy FarmFactory
-  await deployer.deploy(FarmFactory);
-  const farmFactory = await FarmFactory.deployed();
-  
-  // After deployment, you can create a farm with its token using createFarmWithToken
-  await farmFactory.createFarmWithToken(
-    "Ferme du Quennelet", // _farmName
-    "Quennelet Farm Token", // _tokenName
-    "QFT", // _tokenSymbol
-    "122", // _sizeInAcres
-    "100000", // _totalTokenSupply 
-    "1000000", // _valuation 
-    "10", // _expectedOutcomePercentage 
-    "1" // _pricePerToken
-  );
-}; 
+async function main() {
+  const FarmFactory = await ethers.getContractFactory("FarmFactory");
+  const farmFactory = await FarmFactory.deploy();
+  await farmFactory.waitForDeployment();
+
+  const address = await farmFactory.getAddress();
+  console.log(`FarmFactory deployed to: ${address}`);
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  }); 
