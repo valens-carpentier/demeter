@@ -1,61 +1,55 @@
 import { ethers } from 'ethers'
-import FarmFactory from '../../build/contracts/FarmFactory.json'
-import FarmToken from '../../build/contracts/FarmToken.json'
-import { RPC_URL, FARM_FACTORY_ADDRESS } from './constants'
+import { FARM_FACTORY_ADDRESS, RPC_URL } from './constants'
+import FarmFactoryJSON from './abis/FarmFactory.json'
 
-const loadFarms = async () => {
-    try {
+const FarmFactoryABI = FarmFactoryJSON.abi 
+
+async function loadFarms() {
+    try {        
         const provider = new ethers.JsonRpcProvider(RPC_URL)
         const farmFactory = new ethers.Contract(
             FARM_FACTORY_ADDRESS,
-            FarmFactory.abi,
+            FarmFactoryABI,
             provider
         )
 
-        // Get total number of farms
         const totalFarms = await farmFactory.getTotalFarms()
-        const totalFarmsNumber = Number(totalFarms)
-
-        if (totalFarmsNumber === 0) {
-            return []
-        }
-
-        // Fetch all farms 
-        const farmPromises = []
-        for (let i = 0; i < totalFarmsNumber; i++) {
-            farmPromises.push(farmFactory.getFarm(i))
-        }
-
-        const farms = await Promise.all(farmPromises)
         
-        // Get token prices for each farm
-        const tokenPricePromises = farms.map(farm => {
+        const farms = []
+        for (let i = 0; i < Number(totalFarms); i++) {
+            const farmId = await farmFactory.allFarmIds(i)
+            const farmData = await farmFactory.getFarm(farmId)
+            
+            // Properly destructure the farm data from the Proxy object
+            const farm = {
+                token: farmData[0],
+                owner: farmData[1],
+                name: farmData[2],
+                sizeInAcres: Number(farmData[3]),
+                totalTokenSupply: Number(farmData[4]),
+                valuation: Number(farmData[5]),
+                expectedOutcomePercentage: Number(farmData[6]),
+                isActive: farmData[7],
+                timestamp: Number(farmData[8])
+            }
+            
+            // Get token price
             const tokenContract = new ethers.Contract(
-                farm[0], // token address
-                FarmToken.abi,
+                farm.token,
+                ['function pricePerToken() view returns (uint256)'],
                 provider
             )
-            return tokenContract.pricePerToken()
-        })
-        
-        const tokenPrices = await Promise.all(tokenPricePromises)
+            const pricePerToken = await tokenContract.pricePerToken()
 
-        // Format the farm data to match the Farm type
-        return farms.map((farm, index) => ({
-            token: farm[0],             // address
-            owner: farm[1],             // address
-            name: farm[2],              // string
-            sizeInAcres: Number(farm[3]),    // uint256
-            totalTokenSupply: Number(farm[4]), // uint256
-            valuation: Number(farm[5]),       // uint256
-            expectedOutcomePercentage: Number(farm[6]), // uint256
-            isActive: farm[7],          // bool
-            timestamp: Number(farm[8]),   // uint256
-            pricePerToken: Number(tokenPrices[index]) // Add the token price
-        }))
+            farms.push({
+                ...farm,
+                pricePerToken: Number(pricePerToken) / 100
+            })
+        }
 
+        return farms
     } catch (error) {
-        console.error('Failed to load farms:', error)
+        console.error('Error loading farms:', error)
         throw error
     }
 }

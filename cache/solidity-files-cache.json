@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/valenscarpentier/repos/demeter/contracts/FarmFactory.sol": {
-      "lastModificationDate": 1737470994197,
-      "contentHash": "3b36ab8f0b19d6b9699178e249c46327",
+      "lastModificationDate": 1737474285315,
+      "contentHash": "0905138f94e007ffc68ad333d0248235",
       "sourceName": "contracts/FarmFactory.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -40,8 +40,8 @@
       ]
     },
     "/Users/valenscarpentier/repos/demeter/contracts/FarmToken.sol": {
-      "lastModificationDate": 1731952095863,
-      "contentHash": "f90f879f8e2c812a9166a1ead87f1677",
+      "lastModificationDate": 1737536375634,
+      "contentHash": "221e130ebf5c5b26896396e18598e665",
       "sourceName": "contracts/FarmToken.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -69,13 +69,88 @@
       },
       "imports": [
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
-        "@openzeppelin/contracts/access/Ownable.sol"
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "./interfaces/IAggregatorV3.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
       ],
       "artifacts": [
         "FarmToken"
+      ]
+    },
+    "/Users/valenscarpentier/repos/demeter/contracts/interfaces/IAggregatorV3.sol": {
+      "lastModificationDate": 1737474296686,
+      "contentHash": "ced4db8dbf72fd3e4f96abc1fb48ffdf",
+      "sourceName": "contracts/interfaces/IAggregatorV3.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAggregatorV3"
+      ]
+    },
+    "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
+      "lastModificationDate": 1731952008293,
+      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
+      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "../utils/Context.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "Ownable"
       ]
     },
     "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/token/ERC20/ERC20.sol": {
@@ -119,10 +194,10 @@
         "ERC20"
       ]
     },
-    "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1731952008293,
-      "contentHash": "d3c790edc9ccf808a17c5a6cd13614fd",
-      "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
+    "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/utils/Context.sol": {
+      "lastModificationDate": 1731952008276,
+      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
+      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
         "version": "0.8.28",
         "settings": {
@@ -147,14 +222,12 @@
           }
         }
       },
-      "imports": [
-        "../utils/Context.sol"
-      ],
+      "imports": [],
       "versionPragmas": [
         "^0.8.20"
       ],
       "artifacts": [
-        "Ownable"
+        "Context"
       ]
     },
     "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol": {
@@ -267,42 +340,6 @@
         "IERC1155Errors",
         "IERC20Errors",
         "IERC721Errors"
-      ]
-    },
-    "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1731952008276,
-      "contentHash": "67bfbc07588eb8683b3fd8f6f909563e",
-      "sourceName": "@openzeppelin/contracts/utils/Context.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.20"
-      ],
-      "artifacts": [
-        "Context"
       ]
     }
   }
