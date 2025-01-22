@@ -64,7 +64,7 @@
 
 .assets-header {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(4, 1fr) 2fr !important;
   padding: 16px !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
   background-color: #F5F2EA !important;
@@ -80,10 +80,11 @@
 
 .asset-row {
   display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
+  grid-template-columns: repeat(4, 1fr) 2fr !important;
   padding: 16px !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
   transition: background-color 0.2s ease !important;
+  align-items: center !important;
 }
 
 .asset-row:hover {
@@ -129,4 +130,25 @@
     font-weight: 600 !important;
     letter-spacing: -0.025em !important;
     margin: 0 !important;
+}
+
+.button-container {
+  display: flex !important;
+  gap: 8px !important;
+  justify-content: flex-end !important;
+}
+
+.asset-row .sell-button, .asset-row .buy-button {
+  background-color: #4CAF50 !important;
+  color: white !important;
+  border-radius: 6px !important;
+  padding: 12px 24px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  min-width: 80px !important;
+  margin: 0 !important;
+}
+
+.asset-row .sell-button:hover, .asset-row .buy-button:hover {
+  background-color: #2E7D32 !important;
 }

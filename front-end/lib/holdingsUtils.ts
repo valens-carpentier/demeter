@@ -29,17 +29,21 @@ export async function getUserHoldings(safeAddress: string): Promise<UserHolding[
         provider
       )
       
-      // Get user's token balance
+      // Get user's token balance and convert from BigInt
       const balance = await farmToken.balanceOf(safeAddress)
-      const tokenBalance = Number(balance)
+      const decimals = await farmToken.decimals()
+      const tokenBalance = Number(ethers.formatUnits(balance, decimals))
       
       // If user has tokens, get additional info
       if (tokenBalance > 0) {
         const symbol = await farmToken.symbol()
         const pricePerToken = await farmToken.pricePerToken()
         
-        // Calculate user's share value based on token balance and farm valuation
-        const userShare = (tokenBalance * Number(pricePerToken))
+        // Price is in cents, convert to dollars
+        const tokenPriceInDollars = Number(pricePerToken) / 100
+        
+        // Calculate user's share value
+        const userShare = tokenBalance * tokenPriceInDollars
         
         return {
           farmName: farm.name,
@@ -48,7 +52,7 @@ export async function getUserHoldings(safeAddress: string): Promise<UserHolding[
           farmValuation: farm.valuation,
           userShare: userShare,
           tokenAddress: farm.token,
-          tokenPrice: Number(pricePerToken)
+          tokenPrice: tokenPriceInDollars
         }
       }
       return null

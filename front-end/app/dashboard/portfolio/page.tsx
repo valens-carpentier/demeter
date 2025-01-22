@@ -5,16 +5,17 @@ import {
   Box, 
   Typography, 
   Paper, 
-  Grid, 
   Link as MuiLink, 
   Divider, 
-  CircularProgress 
+  CircularProgress,
+  Button
 } from '@mui/material'
 import { SafeAddressContext, PasskeyContext } from '../layout'
 import { getUserHoldings, getTotalHoldingsValue } from '../../../lib/holdingsUtils'
 import { getBalance } from '../../../lib/balanceUtils'
 import { useRouter } from 'next/navigation'
 import '@/styles/portfolio.css'
+import SellModal from '../../../components/SellModal'
 
 interface UserHolding {
   farmName: string;
@@ -30,6 +31,8 @@ export default function Portfolio() {
   const [balance, setBalance] = useState<string>('0.00')
   const [holdings, setHoldings] = useState<UserHolding[]>([])
   const [loading, setLoading] = useState(true)
+  const [openSellModal, setOpenSellModal] = useState(false)
+  const [selectedHolding, setSelectedHolding] = useState<UserHolding | null>(null)
 
   useEffect(() => {
     if (passkey) {
@@ -56,6 +59,17 @@ export default function Portfolio() {
 
     fetchData()
   }, [safeAddress])
+
+  const handleSellClick = (holding: UserHolding) => {
+    setSelectedHolding(holding)
+    setOpenSellModal(true)
+  }
+
+  const handleBuyClick = (holding: UserHolding) => {
+    setSelectedBuyHolding(holding)
+    setOpenBuyModal(true)
+  }
+  
 
   return (
     <Box className="portfolio-container">
@@ -142,7 +156,24 @@ export default function Portfolio() {
                        maximumFractionDigits: 2
                           })}
                 </Typography>
+                <Box className="button-container">
+                  <Button 
+                    variant="contained"
+                    className="sell-button"
+                    onClick={() => handleSellClick(holding)}
+                  >
+                    Sell
+                  </Button>
+                  <Button 
+                    variant="contained"
+                    className="buy-button"
+                    onClick={() => handleBuyClick(holding)}
+                  >
+                    Buy
+                  </Button>
+                </Box>
               </Box>
+              
             ))
           ) : (
             <Typography className="no-assets-message">
@@ -151,6 +182,15 @@ export default function Portfolio() {
           )
         )}
       </Paper>
+
+      <SellModal
+        open={openSellModal}
+        onClose={() => setOpenSellModal(false)}
+        holding={selectedHolding}
+        safeAddress={safeAddress}
+        passkey={passkey}
+      />
+
     </Box>
   )
 }

@@ -16,4 +16,4 @@ export const VERIFICATION_GAS_LIMIT = BigInt('0x3d3d94')  // 4,000,148
 export const PRE_VERIFICATION_GAS = BigInt('0x2e8b5')     // 190,645
 
 // Farm Factory Address
-export const FARM_FACTORY_ADDRESS = "0xE0033bfC105DbD302AE034526D3c67bd9b9C17aB";
+export const FARM_FACTORY_ADDRESS = "0xD62630EbBbfF334a9B6c18c8915D2b4547b47bbD";
