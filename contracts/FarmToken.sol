@@ -23,6 +23,7 @@ contract FarmToken is ERC20, Ownable {
     event TokensPurchased(address indexed buyer, uint256 amount, uint256 costInWei, uint256 costInUsd);
     event PriceUpdated(uint256 oldPrice, uint256 newPrice);
     event FundsWithdrawn(address indexed owner, uint256 amount);
+    event TokensSold(address indexed seller, uint256 amount, uint256 costInWei, uint256 costInUsd);
     
     constructor(
         string memory name,
@@ -76,6 +77,26 @@ contract FarmToken is ERC20, Ownable {
             (bool success, ) = payable(msg.sender).call{value: excess}("");
             require(success, "Failed to return excess payment");
         }
+    }
+    
+    function sellTokens(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount * 10**decimals(), "Insufficient token balance");
+        
+        uint256 actualAmount = amount * 10**decimals();
+        uint256 totalValueInUsd = amount * pricePerToken; // in cents
+        uint256 totalValueInWei = calculateETHAmount(totalValueInUsd);
+        
+        require(address(this).balance >= totalValueInWei, "Insufficient contract balance");
+        
+        // Transfer tokens back to owner
+        _transfer(msg.sender, owner(), actualAmount);
+        
+        // Transfer ETH to seller
+        (bool success, ) = payable(msg.sender).call{value: totalValueInWei}("");
+        require(success, "Failed to send ETH to seller");
+        
+        emit TokensSold(msg.sender, amount, totalValueInWei, totalValueInUsd);
     }
     
     modifier onlyFarmFactory() {
