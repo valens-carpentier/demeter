@@ -17,3 +17,6 @@ export const PRE_VERIFICATION_GAS = BigInt('0x2e8b5')     // 190,645
 
 // Farm Factory Address
 export const FARM_FACTORY_ADDRESS = "0xD62630EbBbfF334a9B6c18c8915D2b4547b47bbD";
+
+// USDC Contract Address
+export const USDC_CONTRACT_ADDRESS = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";

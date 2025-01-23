@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
 import { executeSafeDeployment } from '../lib/deployment'
 import styles from '@/styles/safeaccountdetails.module.css'
-import { getBalance } from '@/lib/balanceUtils'
+import { getBalance, getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 
 type props = {
@@ -27,9 +27,12 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>(false)
   const [isDeploying, setIsDeploying] = useState<boolean>(false)
   const [userOp, setUserOp] = useState<string>()
-  const [balance, setBalance] = useState<string>()
+  const [ethBalance, setEthBalance] = useState<string>()
   const [balanceLoading, setBalanceLoading] = useState<boolean>(false)
-  const [balanceUSD, setBalanceUSD] = useState<string>()
+  const [usdcBalance, setUsdcBalance] = useState<string>()
+  const [totalBalanceUSD, setTotalBalanceUSD] = useState<string>('0.00')
+  const [ethPriceUSD, setEthPriceUSD] = useState<number>(0)
+
 
   const showSafeInfo = useCallback(async () => {
     setIsLoading(true)
@@ -101,42 +104,52 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   const jiffscanLink = `https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`
   
   useEffect(() => {
-    const fetchBalance = async () => {
+    const fetchBalances = async () => {
       if (!safeAddress) return
       try {
         setBalanceLoading(true)
-        const balance = await getBalance(safeAddress)
-        setBalance(balance)
+        const [ethBalance, usdcBalance] = await Promise.all([
+          getBalance(safeAddress),
+          getUSDCBalance(safeAddress)
+        ])
+        setEthBalance(ethBalance)
+        setUsdcBalance(usdcBalance)
       } catch (error) {
-        console.error('Failed to fetch balance:', error)
-        setBalance('0.00') // Fallback value
+        console.error('Failed to fetch balances:', error)
+        setEthBalance('0.00')
+        setUsdcBalance('0.00')
       } finally {
         setBalanceLoading(false)
       }
     }
 
-    fetchBalance()
+    fetchBalances()
   }, [safeAddress])
 
   useEffect(() => {
-    const balanceETHValueUSD = async () => {
+    const calculateTotalBalanceUSD = async () => {
       try {
-        if (!balance) return
+        if (!ethBalance) return
 
         const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
-        const data = await response.json();
-        const ethPriceUSD = data.ethereum.usd;
+        const data = await response.json()
+        const ethPrice = data.ethereum.usd
+        setEthPriceUSD(ethPrice)
         
-        const balanceUSD = (Number(balance) * ethPriceUSD).toFixed(2);
-        setBalanceUSD(balanceUSD);
+        const ethBalanceUSD = Number(ethBalance) * ethPrice
+        const usdcBalanceUSD = Number(usdcBalance || '0')
+        
+        const totalUSD = (ethBalanceUSD + usdcBalanceUSD).toFixed(2)
+        setTotalBalanceUSD(totalUSD)
       } catch (error) {
-        console.error('Failed to fetch ETH price:', error);
-        setBalanceUSD('0.00');
+        console.error('Failed to calculate total balance:', error)
+        setTotalBalanceUSD('0.00')
+        setEthPriceUSD(0)
       }
     }
 
-    balanceETHValueUSD()
-  }, [balance])
+    calculateTotalBalanceUSD()
+  }, [ethBalance, usdcBalance])
 
   return (
     <Paper className={styles.container}>
@@ -154,9 +167,14 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
           <CircularProgress className={styles.loading}/>
         ) : (
           <>
-            <Typography className={styles.balanceValue}>
-              ${balanceUSD || '0.00'}
-            </Typography>
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+              <Typography className={styles.balanceValue}>
+                ${totalBalanceUSD}
+              </Typography>
+              <Tooltip title={`ETH: $${(Number(ethBalance || '0') * Number(ethPriceUSD || 0)).toFixed(2)} | USDC: $${usdcBalance || '0.00'}`}>
+                <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
+              </Tooltip>
+            </Stack>
 
             <Typography textAlign={'center'} fontSize="0.875rem">
               <Link
