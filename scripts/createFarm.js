@@ -2,19 +2,20 @@ const hre = require("hardhat");
 
 async function main() {
   const FarmFactory = await hre.ethers.getContractFactory("FarmFactory");
-  const farmFactory = await FarmFactory.attach("0xE0033bfC105DbD302AE034526D3c67bd9b9C17aB"); // Replace with your deployed factory address
+  const farmFactory = await FarmFactory.attach("0xD62630EbBbfF334a9B6c18c8915D2b4547b47bbD"); // Replace with your deployed factory address
   
   console.log("Creating new farm...");
   
+  // Convert numbers to BigInt where needed
   const tx = await farmFactory.createFarmWithToken(
-    "Ferme Lavaqueresse", // _farmName
-    "Lavaqueresse Farm Token", // _tokenName
-    "LFT", // _tokenSymbol
-    250, // _sizeInAcres
-    100000, // _totalTokenSupply (100,000 tokens)
-    2500000, // _valuation ($2.5M)
-    12, // _expectedOutcomePercentage (12%)
-    2500 // _pricePerToken ($25.00 = 2500 cents)
+    "Ferme Du Quennelet", // farmName
+    "Quennelet Farm Token", // tokenName
+    "QFT", // tokenSymbol
+    BigInt(120), // sizeInAcres
+    BigInt(120000), // totalTokenSupply
+    BigInt(1200000), // valuation
+    BigInt(16), // expectedOutcomePercentage
+    BigInt(1200) // pricePerToken (in cents)
   );
 
   console.log("Transaction sent:", tx.hash);
