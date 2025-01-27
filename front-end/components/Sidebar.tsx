@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box } from '@mui/material'
-import { Dashboard, AccountBalance, Work, Settings, Logout } from '@mui/icons-material'
+import { Dashboard, AccountBalance, AccountBalanceWallet, Work, Settings, Logout, History } from '@mui/icons-material'
 import { useRouter, usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
 import styles from '@/styles/sidebar.module.css'
@@ -19,7 +19,8 @@ export default function Sidebar({ children }: SidebarProps) {
   const menuItems = [
     { text: 'Dashboard', icon: <Dashboard />, path: '/dashboard' },
     { text: 'Marketplace', icon: <AccountBalance />, path: '/dashboard/marketplace' },
-    { text: 'Portfolio', icon: <Work />, path: '/dashboard/portfolio' },
+    { text: 'Portfolio', icon: <AccountBalanceWallet />, path: '/dashboard/portfolio' },
+    { text: 'Transactions', icon: <History />, path: '/dashboard/transactions' },
     { text: 'Profile', icon: <Settings />, path: '/dashboard/profile', disabled: true }
   ]
 

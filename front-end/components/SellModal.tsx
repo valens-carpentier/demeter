@@ -5,14 +5,19 @@ import { sellFarmTokens } from '../lib/tokenUtils'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import Link from 'next/link'
 import '../styles/sell-modal.css'
+import { PasskeyArgType } from '@safe-global/protocol-kit'
+
+interface TokenTransactionError extends Error {
+    message: string;
+    data?: unknown;
+}
 
 interface SellModalProps {
     open: boolean
     onClose: () => void
     holding: UserHolding | null
     safeAddress: string
-    passkey: any
-    onSuccess: (hash: string) => void
+    passkey: PasskeyArgType
 }
 
 export default function SellModal({
@@ -21,7 +26,6 @@ export default function SellModal({
     holding,
     safeAddress,
     passkey,
-    onSuccess
 }: SellModalProps) {
     const [sellAmount, setSellAmount] = useState('')
     const [isSelling, setIsSelling] = useState(false)
@@ -39,8 +43,7 @@ export default function SellModal({
                 amount,
                 passkey
             )
-            setTransactionHash(hash)
-            onSuccess(hash)
+                setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to sell tokens:', error)
             alert(error.message || 'Failed to sell tokens. Please try again.')

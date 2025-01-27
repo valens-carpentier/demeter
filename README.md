@@ -24,6 +24,14 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 ![Buy Modal](./screenshots/buy-modal-screen.png)
 *Purchase farm tokens using your Safe Account*
 
+### Sell Farm Token
+![Sell Modal](./screenshots/sell-modal.png)
+*Sell farm tokens to other users*
+
+### Transaction History
+![Transaction History](./screenshots/transaction-page.png)
+*View your transaction history*
+
 ### Portfolio Management
 ![Portfolio](./screenshots/portfolio-screen.png)
 *Track your farm token holdings and investments*
@@ -49,8 +57,9 @@ Demeter allows users to purchase tokens representing fractional ownership of far
   - Account abstraction
   - Smart account management
   - Passkey authentication
+  - Transaction Service API for history & queuing
 - Infura: Node infrastructure
-- Truffle: Smart contract deployment
+- Hardhat: Smart contract development and deployment
 
 ### Frontend
 - Framework: Next.js
@@ -80,6 +89,11 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Each user account is a Safe smart account
 - All assets are stored in Safe vaults
 - Account abstraction via ERC-4337
+- USDC payment integration for token purchases
+- Transaction history and queuing via Safe Transaction Service
+
+### Safe Transaction Service Integration
+- Transaction history tracking
 
 ### Integration Points
 - Safe Passkey Authentication: [Safe Passkey Tutorial](https://docs.safe.global/advanced/passkeys/tutorials/react)
@@ -126,13 +140,16 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Network: Base Sepolia Testnet
 - RPC URL: https://sepolia.base.org
 - Chain ID: 84532
+- Safe Transaction Service API: https://safe-transaction-base-sepolia.safe.global/
 
 ### Deployed Contracts
 - Farm Factory: 0x24829794aCA3e34a3300e66A25f42261b0203bfD
 - Entry Point: 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
 
 ### Key Dependencies
-- Material UI for component library
+- Material UI v6.1.7
 - Safe Protocol Kit v4.1.0
 - Safe Relay Kit v3.1.0
+- Safe Transaction Service API
 - Ethers.js v6
+- Hardhat v2.22.18
