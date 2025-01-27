@@ -11,7 +11,7 @@ import {
   Button
 } from '@mui/material'
 import { SafeAddressContext, PasskeyContext } from '../layout'
-import { getUserHoldings, getTotalHoldingsValue } from '../../../lib/holdingsUtils'
+import { getUserHoldings } from '../../../lib/holdingsUtils'
 import { getBalance } from '../../../lib/balanceUtils'
 import { useRouter } from 'next/navigation'
 import '@/styles/portfolio.css'

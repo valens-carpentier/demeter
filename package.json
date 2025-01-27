@@ -12,6 +12,7 @@
     "hardhat": "^2.22.18"
   },
   "dependencies": {
-    "@openzeppelin/contracts-upgradeable": "^5.2.0"
+    "@openzeppelin/contracts-upgradeable": "^5.2.0",
+    "date-fns": "^4.1.0"
   }
 }

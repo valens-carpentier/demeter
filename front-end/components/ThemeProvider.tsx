@@ -1,4 +1,4 @@
-import { ThemeProvider, useMediaQuery, type Theme } from '@mui/material'
+import { ThemeProvider, type Theme } from '@mui/material'
 import type { Shadows } from '@mui/material/styles'
 import { createTheme } from '@mui/material/styles'
 import type { TypographyOptions } from '@mui/material/styles/createTypography'
