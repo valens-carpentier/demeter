@@ -16,7 +16,14 @@ export const VERIFICATION_GAS_LIMIT = BigInt('0x3d3d94')  // 4,000,148
 export const PRE_VERIFICATION_GAS = BigInt('0x2e8b5')     // 190,645
 
 // Farm Factory Address
-export const FARM_FACTORY_ADDRESS = "0xD62630EbBbfF334a9B6c18c8915D2b4547b47bbD";
+export const FARM_FACTORY_ADDRESS = "0xe37f47eCd434F04359a5830db4b3D617d209d083";
 
 // USDC Contract Address
 export const USDC_CONTRACT_ADDRESS = "0x036CbD53842c5426634e7929541eC2318f3dCF7e";
+
+export const USDC_ABI = [
+  // Add USDC contract ABI here
+  "function approve(address spender, uint256 amount) external returns (bool)",
+  "function transfer(address to, uint256 amount) external returns (bool)",
+  "function balanceOf(address account) external view returns (uint256)"
+]

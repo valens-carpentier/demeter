@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IAggregatorV3.sol";
+import "./interfaces/IUSDC.sol";
 
 contract FarmToken is ERC20, Ownable {
     uint256 public farmId;
@@ -20,10 +21,17 @@ contract FarmToken is ERC20, Ownable {
     // Price validity duration (1 hour)
     uint256 public constant PRICE_VALIDITY_DURATION = 1 hours;
     
+    // Add USDC contract address for Base Sepolia
+    address public constant USDC_ADDRESS = 0x036CbD53842c5426634e7929541eC2318f3dCF7e;
+    
+    // Add payment method enum
+    enum PaymentMethod { ETH, USDC }
+    
     event TokensPurchased(address indexed buyer, uint256 amount, uint256 costInWei, uint256 costInUsd);
     event PriceUpdated(uint256 oldPrice, uint256 newPrice);
     event FundsWithdrawn(address indexed owner, uint256 amount);
     event TokensSold(address indexed seller, uint256 amount, uint256 costInWei, uint256 costInUsd);
+    event TokensPurchasedWithUSDC(address indexed buyer, uint256 amount, uint256 usdcAmount);
     
     constructor(
         string memory name,
@@ -117,5 +125,48 @@ contract FarmToken is ERC20, Ownable {
         (bool success, ) = payable(owner()).call{value: balance}("");
         require(success, "Failed to withdraw funds");
         emit FundsWithdrawn(owner(), balance);
+    }
+    
+    // Add buyTokensWithUSDC function
+    function buyTokensWithUSDC(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than 0");
+        
+        uint256 actualAmount = amount * 10**decimals();
+        uint256 totalCostInUsd = amount * pricePerToken; // in cents
+        
+        // Convert cents to USDC (USDC has 6 decimals)
+        uint256 usdcAmount = (totalCostInUsd * 10**4); // Convert cents to USDC decimals (6)
+        
+        IUSDC usdc = IUSDC(USDC_ADDRESS);
+        
+        // Check USDC allowance
+        require(usdc.allowance(msg.sender, address(this)) >= usdcAmount, 
+                "Insufficient USDC allowance");
+        
+        // Check USDC balance
+        require(usdc.balanceOf(msg.sender) >= usdcAmount, 
+                "Insufficient USDC balance");
+        
+        // Check token availability
+        require(balanceOf(owner()) >= actualAmount, 
+                "Insufficient tokens available");
+        
+        // Transfer USDC from buyer to contract
+        require(usdc.transferFrom(msg.sender, address(this), usdcAmount),
+                "USDC transfer failed");
+        
+        // Transfer tokens to buyer
+        _transfer(owner(), msg.sender, actualAmount);
+        
+        emit TokensPurchasedWithUSDC(msg.sender, amount, usdcAmount);
+    }
+    
+    // Add function to withdraw USDC (for owner)
+    function withdrawUSDC() public onlyOwner {
+        IUSDC usdc = IUSDC(USDC_ADDRESS);
+        uint256 balance = usdc.balanceOf(address(this));
+        require(balance > 0, "No USDC to withdraw");
+        
+        require(usdc.transfer(owner(), balance), "USDC transfer failed");
     }
 } 

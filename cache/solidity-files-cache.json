@@ -40,8 +40,8 @@
       ]
     },
     "/Users/valenscarpentier/repos/demeter/contracts/FarmToken.sol": {
-      "lastModificationDate": 1737562384091,
-      "contentHash": "4d461a6201c90179441c84e518bd72df",
+      "lastModificationDate": 1737971749314,
+      "contentHash": "b0fc7241e94d896490d5043d18318aea",
       "sourceName": "contracts/FarmToken.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -70,7 +70,8 @@
       "imports": [
         "@openzeppelin/contracts/token/ERC20/ERC20.sol",
         "@openzeppelin/contracts/access/Ownable.sol",
-        "./interfaces/IAggregatorV3.sol"
+        "./interfaces/IAggregatorV3.sol",
+        "./interfaces/IUSDC.sol"
       ],
       "versionPragmas": [
         "^0.8.0"
@@ -567,6 +568,42 @@
         "IERC1155Errors",
         "IERC20Errors",
         "IERC721Errors"
+      ]
+    },
+    "/Users/valenscarpentier/repos/demeter/contracts/interfaces/IUSDC.sol": {
+      "lastModificationDate": 1737971701973,
+      "contentHash": "8635d33a6f02f4c74266987a015729c6",
+      "sourceName": "contracts/interfaces/IUSDC.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IUSDC"
       ]
     }
   }
