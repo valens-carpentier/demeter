@@ -23,7 +23,7 @@ import loadFarms from '../../../lib/farmsUtils'
 import { SafeAddressContext, PasskeyContext } from '../../dashboard/layout'
 import type { Farm } from '../../../types/farm'
 import '../../../styles/marketplace.css'
-import { buyFarmTokens } from '../../../lib/tokenUtils'
+import { buyFarmTokens, buyFarmTokensWithUSDC } from '../../../lib/tokenUtils'
 
 type SortOption = 'valuation-high' | 'valuation-low' | 'expected-high' | 'expected-low'
 
@@ -98,18 +98,15 @@ export default function Marketplace() {
         setOpenBuyModal(true)
     }
 
-    const handleBuyConfirm = async () => {
+    const handleBuyConfirm = async (paymentMethod: 'ETH' | 'USDC') => {
         if (!selectedFarm || !safeAddress || !buyAmount || !passkey) return
 
         try {
             setIsBuying(true)
             const amount = parseInt(buyAmount)
-            const hash = await buyFarmTokens(
-                selectedFarm.token,
-                safeAddress,
-                amount,
-                passkey
-            )
+            const hash = paymentMethod === 'ETH' 
+                ? await buyFarmTokens(selectedFarm.token, safeAddress, amount, passkey)
+                : await buyFarmTokensWithUSDC(selectedFarm.token, safeAddress, amount, passkey)
             setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to buy tokens:', error)
@@ -305,7 +302,7 @@ export default function Marketplace() {
                 selectedFarm={selectedFarm}
                 buyAmount={buyAmount}
                 onBuyAmountChange={(value) => setBuyAmount(value)}
-                onBuyConfirm={handleBuyConfirm}
+                onBuyConfirm={(paymentMethod) => handleBuyConfirm(paymentMethod)}
                 isBuying={isBuying}
                 transactionHash={transactionHash}
             />

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import BuyFarmModal from './BuyFarmModal'
 
 import loadFarms from '../lib/farmsUtils'
-import { buyFarmTokens } from '../lib/tokenUtils'
+import { buyFarmTokens, buyFarmTokensWithUSDC } from '../lib/tokenUtils'
 import '@/styles/farmlist.css'
 import { SafeAddressContext, PasskeyContext } from '../app/dashboard/layout'
 
@@ -76,18 +76,15 @@ export default function FarmList() {
         setOpenBuyModal(true)
     }
 
-    const handleBuyConfirm = async () => {
+    const handleBuyConfirm = async (paymentMethod: 'ETH' | 'USDC') => {
         if (!selectedFarm || !safeAddress || !buyAmount || !passkey) return
 
         try {
             setIsBuying(true)
             const amount = parseInt(buyAmount)
-            const hash = await buyFarmTokens(
-                selectedFarm.token, 
-                safeAddress, 
-                amount,
-                passkey
-            )
+            const hash = paymentMethod === 'ETH' 
+                ? await buyFarmTokens(selectedFarm.token, safeAddress, amount, passkey)
+                : await buyFarmTokensWithUSDC(selectedFarm.token, safeAddress, amount, passkey)
             setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to buy tokens:', error)
@@ -191,7 +188,7 @@ export default function FarmList() {
                 selectedFarm={selectedFarm}
                 buyAmount={buyAmount}
                 onBuyAmountChange={(value) => setBuyAmount(value)}
-                onBuyConfirm={handleBuyConfirm}
+                onBuyConfirm={(paymentMethod) => handleBuyConfirm(paymentMethod)}
                 isBuying={isBuying}
                 transactionHash={transactionHash}
             />
