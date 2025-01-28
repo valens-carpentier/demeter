@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
   const FarmFactory = await hre.ethers.getContractFactory("FarmFactory");
-  const farmFactory = await FarmFactory.attach("0xe37f47eCd434F04359a5830db4b3D617d209d083"); // Replace with your deployed factory address
+  const farmFactory = await FarmFactory.attach("0x733F653f6d4b47F543592B9118197FFB0b90AfAF"); // Replace with your deployed factory address
   
   console.log("Creating new farm...");
   

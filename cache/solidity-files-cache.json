@@ -40,8 +40,8 @@
       ]
     },
     "/Users/valenscarpentier/repos/demeter/contracts/FarmToken.sol": {
-      "lastModificationDate": 1737971749314,
-      "contentHash": "b0fc7241e94d896490d5043d18318aea",
+      "lastModificationDate": 1738079718053,
+      "contentHash": "94c411ad8b24a2d23751305b87ecac49",
       "sourceName": "contracts/FarmToken.sol",
       "solcConfig": {
         "version": "0.8.28",

@@ -1,16 +1,11 @@
 import { useState } from 'react'
 import { Modal, Box, Typography, Button, CircularProgress } from '@mui/material'
 import { UserHolding } from '../lib/holdingsUtils'
-import { sellFarmTokens } from '../lib/tokenUtils'
+import { sellFarmTokens, sellFarmTokensWithUSDC } from '../lib/tokenUtils'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import Link from 'next/link'
 import '../styles/sell-modal.css'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
-
-interface TokenTransactionError extends Error {
-    message: string;
-    data?: unknown;
-}
 
 interface SellModalProps {
     open: boolean
@@ -31,19 +26,16 @@ export default function SellModal({
     const [isSelling, setIsSelling] = useState(false)
     const [transactionHash, setTransactionHash] = useState<string>('')
 
-    const handleSell = async () => {
+    const handleSell = async (paymentMethod: 'ETH' | 'USDC') => {
         if (!holding || !safeAddress || !sellAmount || !passkey) return
 
         try {
             setIsSelling(true)
             const amount = parseInt(sellAmount)
-            const hash = await sellFarmTokens(
-                holding.tokenAddress,
-                safeAddress,
-                amount,
-                passkey
-            )
-                setTransactionHash(hash)
+            const hash = paymentMethod === 'ETH' 
+                ? await sellFarmTokens(holding.tokenAddress, safeAddress, amount, passkey)
+                : await sellFarmTokensWithUSDC(holding.tokenAddress, safeAddress, amount, passkey)
+            setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to sell tokens:', error)
             alert(error.message || 'Failed to sell tokens. Please try again.')
@@ -144,15 +136,26 @@ export default function SellModal({
                         </Typography>
                     </Box>
                 </Box>
-                <Button
-                    fullWidth
-                    variant="contained"
-                    className="sell-button"
-                    onClick={handleSell}
-                    disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
-                >
-                    Sell
-                </Button>
+                <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        className="sell-button"
+                        onClick={() => handleSell('ETH')}
+                        disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
+                    >
+                        Sell for ETH
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        className="sell-button usdc-button"
+                        onClick={() => handleSell('USDC')}
+                        disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
+                    >
+                        Sell for USDC
+                    </Button>
+                </Box>
             </>
         )
     }

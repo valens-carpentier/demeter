@@ -143,7 +143,7 @@ Demeter allows users to purchase tokens representing fractional ownership of far
 - Safe Transaction Service API: https://safe-transaction-base-sepolia.safe.global/
 
 ### Deployed Contracts
-- Farm Factory: 0x24829794aCA3e34a3300e66A25f42261b0203bfD
+- Farm Factory: 0x733F653f6d4b47F543592B9118197FFB0b90AfAF
 - Entry Point: 0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789
 
 ### Key Dependencies
