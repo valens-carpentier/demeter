@@ -169,4 +169,30 @@ contract FarmToken is ERC20, Ownable {
         
         require(usdc.transfer(owner(), balance), "USDC transfer failed");
     }
+    
+    function sellTokensWithUSDC(uint256 amount) public {
+        require(amount > 0, "Amount must be greater than 0");
+        require(balanceOf(msg.sender) >= amount * 10**decimals(), "Insufficient token balance");
+        
+        uint256 actualAmount = amount * 10**decimals();
+        uint256 totalValueInUsd = amount * pricePerToken; // in cents
+        
+        // Convert cents to USDC (USDC has 6 decimals)
+        uint256 usdcAmount = (totalValueInUsd * 10**4); // Convert cents to USDC decimals (6)
+        
+        IUSDC usdc = IUSDC(USDC_ADDRESS);
+        
+        // Check USDC balance of contract
+        require(usdc.balanceOf(address(this)) >= usdcAmount, 
+                "Insufficient USDC balance in contract");
+        
+        // Transfer tokens back to owner
+        _transfer(msg.sender, owner(), actualAmount);
+        
+        // Transfer USDC to seller
+        require(usdc.transfer(msg.sender, usdcAmount), 
+                "USDC transfer failed");
+        
+        emit TokensSold(msg.sender, amount, 0, totalValueInUsd);
+    }
 } 

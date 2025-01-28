@@ -53,10 +53,13 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
 
         for (const tx of data.results || []) {
             try {
-                // Skip if not a 4337 transaction
-                if (tx.to !== ENTRYPOINT_ADDRESS) continue
+                console.log('Processing transaction:', {
+                    to: tx.to,
+                    data: tx.data,
+                    transfers: tx.transfers
+                });
 
-                // Look for transfers to farm addresses in the transaction
+                // Check for both transfers and direct calls
                 if (tx.transfers) {
                     for (const transfer of tx.transfers) {
                         const toAddress = transfer.to.toLowerCase()
@@ -84,6 +87,42 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
                             })
                             break
                         }
+                    }
+                }
+
+                // Also check for direct calls to farm token contracts
+                const farmTokenAddresses = Array.from(farmAddressToName.keys());
+                if (farmTokenAddresses.includes(tx.to.toLowerCase())) {
+                    const farmName = farmAddressToName.get(tx.to.toLowerCase());
+                    if (farmName) {
+                        // Check transfer direction for sell transactions
+                        let type = 'buy';
+                        if (tx.transfers) {
+                            for (const transfer of tx.transfers) {
+                                if (transfer.from.toLowerCase() === safeAddress.toLowerCase() && 
+                                    transfer.to.toLowerCase() !== tx.to.toLowerCase()) {
+                                    type = 'sell';
+                                    break;
+                                }
+                            }
+                        }
+
+                        const farmToken = new ethers.Contract(
+                            tx.to,
+                            ['function pricePerToken() view returns (uint256)'],
+                            new ethers.JsonRpcProvider(RPC_URL)
+                        );
+
+                        const pricePerToken = await farmToken.pricePerToken();
+
+                        transactions.push({
+                            farmName,
+                            date: tx.executionDate,
+                            amount: 1, // You might need to decode the actual amount from tx.data
+                            hash: tx.transactionHash,
+                            type: type === 'buy' ? 'Buy' : 'Sell',
+                            price: Number(pricePerToken)
+                        });
                     }
                 }
             } catch (error) {
