@@ -1,5 +1,5 @@
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Box } from '@mui/material'
-import { Dashboard, AccountBalance, AccountBalanceWallet, Work, Settings, Logout, History } from '@mui/icons-material'
+import { Dashboard, AccountBalance, AccountBalanceWallet, Settings, Logout, History } from '@mui/icons-material'
 import { useRouter, usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
 import styles from '@/styles/sidebar.module.css'

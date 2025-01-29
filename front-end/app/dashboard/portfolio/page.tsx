@@ -12,7 +12,6 @@ import {
 } from '@mui/material'
 import { SafeAddressContext, PasskeyContext } from '../layout'
 import { getUserHoldings } from '../../../lib/holdingsUtils'
-import { getBalance } from '../../../lib/balanceUtils'
 import { useRouter } from 'next/navigation'
 import '@/styles/portfolio.css'
 import SellModal from '../../../components/SellModal'
@@ -28,7 +27,6 @@ export default function Portfolio() {
   const safeAddress = useContext(SafeAddressContext)
   const passkey = useContext(PasskeyContext)
   const router = useRouter()
-  const [balance, setBalance] = useState<string>('0.00')
   const [holdings, setHoldings] = useState<UserHolding[]>([])
   const [loading, setLoading] = useState(true)
   const [openSellModal, setOpenSellModal] = useState(false)
@@ -45,10 +43,8 @@ export default function Portfolio() {
       if (!safeAddress) return
 
       try {
-        const balanceUSD = await getBalance(safeAddress)
         const userHoldings = await getUserHoldings(safeAddress)
         
-        setBalance(balanceUSD || '0.00')
         setHoldings(userHoldings)
       } catch (error) {
         console.error('Error fetching portfolio data:', error)
@@ -66,8 +62,8 @@ export default function Portfolio() {
   }
 
   const handleBuyClick = (holding: UserHolding) => {
-    setSelectedBuyHolding(holding)
-    setOpenBuyModal(true)
+    setSelectedHolding(holding)
+    setOpenSellModal(true)
   }
   
 

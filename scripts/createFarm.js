@@ -2,15 +2,15 @@ const hre = require("hardhat");
 
 async function main() {
   const FarmFactory = await hre.ethers.getContractFactory("FarmFactory");
-  const farmFactory = await FarmFactory.attach("0x733F653f6d4b47F543592B9118197FFB0b90AfAF"); // Replace with your deployed factory address
+  const farmFactory = await FarmFactory.attach("0x489C7835862c55B4A00efE4C68B695d66009D6f7"); // Replace with your deployed factory address
   
   console.log("Creating new farm...");
   
   // Convert numbers to BigInt where needed
   const tx = await farmFactory.createFarmWithToken(
-    "Ferme Du Quennelet", // farmName
-    "Quennelet Farm Token", // tokenName
-    "QFT", // tokenSymbol
+    "Ferme Le Rouger", // farmName
+    "Rouger Farm Token", // tokenName
+    "RF", // tokenSymbol
     BigInt(120), // sizeInAcres
     BigInt(120000), // totalTokenSupply
     BigInt(1200000), // valuation

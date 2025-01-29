@@ -4,12 +4,7 @@ import { useState, useEffect, useContext } from 'react'
 import { 
     Box, 
     Typography, 
-    Grid2,
-    Card,
-    CardContent,
-    TextField,
-    MenuItem,
-    InputAdornment,
+
     Link,
     Table,
     TableBody,
@@ -21,8 +16,6 @@ import {
     Paper,
     Button
 } from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import SortIcon from '@mui/icons-material/Sort'
 import { SafeAddressContext, PasskeyContext } from '../../dashboard/layout'
 import { loadTransactions } from '../../../lib/transactionUtils'
 import { useRouter } from 'next/navigation'
@@ -32,8 +25,6 @@ export default function Transactions() {
     const [transactions, setTransactions] = useState([])
     const [filteredTransactions, setFilteredTransactions] = useState([])
     const [loading, setLoading] = useState(true)
-    const [searchTerm, setSearchTerm] = useState('')
-    const [sortBy, setSortBy] = useState('date-new')
     const passkey = useContext(PasskeyContext)
     const router = useRouter()
     
@@ -60,36 +51,7 @@ export default function Transactions() {
         }
         fetchTransactions()
     }, [safeAddress])
-
-    useEffect(() => {
-        let result = [...transactions]
-        
-        // Apply search filter
-        if (searchTerm) {
-            result = result.filter(tx => 
-                tx.farmName.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-        }
-        
-        // Apply sorting
-        result.sort((a, b) => {
-            switch (sortBy) {
-                case 'date-new':
-                    return new Date(b.date).getTime() - new Date(a.date).getTime()
-                case 'date-old':
-                    return new Date(a.date).getTime() - new Date(b.date).getTime()
-                case 'amount-high':
-                    return b.amount - a.amount
-                case 'amount-low':
-                    return a.amount - b.amount
-                default:
-                    return 0
-            }
-        })
-        
-        setFilteredTransactions(result)
-    }, [transactions, searchTerm, sortBy])
-
+    
     // Add handler for checkbox selection
     const handleSelectAll = (event) => {
         if (event.target.checked) {

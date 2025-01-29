@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Modal, Box, Typography, Button, CircularProgress } from '@mui/material'
 import { UserHolding } from '../lib/holdingsUtils'
-import { sellFarmTokens, sellFarmTokensWithUSDC } from '../lib/tokenUtils'
+import { sellFarmTokensWithUSDC } from '../lib/tokenUtils'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import Link from 'next/link'
 import '../styles/sell-modal.css'
@@ -26,15 +26,13 @@ export default function SellModal({
     const [isSelling, setIsSelling] = useState(false)
     const [transactionHash, setTransactionHash] = useState<string>('')
 
-    const handleSell = async (paymentMethod: 'ETH' | 'USDC') => {
+    const handleSell = async () => {
         if (!holding || !safeAddress || !sellAmount || !passkey) return
 
         try {
             setIsSelling(true)
             const amount = parseInt(sellAmount)
-            const hash = paymentMethod === 'ETH' 
-                ? await sellFarmTokens(holding.tokenAddress, safeAddress, amount, passkey)
-                : await sellFarmTokensWithUSDC(holding.tokenAddress, safeAddress, amount, passkey)
+            const hash = await sellFarmTokensWithUSDC(holding.tokenAddress, safeAddress, amount, passkey)
             setTransactionHash(hash)
         } catch (error: any) {
             console.error('Failed to sell tokens:', error)
@@ -49,15 +47,12 @@ export default function SellModal({
             return (
                 <Box className="transaction-success-container">
                     <CheckCircleIcon className="success-icon" />
-                    
                     <Typography variant="h6" sx={{ textAlign: 'center' }}>
                         Transaction Successful!
                     </Typography>
-                    
                     <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
                         Your sale has been confirmed. You can view the transaction details below:
                     </Typography>
-                    
                     <Link 
                         href={`https://jiffyscan.xyz/userOpHash/${transactionHash}?network=base-sepolia`}
                         target="_blank"
@@ -136,24 +131,15 @@ export default function SellModal({
                         </Typography>
                     </Box>
                 </Box>
-                <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        className="sell-button"
-                        onClick={() => handleSell('ETH')}
-                        disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
-                    >
-                        Sell for ETH
-                    </Button>
+                <Box sx={{ mt: 2 }}>
                     <Button
                         fullWidth
                         variant="contained"
                         className="sell-button usdc-button"
-                        onClick={() => handleSell('USDC')}
+                        onClick={handleSell}
                         disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
                     >
-                        Sell for USDC
+                        Proceed
                     </Button>
                 </Box>
             </>

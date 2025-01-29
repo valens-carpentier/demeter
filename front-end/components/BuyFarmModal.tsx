@@ -10,7 +10,7 @@ interface BuyFarmModalProps {
     selectedFarm: Farm | null
     buyAmount: string
     onBuyAmountChange: (value: string) => void
-    onBuyConfirm: (paymentMethod: 'ETH' | 'USDC') => Promise<void>
+    onBuyConfirm: () => Promise<void>
     isBuying: boolean
     transactionHash?: string
 }
@@ -114,16 +114,7 @@ export default function BuyFarmModal({
                         fullWidth
                         variant="contained"
                         className="buy-button"
-                        onClick={() => onBuyConfirm('ETH')}
-                        disabled={isBuying || !buyAmount}
-                    >
-                        Pay with ETH
-                    </Button>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        className="buy-button usdc-button"
-                        onClick={() => onBuyConfirm('USDC')}
+                        onClick={onBuyConfirm}
                         disabled={isBuying || !buyAmount}
                     >
                         Pay with USDC

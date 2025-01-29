@@ -13,7 +13,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
 import { executeSafeDeployment } from '../lib/deployment'
 import styles from '@/styles/safeaccountdetails.module.css'
-import { getBalance, getUSDCBalance } from '@/lib/balanceUtils'
+import { getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 
 type props = {
@@ -27,12 +27,8 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>(false)
   const [isDeploying, setIsDeploying] = useState<boolean>(false)
   const [userOp, setUserOp] = useState<string>()
-  const [ethBalance, setEthBalance] = useState<string>()
   const [balanceLoading, setBalanceLoading] = useState<boolean>(false)
   const [usdcBalance, setUsdcBalance] = useState<string>()
-  const [totalBalanceUSD, setTotalBalanceUSD] = useState<string>('0.00')
-  const [ethPriceUSD, setEthPriceUSD] = useState<number>(0)
-
 
   const showSafeInfo = useCallback(async () => {
     setIsLoading(true)
@@ -108,15 +104,10 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
       if (!safeAddress) return
       try {
         setBalanceLoading(true)
-        const [ethBalance, usdcBalance] = await Promise.all([
-          getBalance(safeAddress),
-          getUSDCBalance(safeAddress)
-        ])
-        setEthBalance(ethBalance)
-        setUsdcBalance(usdcBalance)
+        const balance = await getUSDCBalance(safeAddress)
+        setUsdcBalance(balance)
       } catch (error) {
         console.error('Failed to fetch balances:', error)
-        setEthBalance('0.00')
         setUsdcBalance('0.00')
       } finally {
         setBalanceLoading(false)
@@ -126,31 +117,6 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
     fetchBalances()
   }, [safeAddress])
 
-  useEffect(() => {
-    const calculateTotalBalanceUSD = async () => {
-      try {
-        if (!ethBalance) return
-
-        const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd')
-        const data = await response.json()
-        const ethPrice = data.ethereum.usd
-        setEthPriceUSD(ethPrice)
-        
-        const ethBalanceUSD = Number(ethBalance) * ethPrice
-        const usdcBalanceUSD = Number(usdcBalance || '0')
-        
-        const totalUSD = (ethBalanceUSD + usdcBalanceUSD).toFixed(2)
-        setTotalBalanceUSD(totalUSD)
-      } catch (error) {
-        console.error('Failed to calculate total balance:', error)
-        setTotalBalanceUSD('0.00')
-        setEthPriceUSD(0)
-      }
-    }
-
-    calculateTotalBalanceUSD()
-  }, [ethBalance, usdcBalance])
-
   return (
     <Paper className={styles.container}>
       <Stack className={styles.stack}>
@@ -158,7 +124,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
           <Typography className={styles.balanceTitle}>
             Balance
           </Typography>
-          <Tooltip title="This is your balance available to buy farm tokens">
+          <Tooltip title="This is your USDC balance available to buy farm tokens">
             <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
           </Tooltip>
         </Stack>
@@ -169,11 +135,8 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
           <>
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
               <Typography className={styles.balanceValue}>
-                ${totalBalanceUSD}
+                ${usdcBalance || '0.00'}
               </Typography>
-              <Tooltip title={`ETH: $${(Number(ethBalance || '0') * Number(ethPriceUSD || 0)).toFixed(2)} | USDC: $${usdcBalance || '0.00'}`}>
-                <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
-              </Tooltip>
             </Stack>
 
             <Typography textAlign={'center'} fontSize="0.875rem">

@@ -40,7 +40,7 @@
       ]
     },
     "/Users/valenscarpentier/repos/demeter/contracts/FarmToken.sol": {
-      "lastModificationDate": 1738079718053,
+      "lastModificationDate": 1738092500947,
       "contentHash": "94c411ad8b24a2d23751305b87ecac49",
       "sourceName": "contracts/FarmToken.sol",
       "solcConfig": {
@@ -78,42 +78,6 @@
       ],
       "artifacts": [
         "FarmToken"
-      ]
-    },
-    "/Users/valenscarpentier/repos/demeter/contracts/interfaces/IAggregatorV3.sol": {
-      "lastModificationDate": 1737474296686,
-      "contentHash": "ced4db8dbf72fd3e4f96abc1fb48ffdf",
-      "sourceName": "contracts/interfaces/IAggregatorV3.sol",
-      "solcConfig": {
-        "version": "0.8.28",
-        "settings": {
-          "optimizer": {
-            "enabled": true,
-            "runs": 200
-          },
-          "evmVersion": "paris",
-          "outputSelection": {
-            "*": {
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ],
-              "": [
-                "ast"
-              ]
-            }
-          }
-        }
-      },
-      "imports": [],
-      "versionPragmas": [
-        "^0.8.0"
-      ],
-      "artifacts": [
-        "IAggregatorV3"
       ]
     },
     "/Users/valenscarpentier/repos/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
@@ -604,6 +568,42 @@
       ],
       "artifacts": [
         "IUSDC"
+      ]
+    },
+    "/Users/valenscarpentier/repos/demeter/contracts/interfaces/IAggregatorV3.sol": {
+      "lastModificationDate": 1738092592298,
+      "contentHash": "ced4db8dbf72fd3e4f96abc1fb48ffdf",
+      "sourceName": "contracts/interfaces/IAggregatorV3.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "IAggregatorV3"
       ]
     }
   }
