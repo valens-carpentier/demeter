@@ -15,12 +15,14 @@ import { getUserHoldings } from '../../../lib/holdingsUtils'
 import { useRouter } from 'next/navigation'
 import '@/styles/portfolio.css'
 import SellModal from '../../../components/SellModal'
-
+import BuyFarmModal from '../../../components/BuyFarmModal'
+import { buyFarmTokensWithUSDC } from '../../../lib/tokenUtils'
 interface UserHolding {
   farmName: string;
   tokenPrice: number;
   tokenBalance: number;
   userShare: number;
+  tokenAddress: string;
 }
 
 export default function Portfolio() {
@@ -30,7 +32,11 @@ export default function Portfolio() {
   const [holdings, setHoldings] = useState<UserHolding[]>([])
   const [loading, setLoading] = useState(true)
   const [openSellModal, setOpenSellModal] = useState(false)
+  const [openBuyModal, setOpenBuyModal] = useState(false)
   const [selectedHolding, setSelectedHolding] = useState<UserHolding | null>(null)
+  const [buyAmount, setBuyAmount] = useState('')
+  const [isBuying, setIsBuying] = useState(false)
+  const [transactionHash, setTransactionHash] = useState<string>('')
 
   useEffect(() => {
     if (passkey) {
@@ -63,9 +69,25 @@ export default function Portfolio() {
 
   const handleBuyClick = (holding: UserHolding) => {
     setSelectedHolding(holding)
-    setOpenSellModal(true)
+    setOpenBuyModal(true)
   }
-  
+
+  const handleBuyConfirm = async () => {
+    if (!selectedHolding || !safeAddress || !buyAmount || !passkey) return
+
+    try {
+      setIsBuying(true)
+      const amount = parseInt(buyAmount)
+      const hash = await buyFarmTokensWithUSDC(selectedHolding.tokenAddress, safeAddress, amount, passkey)
+      setTransactionHash(hash)
+    } catch (error: any) {
+      console.error('Failed to buy tokens:', error)
+      alert(error.message || 'Failed to buy tokens. Please try again.')
+      setOpenBuyModal(false)
+    } finally {
+      setIsBuying(false)
+    }
+  }
 
   return (
     <Box className="portfolio-container">
@@ -178,6 +200,25 @@ export default function Portfolio() {
           )
         )}
       </Paper>
+
+      <BuyFarmModal
+        open={openBuyModal}
+        onClose={() => {
+          setOpenBuyModal(false)
+          setTransactionHash('')
+          setBuyAmount('')
+        }}
+        selectedFarm={{
+          name: selectedHolding?.farmName || '',
+          token: selectedHolding?.tokenAddress || '',
+          pricePerToken: selectedHolding?.tokenPrice || 0
+        }}
+        buyAmount={buyAmount}
+        onBuyAmountChange={(value) => setBuyAmount(value)}
+        onBuyConfirm={handleBuyConfirm}
+        isBuying={isBuying}
+        transactionHash={transactionHash}
+      />
 
       <SellModal
         open={openSellModal}
