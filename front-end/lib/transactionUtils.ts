@@ -5,7 +5,7 @@ import loadFarms from './farmsUtils'
 export interface Transaction {
     farmName: string
     date: string
-    amount: number
+    amount: number  
     hash: string
     type: 'Buy' | 'Sell'
     price: number  // Price per token in cents
@@ -22,17 +22,17 @@ interface SafeTransaction {
         from: string
         to: string
         value: string
+        tokenInfo?: {
+            decimals: number
+        }
     }[]
 }
 
 export async function loadTransactions(safeAddress: string): Promise<Transaction[]> {
-    console.log('Loading transactions for address:', safeAddress)
     if (!safeAddress) return []
 
     try {
         const farms = await loadFarms()
-        console.log('Loaded farms:', farms.length)
-        console.log('Farms:', farms.map(farm => farm.token))
 
         const response = await fetch(
             `${SAFE_API_URL}/v1/safes/${safeAddress}/all-transactions/`
@@ -43,7 +43,6 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
         }
 
         const data = await response.json() as { results: SafeTransaction[] }
-        console.log('Safe transactions loaded:', data.results?.length || 0)
 
         const transactions: Transaction[] = []
         const processedHashes = new Set<string>() // Track processed transaction hashes
@@ -58,12 +57,6 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
                     continue
                 }
 
-                console.log('Processing transaction:', {
-                    to: tx.to,
-                    data: tx.data,
-                    transfers: tx.transfers
-                });
-
                 let transactionProcessed = false
 
                 // Check for transfers
@@ -75,25 +68,36 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
                         if (farmName) {
                             const type = transfer.from.toLowerCase() === safeAddress.toLowerCase() ? 'buy' : 'sell'
                             
-                            const farmToken = new ethers.Contract(
-                                toAddress,
-                                ['function pricePerToken() view returns (uint256)'],
-                                new ethers.JsonRpcProvider(RPC_URL)
+                            // Find the farm token transfer
+                            const farmTokenTransfer = tx.transfers.find(t => 
+                                t.tokenInfo && farmAddressToName.has(t.tokenInfo.address?.toLowerCase())
                             )
+                            
+                            if (farmTokenTransfer) {
+                                const tokenDecimals = farmTokenTransfer.tokenInfo?.decimals || 6
+                                const amount = Number(ethers.formatUnits(farmTokenTransfer.value, tokenDecimals))
+                                
+                                const farmToken = new ethers.Contract(
+                                    toAddress,
+                                    ['function pricePerToken() view returns (uint256)'],
+                                    new ethers.JsonRpcProvider(RPC_URL)
+                                )
 
-                            const pricePerToken = await farmToken.pricePerToken()
+                                const pricePerToken = await farmToken.pricePerToken()
+                                const priceInCents = Number(pricePerToken) // Keep as cents
 
-                            transactions.push({
-                                farmName,
-                                date: tx.executionDate,
-                                amount: 1,
-                                hash: tx.transactionHash,
-                                type: type === 'buy' ? 'Buy' : 'Sell',
-                                price: Number(pricePerToken)
-                            })
-                            processedHashes.add(tx.transactionHash)
-                            transactionProcessed = true
-                            break
+                                transactions.push({
+                                    farmName,
+                                    date: tx.executionDate,
+                                    amount,
+                                    hash: tx.transactionHash,
+                                    type: type === 'buy' ? 'Buy' : 'Sell',
+                                    price: priceInCents
+                                })
+                                processedHashes.add(tx.transactionHash)
+                                transactionProcessed = true
+                                break
+                            }
                         }
                     }
                 }
@@ -105,12 +109,21 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
                         const farmName = farmAddressToName.get(tx.to.toLowerCase())
                         if (farmName) {
                             let type = 'buy'
+                            let amount = 0
+                            
                             if (tx.transfers) {
-                                for (const transfer of tx.transfers) {
-                                    if (transfer.from.toLowerCase() === safeAddress.toLowerCase() && 
-                                        transfer.to.toLowerCase() !== tx.to.toLowerCase()) {
+                                // Find the farm token transfer
+                                const farmTokenTransfer = tx.transfers.find(t => 
+                                    t.tokenInfo && farmAddressToName.has(t.tokenInfo.address?.toLowerCase())
+                                )
+                                
+                                if (farmTokenTransfer) {
+                                    const tokenDecimals = farmTokenTransfer.tokenInfo?.decimals || 6
+                                    amount = Number(ethers.formatUnits(farmTokenTransfer.value, tokenDecimals))
+                                    
+                                    if (farmTokenTransfer.from.toLowerCase() === safeAddress.toLowerCase() && 
+                                        farmTokenTransfer.to.toLowerCase() !== tx.to.toLowerCase()) {
                                         type = 'sell'
-                                        break
                                     }
                                 }
                             }
@@ -122,26 +135,26 @@ export async function loadTransactions(safeAddress: string): Promise<Transaction
                             )
 
                             const pricePerToken = await farmToken.pricePerToken()
+                            const priceInCents = Number(pricePerToken) // Keep as cents
 
                             transactions.push({
                                 farmName,
                                 date: tx.executionDate,
-                                amount: 1,
+                                amount,
                                 hash: tx.transactionHash,
                                 type: type === 'buy' ? 'Buy' : 'Sell',
-                                price: Number(pricePerToken)
+                                price: priceInCents
                             })
                             processedHashes.add(tx.transactionHash)
                         }
                     }
                 }
             } catch (error) {
-                console.log('Error processing transaction:', error)
+                console.error('Error processing transaction:', error)
                 continue
             }
         }
 
-        console.log('Total transactions found:', transactions.length)
         return transactions.sort((a, b) => 
             new Date(b.date).getTime() - new Date(a.date).getTime()
         )
