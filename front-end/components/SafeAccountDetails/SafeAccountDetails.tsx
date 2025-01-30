@@ -10,9 +10,9 @@ import {
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { Safe4337Pack } from '@safe-global/relay-kit'
 import { useCallback, useEffect, useState } from 'react'
-import { BUNDLER_URL, CHAIN_NAME, RPC_URL } from '../lib/constants'
-import { executeSafeDeployment } from '../lib/deployment'
-import styles from '@/styles/safeaccountdetails.module.css'
+import { BUNDLER_URL, PAYMASTER_URL, RPC_URL } from '../../lib/constants'
+import { executeSafeDeployment } from '../../lib/deployment'
+import styles from './safeaccountdetails.module.css'
 import { getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 
@@ -26,7 +26,6 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   const [safeAddress, setSafeAddress] = useState<string>()
   const [isSafeDeployed, setIsSafeDeployed] = useState<boolean>(false)
   const [isDeploying, setIsDeploying] = useState<boolean>(false)
-  const [userOp, setUserOp] = useState<string>()
   const [balanceLoading, setBalanceLoading] = useState<boolean>(false)
   const [usdcBalance, setUsdcBalance] = useState<string>()
 
@@ -39,6 +38,10 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
         provider: RPC_URL,
         signer: passkey,
         bundlerUrl: BUNDLER_URL,
+        paymasterOptions: {
+          isSponsored: true,
+          paymasterUrl: PAYMASTER_URL,
+        },
         options: {
           owners: [],
           threshold: 1,
@@ -54,6 +57,10 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
         provider: RPC_URL,
         signer: passkey,
         bundlerUrl: BUNDLER_URL,
+        paymasterOptions: {
+          isSponsored: true,
+          paymasterUrl: PAYMASTER_URL,
+        },
         options: {
           owners: [signerAddress],
           threshold: 1,
@@ -83,12 +90,11 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
 
     try {
       setIsDeploying(true)
-      const hash = await executeSafeDeployment({
+      await executeSafeDeployment({
         signer: passkey,
         safeAddress
       })
-      setUserOp(hash)
-      await showSafeInfo() // Refresh the deployment status
+      await showSafeInfo()
     } catch (error) {
       console.error('Deployment failed:', error)
     } finally {
@@ -97,7 +103,6 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   }
 
   const safeLink = `https://app.safe.global/home?safe=basesep:${safeAddress}`
-  const jiffscanLink = `https://jiffyscan.xyz/userOpHash/${userOp}?network=${CHAIN_NAME}`
   
   useEffect(() => {
     const fetchBalances = async () => {
@@ -124,7 +129,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
           <Typography className={styles.balanceTitle}>
             Balance
           </Typography>
-          <Tooltip title="This is your USDC balance available to buy farm tokens">
+          <Tooltip title="Your balance available to buy farm tokens">
             <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
           </Tooltip>
         </Stack>
@@ -148,7 +153,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
               >
                 <Tooltip title={safeAddress}>
                   <span className={styles.addressContainer}>
-                    {splitAddress(safeAddress)}
+                    {splitAddress(safeAddress || '')}
                   </span>
                 </Tooltip>
               </Link>
@@ -163,30 +168,15 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
                   className={styles.deployButton}
                 >
                   {isDeploying ? (
-                    <CircularProgress size={4} color="inherit" />
+                    <>
+                      <CircularProgress size={20} color="inherit" />
+                      Activating...
+                    </>
                   ) : (
-                    'Deploy your Wallet'
+                    'Activate your account'
                   )}
                 </Button>
-                <Tooltip title="Please send ETH to the wallet address then click on 'Deploy your Wallet' button">
-                  <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
-                </Tooltip>
               </Stack>
-            )}
-
-            {userOp && (
-              <Typography textAlign={'center'} fontSize="0.875rem">
-                <Link
-                  href={jiffscanLink}
-                  target="_blank"
-                  underline="hover"
-                  color="text"
-                >
-                  <span className={styles.addressContainer}>
-                    {userOp}
-                  </span>
-                </Link>
-              </Typography>
             )}
           </>
         )}

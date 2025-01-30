@@ -3,7 +3,7 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { loadPasskeysFromLocalStorage } from '@/lib/passkeys'
-import SafeAccountDetails from '@/components/SafeAccountDetails'
+import SafeAccountDetails from '@/components/SafeAccountDetails/SafeAccountDetails'
 import { useRouter } from 'next/navigation'
 import Sidebar from '@/components/Sidebar'
 import styles from '@/styles/sidebar.module.css'
