@@ -127,7 +127,7 @@ export default function Transactions() {
                                     {tx.amount}
                                 </TableCell>
                                 <TableCell>
-                                    ${(tx.price * tx.amount / 100)}
+                                    ${(tx.price * tx.amount / 100).toFixed(2)}
                                 </TableCell>
                                 <TableCell>{tx.farmName}</TableCell>
                                 <TableCell>
