@@ -1,0 +1,16 @@
+.alert {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-radius: 0;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .link {
+    color: inherit;
+    text-decoration: underline;
+  }

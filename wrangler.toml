@@ -1,0 +1,10 @@
+name = "demeter"
+compatibility_date = "2024-01-01"
+workers_dev = true
+
+[site]
+bucket = ".next"
+entry-point = "."
+
+[build]
+command = "npm run build" 

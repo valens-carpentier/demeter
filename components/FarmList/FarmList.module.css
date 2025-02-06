@@ -1,0 +1,168 @@
+.farmListContainer {
+  padding: 24px;
+  background-color: #FFFFFF;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.farmListTitle {
+  color: #2C3E2D;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.025em;
+}
+
+.farmListGrid {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.farmName {
+  color: #2C3E2D;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: -0.01em;
+}
+
+.farmItem {
+  color: #5C745D;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+
+.farmStatusChip {
+  margin-top: 16px;
+}
+
+.farmViewDetailsButton {
+  color: #4CAF50;
+  border: 2px solid #4CAF50;
+  font-weight: 600;
+  text-transform: none;
+  padding: 8px 16px;
+}
+
+.farmViewDetailsButton:hover {
+  background-color: #4CAF50;
+  color: #FFFFFF;
+}
+
+.farmViewDetailsButton:disabled {
+  color: #A5B5A6;
+  border-color: #A5B5A6;
+}
+
+.noFarmsMessage {
+  margin-top: 24px;
+  text-align: center;
+  color: #5C745D;
+  font-size: 16px;
+}
+
+/* Add subtle hover effect to cards */
+.farmListGrid {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.farmListGrid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.farmInvestmentRow {
+  display: flex;
+  justify-content: space-between;
+  margin: 16px 0;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.investmentLabel {
+  font-size: 0.75rem;
+  color: #5C745D;
+  margin-bottom: 4px;
+}
+
+.investmentValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2C3E2D;
+}
+
+.tokenPrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.farmMetrics {
+  margin-top: auto;
+}
+
+.metricsButtonContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.metricsContent {
+  flex: 1;
+}
+
+.metricLabel {
+  font-size: 0.75rem;
+  color: #5C745D;
+  font-weight: 500;
+}
+
+.metricValue {
+  font-size: 1rem;
+  color: #2C3E2D;
+  font-weight: 700;
+}
+
+.metricSubtitle {
+  font-size: 0.75rem;
+  color: #666;
+  font-style: italic;
+}
+
+.viewPropertyButton {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-weight: 600;
+  text-transform: none;
+  margin-left: 16px;
+}
+
+.viewPropertyButton:hover {
+  background-color: #2E7D32;
+}
+
+.buyModal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+}

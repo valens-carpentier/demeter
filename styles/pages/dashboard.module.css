@@ -1,0 +1,29 @@
+.dashboardContainer {
+  padding: 24px;
+  max-width: 1200px;
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.dashboardContent {
+  width: 100%;
+}
+
+.dashboardStack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+}
+
+.holdingsSection {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.farmsSection {
+  width: 100%;
+  max-width: 1200px;
+}
+
+  

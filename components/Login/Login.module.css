@@ -1,0 +1,38 @@
+.paperContainer {
+  margin: 32px auto 0;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  padding: 32px;
+}
+
+.stackContainer {
+  padding: 32px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.noPasskeysText {
+  text-align: center;
+  margin: 24px 0;
+}
+
+.signupText {
+  text-align: center;
+  margin-top: 24px;
+}
+
+.signupLink {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.loginButton {
+  margin-top: 24px;
+}

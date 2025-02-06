@@ -1,0 +1,89 @@
+.transactionContainer {
+  padding: 24px;
+  background-color: #FFFFFF;
+  max-width: 1200px;
+  margin: 32px auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+  margin-left: 2%;
+  margin-right: 2%;
+  overflow-x: auto;
+}
+
+.transactionTitle {
+  color: #2C3E2D;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -0.025em;
+}
+
+.transactionTable {
+  width: 95%;
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 800px;
+}
+
+.transactionTable {
+  background-color: #F5F2EA;
+}
+
+.transactionTable {
+  color: #5C745D;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 16px;
+}
+
+.transactionTable {
+  color: #2C3E2D;
+  font-size: 14px;
+  padding: 16px;
+  font-weight: 500;
+}
+
+.transactionTable:hover {
+  background-color: #F5F2EA;
+}
+
+.transactionButton {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-weight: 600;
+  text-transform: none;
+}
+
+.transactionButton:hover {
+  background-color: #2E7D32;
+}
+
+.transactionButton.outlined {
+  background-color: transparent;
+  color: #4CAF50;
+  border: 2px solid #4CAF50;
+}
+
+.transactionButton.outlined:hover {
+  background-color: #F5F2EA;
+}
+
+.noTransactionsMessage {
+  text-align: center;
+  color: #5C745D;
+  padding: 32px;
+  font-size: 16px;
+}
+
+.transactionLink {
+  color: #4CAF50;
+  text-decoration: none;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.transactionLink:hover {
+  text-decoration: underline;
+}

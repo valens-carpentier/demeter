@@ -1,4 +1,4 @@
-const hre = require("hardhat");
+import hre from "hardhat";
 
 async function main() {
   const FarmFactory = await hre.ethers.getContractFactory("FarmFactory");
@@ -8,14 +8,14 @@ async function main() {
   
   // Convert numbers to BigInt where needed
   const tx = await farmFactory.createFarmWithToken(
-    "Ferme Le Rouger", // farmName
-    "Rouger Farm Token", // tokenName
-    "RF", // tokenSymbol
-    BigInt(120), // sizeInAcres
-    BigInt(120000), // totalTokenSupply
-    BigInt(1200000), // valuation
-    BigInt(16), // expectedOutcomePercentage
-    BigInt(1200) // pricePerToken (in cents)
+    "Ferme du Verger", // farmName
+    "Verger Farm Token", // tokenName
+    "VFT", // tokenSymbol
+    BigInt(30), // sizeInAcres
+    BigInt(30000), // totalTokenSupply
+    BigInt(300000), // valuation
+    BigInt(8), // expectedOutcomePercentage
+    BigInt(300) // pricePerToken (in cents)
   );
 
   console.log("Transaction sent:", tx.hash);
