@@ -110,6 +110,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
       try {
         setBalanceLoading(true)
         const balance = await getUSDCBalance(safeAddress)
+        console.log('Fetched USDC balance:', balance) // Debugging
         setUsdcBalance(balance)
       } catch (error) {
         console.error('Failed to fetch balances:', error)
@@ -119,7 +120,12 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
       }
     }
 
-    fetchBalances()
+    // Add a small delay to ensure the safe is fully initialized
+    const timer = setTimeout(() => {
+      fetchBalances()
+    }, 1000)
+
+    return () => clearTimeout(timer)
   }, [safeAddress])
 
   return (

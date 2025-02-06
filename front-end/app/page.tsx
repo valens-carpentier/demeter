@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import LoginWithPasskey from '@/components/LoginwithPasskey'
-import SafeAccountDetails from '@/components/SafeAccountDetails'
+import SafeAccountDetails from '@/components/SafeAccountDetails/SafeAccountDetails'
 import SafeThemeProvider from '@/components/ThemeProvider'
 import { createPasskey, storePasskeyInLocalStorage } from '../lib/passkeys'
 
