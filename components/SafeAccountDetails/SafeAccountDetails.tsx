@@ -12,7 +12,7 @@ import { Safe4337Pack } from '@safe-global/relay-kit'
 import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, PAYMASTER_URL, RPC_URL } from '../../lib/constants'
 import { executeSafeDeployment } from '../../lib/deployment'
-import styles from './SafeAccountDetails.module.css'
+import styles from './safeaccountdetails.module.css'
 import { getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 
@@ -45,7 +45,6 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
         options: {
           owners: [],
           threshold: 1,
-          salt: BigInt('0x' + passkey.rawId)
         }
       })
 
@@ -64,7 +63,6 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
         options: {
           owners: [signerAddress],
           threshold: 1,
-          salt: BigInt('0x' + passkey.rawId)
         }
       })
 
@@ -137,24 +135,16 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
           </Typography>
           <Tooltip title={
             <span>
-              This is your USDC balance available to buy farm tokens. 
-              <br />
-              <a 
-                href="https://faucet.circle.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ color: '#4CAF50', textDecoration: 'underline', alignItems: 'center' }}
-              >
-                Get free USDC here
-              </a>
+              Your USDC balance available to buy farm tokens. <br/>
+              Get free USDC from the <a href="https://faucet.circle.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'primary.main', textDecoration: 'underline' }}>Circle Faucet</a>.
             </span>
           }>
-            <InfoOutlined className={styles.infoIcon} />
+            <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
           </Tooltip>
         </Stack>
 
         {isLoading || balanceLoading ? (
-          <CircularProgress className={styles.loading} size={12}/>
+          <CircularProgress size={12} className={styles.loading}/>
         ) : (
           <>
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
@@ -162,26 +152,14 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
                 ${usdcBalance || '0.00'}
               </Typography>
             </Stack>
-            {usdcBalance === '0.00' && (
-              <Typography variant="body2" className={styles.faucetMessage}>
-                Need USDC? Get free test tokens at{' '}
-                <Link
-                  href="https://faucet.circle.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  color="primary"
-                >
-                  Circle Faucet
-                </Link>
-              </Typography>
-            )}
 
-            <Typography className={styles.addressLink}>
+            <Typography textAlign={'center'} fontSize="0.875rem">
               <Link
                 href={safeLink}
                 target="_blank"
                 underline="hover"
                 color="text"
+                textTransform="lowercase"
               >
                 <Tooltip title={safeAddress}>
                   <span className={styles.addressContainer}>
@@ -192,7 +170,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
             </Typography>
 
             {!isSafeDeployed && (
-              <Stack className={styles.buttonStack}>
+              <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
                 <Button
                   variant="contained"
                   onClick={handleDeploy}

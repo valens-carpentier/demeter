@@ -8,11 +8,7 @@ import SideBar from '@/components/SideBar/SideBar'
 import styles from '@/components/SideBar/SideBar.module.css'
 import { useRouter } from 'next/navigation'
 import '@/styles/global/global.css'
-import { Box, CircularProgress } from '@mui/material'
-
-// Create contexts for both safe address and passkey
-export const SafeAddressContext = React.createContext<string | undefined>(undefined)
-export const PasskeyContext = React.createContext<PasskeyArgType | undefined>(undefined)
+import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 
 export default function DashboardLayout({
   children
@@ -22,45 +18,26 @@ export default function DashboardLayout({
   const router = useRouter()
   const [passkey, setPasskey] = useState<PasskeyArgType>()
   const [safeAddress, setSafeAddress] = useState<string | undefined>(undefined)
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const init = async () => {
-      const searchParams = new URLSearchParams(window.location.search)
-      const passkeyRawId = searchParams.get('passkeyId')
-      
-      if (!passkeyRawId) {
-        router.push('/')
-        return
-      }
-
-      const passkeys = loadPasskeysFromLocalStorage()
-      const selectedPasskey = passkeys.find(p => p.rawId === passkeyRawId)
-      
-      if (!selectedPasskey) {
-        router.push('/')
-        return
-      }
-      
-      setPasskey(selectedPasskey)
-      setIsLoading(false)
+    const searchParams = new URLSearchParams(window.location.search)
+    const passkeyRawId = searchParams.get('passkeyId')
+    
+    if (!passkeyRawId) {
+      router.push('/')
+      return
     }
 
-    init()
+    const passkeys = loadPasskeysFromLocalStorage()
+    const selectedPasskey = passkeys.find(p => p.rawId === passkeyRawId)
+    
+    if (!selectedPasskey) {
+      router.push('/')
+      return
+    }
+    
+    setPasskey(selectedPasskey)
   }, [router])
-
-  if (isLoading) {
-    return (
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh' 
-      }}>
-        <CircularProgress size={60} />
-      </Box>
-    )
-  }
 
   if (!passkey) {
     return null

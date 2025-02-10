@@ -17,7 +17,7 @@
 }
 
 :root {
-  --font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {

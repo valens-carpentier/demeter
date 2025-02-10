@@ -4,11 +4,10 @@ import { useContext, useEffect } from 'react'
 import FarmList from '@/components/FarmList/FarmList'
 import HoldingList from '@/components/HoldingList/HoldingList'
 import styles from '@/styles/pages/dashboard.module.css'
-import { SafeAddressContext, PasskeyContext } from './layout'
+import { PasskeyContext } from '@/app/contexts/SafeContext'
 import { useRouter } from 'next/navigation'
 
 export default function DashboardPage() {
-  const safeAddress = useContext(SafeAddressContext)
   const passkey = useContext(PasskeyContext)
   const router = useRouter()
 
@@ -25,7 +24,7 @@ export default function DashboardPage() {
           <HoldingList />
         </section>
         <section className={styles.farmsSection}>
-          <FarmList safeAddress={safeAddress} />
+          <FarmList />
         </section>
       </div>
     </div>

@@ -19,14 +19,14 @@
 }
 
 .balanceValue {
-  color: #2C3E2D;
-  font-size: 12px;
-  line-height: 28px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  text-align: center;
-  box-sizing: border-box;
-  margin-bottom: 3px;
+  color: #2C3E2D !important;
+  font-size: 12px !important;
+  line-height: 28px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+  margin-bottom: 3px !important;
 }
 
 .loading {
@@ -68,10 +68,13 @@
   text-transform: none;
   font-size: 14px;
   font-weight: 500;
-  padding: 8px 24px;
+  padding: 12px 24px;
   border-radius: 6px;
   transition: all 0.2s ease;
   min-width: 150px;
+  height: 48px;
+  width: 150px;
+  margin-right: 8px;
 }
 
 .deployButton:hover {
@@ -88,12 +91,6 @@
   box-shadow: none;
 }
 
-.deployButton{
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-}
-
 .infoIcon {
   font-size: 16px;
   color: #5C745D;
@@ -102,6 +99,7 @@
 .addressLink {
   text-align: center;
   font-size: 0.875rem;
+  text-transform: "lowercase" !important;
 }
 
 .buttonStack {
