@@ -30,7 +30,13 @@ function Create4337SafeAccount() {
     <>
       <TestNetworkBanner />
       {selectedPasskey ? (
-        <SafeAccountDetails passkey={selectedPasskey} />
+        <SafeAccountDetails 
+          passkey={selectedPasskey} 
+          onSafeAddress={(address) => {
+            // Handle the safe address if needed, or use empty function
+            console.log('Safe address:', address)
+          }} 
+        />
       ) : (
         <LoginWithPasskey
           handleCreatePasskey={handleCreatePasskey}

@@ -24,6 +24,7 @@ interface SafeTransaction {
         value: string
         tokenInfo?: {
             decimals: number
+            address: string
         }
     }[]
 }

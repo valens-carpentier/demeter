@@ -7,44 +7,36 @@ import Link from 'next/link'
 import styles from './Login.module.css'
 
 type props = {
-  handleSelectPasskey: (passkey: PasskeyArgType) => {}
+  handleCreatePasskey: () => Promise<void>
+  handleSelectPasskey: (passkey: PasskeyArgType) => void
 }
 
 function LoginWithPasskey({ handleSelectPasskey }: props) {
   const [passkeys, setPasskeys] = useState<PasskeyArgType[]>([])
   const [selectedPasskeyId, setSelectedPasskeyId] = useState<string>('')
-  const [isLoggingIn, setIsLoggingIn] = useState(false)
 
   useEffect(() => {
     const storedPasskeys = loadPasskeysFromLocalStorage()
     setPasskeys(storedPasskeys)
   }, [])
 
-  const handleLogin = async () => {
-    setIsLoggingIn(true)
-    try {
-      const passkey = passkeys.find(p => p.rawId === selectedPasskeyId)
-      if (passkey) {
-        await handleSelectPasskey(passkey)
-      }
-    } catch (error) {
-      console.error('Login failed:', error)
-    } finally {
-      setIsLoggingIn(false)
+  const handleLogin = () => {
+    const passkey = passkeys.find(p => p.rawId === selectedPasskeyId)
+    if (passkey) {
+      handleSelectPasskey(passkey)
     }
   }
 
   return (
     <Paper className={styles.paperContainer} elevation={3}>
-      <Stack padding={4} spacing={3}>
+      <Stack className={styles.stackContainer} spacing={4}>
         <Typography 
-          variant="h1"
+          variant="h1" 
+          className={styles.title}
           sx={{ 
             color: 'text.primary',
             fontWeight: 700,
-            letterSpacing: '-0.025em',
-            textAlign: 'center',
-            mb: 2
+            letterSpacing: '-0.025em'
           }}
         >
           Connect to your account
@@ -87,46 +79,37 @@ function LoginWithPasskey({ handleSelectPasskey }: props) {
               startIcon={<FingerprintIcon />}
               variant="contained"
               onClick={handleLogin}
-              disabled={!selectedPasskeyId || isLoggingIn}
+              disabled={!selectedPasskeyId}
               fullWidth
+              className={styles.loginButton}
               sx={{
                 backgroundColor: 'primary.main',
                 '&:hover': {
                   backgroundColor: 'primary.dark'
-                },
-                mt: 2
+                }
               }}
             >
-              {isLoggingIn ? 'Logging in...' : 'Login with Passkey'}
+              Login with Passkey
             </Button>
           </>
         ) : (
           <Typography 
-            sx={{ 
-              color: 'text.secondary',
-              textAlign: 'center',
-              my: 2
-            }}
+            className={styles.noPasskeysText}
+            sx={{ color: 'text.secondary' }}
           >
             No passkeys found. Please create an account first.
           </Typography>
         )}
 
         <Typography 
-          sx={{ 
-            color: 'text.secondary',
-            textAlign: 'center',
-            mt: 2
-          }}
+          className={styles.signupText}
+          sx={{ color: 'text.secondary' }}
         >
           Don&apos;t have an account?{' '}
           <Link 
             href="/signup" 
-            style={{ 
-              color: 'primary.main',
-              textDecoration: 'underline',
-              cursor: 'pointer'
-            }}
+            className={styles.signupLink}
+            style={{ color: 'primary.main' }}
           >
             Sign up
           </Link>

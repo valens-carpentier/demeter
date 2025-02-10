@@ -42,7 +42,6 @@ yarn-error.log*
 next-env.d.ts
 
 # sensitive constants
-lib/constants.ts
 
 # hardhat
 cache/

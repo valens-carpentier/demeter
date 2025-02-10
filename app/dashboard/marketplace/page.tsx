@@ -20,7 +20,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import SortIcon from '@mui/icons-material/Sort'
 import BuyFarmModal from '../../../components/BuyFarmModal/BuyFarmModal'
 import loadFarms from '../../../lib/farmsUtils'
-import { SafeAddressContext, PasskeyContext } from '../../dashboard/layout'
+import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import type { Farm } from '../../../types/farm'
 import styles from '@/styles/pages/marketplace.module.css'
 import { buyFarmTokensWithUSDC } from '../../../lib/tokenUtils'
@@ -106,9 +106,9 @@ export default function Marketplace() {
             const amount = parseInt(buyAmount)
             const hash = await buyFarmTokensWithUSDC(selectedFarm.token, safeAddress, amount, passkey)
             setTransactionHash(hash)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Failed to buy tokens:', error)
-            alert(error.message || 'Failed to buy tokens. Please try again.')
+            alert(error instanceof Error ? error.message : 'Failed to buy tokens. Please try again.')
             setOpenBuyModal(false)
         } finally {
             setIsBuying(false)
@@ -314,7 +314,11 @@ export default function Marketplace() {
                     setTransactionHash('')
                     setBuyAmount('')
                 }}
-                selectedFarm={selectedFarm}
+                selectedFarm={{
+                    name: selectedFarm?.name || '',
+                    token: selectedFarm?.token || '',
+                    pricePerToken: selectedFarm?.pricePerToken || 0
+                }}
                 buyAmount={buyAmount}
                 onBuyAmountChange={(value) => setBuyAmount(value)}
                 onBuyConfirm={handleBuyConfirm}
