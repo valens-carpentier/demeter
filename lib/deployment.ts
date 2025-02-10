@@ -3,9 +3,6 @@ import { Safe4337Pack } from '@safe-global/relay-kit'
 import {
   BUNDLER_URL,
   RPC_URL,
-  CALL_GAS_LIMIT,
-  VERIFICATION_GAS_LIMIT,
-  PRE_VERIFICATION_GAS,
   PAYMASTER_URL,
 } from './constants'
 
@@ -30,7 +27,6 @@ export const executeSafeDeployment = async ({
       options: {
         owners: [],
         threshold: 1,
-        salt: BigInt('0x' + signer.rawId)
       }
     });
 
@@ -49,7 +45,6 @@ export const executeSafeDeployment = async ({
       options: {
         owners: [signerAddress],
         threshold: 1,
-        salt: BigInt('0x' + signer.rawId)
       }
     });
 
@@ -68,12 +63,6 @@ export const executeSafeDeployment = async ({
         data: '0x',
         value: '0'
       }],
-      options: {
-        paymasterAndData: '0x',
-        callGasLimit: CALL_GAS_LIMIT.toString(),
-        verificationGasLimit: VERIFICATION_GAS_LIMIT.toString(),
-        preVerificationGas: PRE_VERIFICATION_GAS.toString()
-      }
     });
 
     console.log('[Deployment] Signing operation...');
@@ -86,7 +75,7 @@ export const executeSafeDeployment = async ({
 
     console.log('[Deployment] Transaction executed, userOpHash:', userOperationHash);
     return userOperationHash;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Deployment] Failed:', error);
     throw error;
   }

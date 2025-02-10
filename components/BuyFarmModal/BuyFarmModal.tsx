@@ -1,5 +1,4 @@
 import { Modal, Box, Typography, Button, CircularProgress } from '@mui/material'
-import { Farm } from '../../types/farm'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import Link from 'next/link'
 import styles from './BuyFarmModal.module.css'
@@ -7,7 +6,11 @@ import styles from './BuyFarmModal.module.css'
 interface BuyFarmModalProps {
     open: boolean
     onClose: () => void
-    selectedFarm: Farm | null
+    selectedFarm: {
+        name: string
+        token: string
+        pricePerToken: number
+    }
     buyAmount: string
     onBuyAmountChange: (value: string) => void
     onBuyConfirm: () => Promise<void>

@@ -16,7 +16,7 @@ import BuyFarmModal from '../../components/BuyFarmModal/BuyFarmModal'
 import loadFarms from '../../lib/farmsUtils'
 import { buyFarmTokensWithUSDC } from '../../lib/tokenUtils'
 import styles from './FarmList.module.css'
-import { SafeAddressContext, PasskeyContext } from '../../app/dashboard/layout'
+import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 
 // Define the Farm type based on the struct in the smart contract
 type Farm = {
@@ -36,7 +36,6 @@ export default function FarmList() {
     const safeAddress = useContext(SafeAddressContext)
     const passkey = useContext(PasskeyContext)
     const [farms, setFarms] = useState<Farm[]>([])
-    const [loading, setLoading] = useState(true)
     const [selectedFarm, setSelectedFarm] = useState<Farm | null>(null)
     const [buyAmount, setBuyAmount] = useState<string>('')
     const [isBuying, setIsBuying] = useState(false)
@@ -48,7 +47,7 @@ export default function FarmList() {
         const fetchFarms = async () => {
             try {
                 const farmData = await loadFarms()
-                const formattedFarms = farmData.map((farm: any) => ({
+                const formattedFarms = farmData.map((farm: Farm) => ({
                     token: farm.token,
                     owner: farm.owner,
                     name: farm.name,
@@ -63,8 +62,6 @@ export default function FarmList() {
                 setFarms(formattedFarms)
             } catch (error) {
                 console.error('Error loading farms:', error)
-            } finally {
-                setLoading(false)
             }
         }
         
@@ -84,9 +81,9 @@ export default function FarmList() {
             const amount = parseInt(buyAmount)
             const hash = await buyFarmTokensWithUSDC(selectedFarm.token, safeAddress, amount, passkey)
             setTransactionHash(hash)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Failed to buy tokens:', error)
-            alert(error.message || 'Failed to buy tokens. Please try again.')
+            alert(error instanceof Error ? error.message : 'Failed to buy tokens. Please try again.')
             setOpenBuyModal(false)
         } finally {
             setIsBuying(false)
@@ -183,7 +180,11 @@ export default function FarmList() {
                     setTransactionHash('')
                     setBuyAmount('')
                 }}
-                selectedFarm={selectedFarm}
+                selectedFarm={{
+                    name: selectedFarm?.name || '',
+                    token: selectedFarm?.token || '',
+                    pricePerToken: selectedFarm?.pricePerToken || 0
+                }}
                 buyAmount={buyAmount}
                 onBuyAmountChange={(value) => setBuyAmount(value)}
                 onBuyConfirm={() => handleBuyConfirm()}

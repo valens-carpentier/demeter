@@ -31,7 +31,6 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: [
-      'San Francisco',
       '-apple-system',
       'BlinkMacSystemFont',
       'sans-serif'

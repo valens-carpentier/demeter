@@ -1,7 +1,7 @@
 'use client'
 
 import { useContext, useEffect, useState } from 'react'
-import { SafeAddressContext, PasskeyContext } from '../layout'
+import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import { getUserHoldings } from '../../../lib/holdingsUtils'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/pages/portfolio.module.css'
@@ -15,6 +15,8 @@ interface UserHolding {
   tokenBalance: number;
   userShare: number;
   tokenAddress: string;
+  tokenSymbol: string;
+  farmValuation: number;
 }
 
 export default function Portfolio() {
@@ -72,9 +74,9 @@ export default function Portfolio() {
       const amount = parseInt(buyAmount)
       const hash = await buyFarmTokensWithUSDC(selectedHolding.tokenAddress, safeAddress, amount, passkey)
       setTransactionHash(hash)
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Failed to buy tokens:', error)
-      alert(error.message || 'Failed to buy tokens. Please try again.')
+      alert(error instanceof Error ? error.message : 'Failed to buy tokens. Please try again.')
       setOpenBuyModal(false)
     } finally {
       setIsBuying(false)
@@ -202,8 +204,8 @@ export default function Portfolio() {
         open={openSellModal}
         onClose={() => setOpenSellModal(false)}
         holding={selectedHolding}
-        safeAddress={safeAddress}
-        passkey={passkey}
+        safeAddress={safeAddress || ''}
+        passkey={passkey!}
       />
 
     </div>

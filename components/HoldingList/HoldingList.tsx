@@ -2,14 +2,11 @@ import { useEffect, useState, useContext } from 'react'
 import {
     Paper, 
     Typography,
-    Grid2, 
-    Card, 
-    CardContent, 
     Box,
     CircularProgress
 } from '@mui/material'
 import { getUserHoldings, getTotalHoldingsValue, UserHolding } from '../../lib/holdingsUtils'
-import { SafeAddressContext } from '../../app/dashboard/layout'
+import { SafeAddressContext } from '@/app/contexts/SafeContext'
 import styles from './HoldingList.module.css'
 
 export default function HoldingList() {

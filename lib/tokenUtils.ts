@@ -33,7 +33,6 @@ export async function buyFarmTokensWithUSDC(
             options: {
                 owners: [],
                 threshold: 1,
-                salt: BigInt('0x' + passkey.rawId)
             }
         });
 
@@ -50,7 +49,6 @@ export async function buyFarmTokensWithUSDC(
             options: {
                 owners: [signerAddress],
                 threshold: 1,
-                salt: BigInt('0x' + passkey.rawId)
             }
         });
 
@@ -91,7 +89,7 @@ export async function buyFarmTokensWithUSDC(
         }
 
         return userOperationHash;
-    } catch (error: any) {
+    } catch (error: unknown) {
         throw error;
     }
 }
@@ -114,7 +112,6 @@ export async function sellFarmTokensWithUSDC(
             options: {
                 owners: [],
                 threshold: 1,
-                salt: BigInt('0x' + passkey.rawId)
             }
         });
 
@@ -131,7 +128,6 @@ export async function sellFarmTokensWithUSDC(
             options: {
                 owners: [signerAddress],
                 threshold: 1,
-                salt: BigInt('0x' + passkey.rawId)
             }
         });
 
@@ -160,7 +156,7 @@ export async function sellFarmTokensWithUSDC(
         }
 
         return userOperationHash;
-    } catch (error: any) {
+    } catch (error: unknown) {
         throw error;
     }
 }

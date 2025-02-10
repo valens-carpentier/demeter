@@ -66,3 +66,21 @@
 .logoutContainer {
   margin-bottom: 32px;
 }
+
+/* Add media queries for responsive behavior */
+@media (max-width: 768px) {
+  .sidebarWrapper {
+    width: 100%;
+    position: relative;
+    height: auto;
+  }
+  
+  .menuContainer {
+    display: none; /* Hide menu by default on mobile */
+  }
+  
+  .mobileMenuButton {
+    display: block;
+    padding: 16px;
+  }
+}

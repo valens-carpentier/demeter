@@ -16,20 +16,19 @@ import {
     Button,
     CircularProgress
 } from '@mui/material'
-import { SafeAddressContext, PasskeyContext } from '../../dashboard/layout'
-import { loadTransactions } from '../../../lib/transactionUtils'
+import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
+import { loadTransactions, Transaction } from '../../../lib/transactionUtils'
 import { useRouter } from 'next/navigation'
 import styles from '@/styles/pages/transaction.module.css'
 
 export default function Transactions() {
-    const [transactions, setTransactions] = useState([])
-    const [filteredTransactions, setFilteredTransactions] = useState([])
+    const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
     const [loading, setLoading] = useState(true)
     const passkey = useContext(PasskeyContext)
     const router = useRouter()
     
     const safeAddress = useContext(SafeAddressContext)
-    const [selected, setSelected] = useState([])
+    const [selected, setSelected] = useState<string[]>([])
 
     useEffect(() => {
         if (passkey) {
@@ -40,8 +39,7 @@ export default function Transactions() {
     useEffect(() => {
         const fetchTransactions = async () => {
             try {
-                const txData = await loadTransactions(safeAddress)
-                setTransactions(txData)
+                const txData = await loadTransactions(safeAddress || '')
                 setFilteredTransactions(txData)
             } catch (error) {
                 console.error('Error loading transactions:', error)
@@ -53,7 +51,7 @@ export default function Transactions() {
     }, [safeAddress])
     
     // Add handler for checkbox selection
-    const handleSelectAll = (event) => {
+    const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.checked) {
             setSelected(filteredTransactions.map(tx => tx.hash))
         } else {
@@ -61,7 +59,7 @@ export default function Transactions() {
         }
     }
 
-    const handleSelectOne = (hash) => {
+    const handleSelectOne = (hash: string) => {
         const selectedIndex = selected.indexOf(hash)
         let newSelected = []
 
