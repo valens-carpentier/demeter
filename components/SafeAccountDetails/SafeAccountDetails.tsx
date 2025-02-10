@@ -10,9 +10,9 @@ import {
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { Safe4337Pack } from '@safe-global/relay-kit'
 import { useCallback, useEffect, useState } from 'react'
-import { BUNDLER_URL, PAYMASTER_URL, RPC_URL } from '../../lib/constants'
-import { executeSafeDeployment } from '../../lib/deployment'
-import styles from './safeaccountdetails.module.css'
+import { BUNDLER_URL, PAYMASTER_URL, RPC_URL } from '@/lib/constants'
+import { executeSafeDeployment } from '@/lib/deployment'
+import styles from './SafeAccountDetails.module.css'
 import { getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 

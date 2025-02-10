@@ -50,3 +50,6 @@ artifacts/
 # IDE
 .idea/
 .vscode/
+
+# next.js cache
+.next/cache

@@ -14,10 +14,14 @@ export default function SignupPage() {
     setIsCreating(true)
     try {
       const passkey = await createPasskey()
+      if (!passkey) {
+        throw new Error('Passkey creation returned null')
+      }
       storePasskeyInLocalStorage(passkey)
       router.push(`/dashboard?passkeyId=${passkey.rawId}`)
     } catch (error) {
       console.error('Failed to create passkey:', error)
+      alert('Failed to create passkey. Please ensure your browser supports WebAuthn and try again.')
     } finally {
       setIsCreating(false)
     }
