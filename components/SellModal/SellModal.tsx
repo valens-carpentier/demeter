@@ -34,9 +34,9 @@ export default function SellModal({
             const amount = parseInt(sellAmount)
             const hash = await sellFarmTokensWithUSDC(holding.tokenAddress, safeAddress, amount, passkey)
             setTransactionHash(hash)
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Failed to sell tokens:', error)
-            alert(error.message || 'Failed to sell tokens. Please try again.')
+            alert(error instanceof Error ? error.message : 'Failed to sell tokens. Please try again.')
         } finally {
             setIsSelling(false)
         }
@@ -136,6 +136,13 @@ export default function SellModal({
                         fullWidth
                         variant="contained"
                         className={`${styles.sellButton} ${styles.usdcButton}`}
+                        sx={{
+                            backgroundColor: '#4CAF50',
+                            color: '#FFFFFF',
+                            '&:hover': {
+                                backgroundColor: '#2E7D32',
+                            },
+                        }}
                         onClick={handleSell}
                         disabled={isSelling || !sellAmount || parseInt(sellAmount) < 1 || parseInt(sellAmount) > (holding?.tokenBalance || 0)}
                     >

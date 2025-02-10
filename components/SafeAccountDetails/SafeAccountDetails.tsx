@@ -159,6 +159,7 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
                 target="_blank"
                 underline="hover"
                 color="text"
+                textTransform="lowercase"
               >
                 <Tooltip title={safeAddress}>
                   <span className={styles.addressContainer}>
