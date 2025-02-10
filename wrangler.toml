@@ -4,7 +4,7 @@ workers_dev = true
 
 [site]
 bucket = ".next"
-entry-point = "."
+main = "index.js"
 
 [build]
 command = "npm run build" 
