@@ -18,12 +18,12 @@ import {
 } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import SortIcon from '@mui/icons-material/Sort'
-import BuyFarmModal from '../../../components/BuyFarmModal/BuyFarmModal'
+import BuyFarmModal from '../../../components/BuyFarmModal'
 import loadFarms from '../../../lib/farmsUtils'
 import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import type { Farm } from '../../../types/farm'
-import styles from '@/styles/pages/marketplace.module.css'
 import { buyFarmTokensWithUSDC } from '../../../lib/tokenUtils'
+import theme from '@/styles/global/theme'
 
 type SortOption = 'valuation-high' | 'valuation-low' | 'expected-high' | 'expected-low'
 
@@ -117,9 +117,18 @@ export default function Marketplace() {
 
     if (loading) {
         return (
-            <Box className={styles.marketplaceContainer}>
+            <Box sx={{ 
+                marginLeft: '5%',
+                marginRight: '5%',
+                padding: 3
+            }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                    <Typography variant="h4" className={styles.marketplaceTitle}>
+                    <Typography variant="h4" sx={{
+                        color: '#2C3E2D',
+                        fontWeight: 700,
+                        fontSize: '2rem',
+                        letterSpacing: '-0.025em'
+                    }}>
                         Marketplace
                     </Typography>
                 </Box>
@@ -141,12 +150,21 @@ export default function Marketplace() {
     }
 
     return (
-        <Box className={styles.marketplaceContainer} sx={{ padding: 3 }}>
+        <Box sx={{ 
+            marginLeft: '5%',
+            marginRight: '5%',
+            padding: 3
+        }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                <Typography variant="h4" className={styles.marketplaceTitle}>
+                <Typography variant="h4" sx={{
+                    color: '#2C3E2D',
+                    fontWeight: 700,
+                    fontSize: theme.typography.h4.fontSize,
+                    letterSpacing: '-0.025em'
+                }}>
                     Marketplace
                 </Typography>
-                <Typography color="text.secondary">
+                <Typography color="text.secondary" sx={{ fontSize: theme.typography.body1.fontSize }}>
                     {filteredFarms.length} farms available
                 </Typography>
             </Box>
@@ -178,89 +196,157 @@ export default function Marketplace() {
                         ),
                     }}
                 >
-                    <MenuItem value="valuation-high">Highest Valuation</MenuItem>
-                    <MenuItem value="valuation-low">Lowest Valuation</MenuItem>
-                    <MenuItem value="expected-high">Largest Size</MenuItem>
-                    <MenuItem value="expected-low">Smallest Size</MenuItem>
+                    <MenuItem value="valuation-high" sx={{ color: theme.palette.text.primary }}>Highest Valuation</MenuItem>
+                    <MenuItem value="valuation-low" sx={{ color: theme.palette.text.primary }}>Lowest Valuation</MenuItem>
+                    <MenuItem value="expected-high" sx={{ color: theme.palette.text.primary }}>Largest Size</MenuItem>
+                    <MenuItem value="expected-low" sx={{ color: theme.palette.text.primary }}>Smallest Size</MenuItem>
                 </TextField>
             </Box>
 
-            <Grid 
-                container 
-                spacing={3} 
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    maxWidth: '1000px',
-                    margin: '0 auto'
-                }}
-            >
+            <Grid container spacing={3} sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                maxWidth: '1000px',
+                margin: '0 auto'
+            }}>
                 {filteredFarms.map((farm, index) => (
-                    <Grid 
-                        item 
-                        xs={12}
-                        sm={12}
-                        md={6}
-                        lg={6}
+                    <Grid item xs={12} sm={12} md={6} lg={6} key={index}
                         sx={{
                             display: 'flex',
                             justifyContent: 'center'
                         }}
-                        key={index}
                     >
-                        <Card className={styles.farmCard}>
+                        <Card sx={{
+                            height: '500px',
+                            width: '400px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            transition: theme.transitions.create(['transform', 'box-shadow'], {
+                                duration: theme.transitions.duration.standard,
+                                easing: theme.transitions.easing.easeInOut,
+                            }),
+                            border: `1px solid ${theme.palette.divider}`,
+                            maxWidth: '100%',
+                            '&:hover': {
+                                transform: 'translateY(-4px)',
+                                boxShadow: theme.shadows[6]
+                            }
+                        }}>
                             <CardContent>
-                                <Typography variant="h6" className={styles.farmName}>
+                                <Typography variant="h6" sx={{
+                                    color: theme.palette.text.primary,
+                                    fontWeight: theme.typography.fontWeightBold,
+                                    marginBottom: 0,
+                                    padding: theme.spacing(2),
+                                    borderBottom: `1px solid ${theme.palette.divider}`,
+                                    width: '100%',
+                                    margin: theme.spacing(-2, -2, 2, -2),
+                                    fontSize: theme.typography.h6.fontSize
+                                }}>
                                     {farm.name}
                                 </Typography>
                                 <Box sx={{ my: 2 }}>
-                                <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography sx={{
+                                            fontSize: theme.typography.body2.fontSize,
+                                            color: theme.palette.text.secondary,
+                                            fontWeight: 500
+                                        }}>
                                             Farm Size
                                         </Typography>
-                                        <Typography variant="h6" className={styles.statValue}>
+                                        <Typography variant="h6" sx={{
+                                            fontWeight: 600,
+                                            color: theme.palette.text.primary,
+                                            fontSize: theme.typography.body2.fontSize
+                                        }}>
                                             {farm.sizeInAcres} acres
                                         </Typography>
-                                    </div>
+                                    </Box>
                                     <Divider sx={{ my: 1.5 }} />
-                                    <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
                                             Farm Valuation
                                         </Typography>
-                                        <Typography variant="h6" className={styles.statValue}>
+                                        <Typography variant="h6" sx={{ 
+                                            fontSize: theme.typography.body2.fontSize,
+                                            fontWeight: 600,
+                                            color: theme.palette.text.primary
+                                        }}>
                                             ${farm.valuation.toLocaleString()}
                                         </Typography>
-                                    </div>
+                                    </Box>
                                     <Divider sx={{ my: 1.5 }} />
-                                    <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
                                             Token Price
                                         </Typography>
-                                        <Typography variant="h6" className={`${styles.statValue} ${styles.highlight}`}>
+                                        <Typography variant="h6" sx={{
+                                            fontSize: theme.typography.body2.fontSize,
+                                            fontWeight: 600,
+                                            color: theme.palette.primary.main
+                                        }}>
                                             ${(farm.pricePerToken)}
                                         </Typography>
-                                    </div>
+                                    </Box>
                                     <Divider sx={{ my: 1.5 }} />
-                                    <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
                                             Expected Annual Valuation Growth
                                         </Typography>
-                                        <Typography variant="h6" className={`${styles.statValue} ${styles.success}`}>
+                                        <Typography variant="h6" sx={{
+                                            fontSize: theme.typography.body2.fontSize,
+                                            fontWeight: 600,
+                                            color: theme.palette.primary.main
+                                        }}>
                                             {farm.expectedOutcomePercentage}%
                                         </Typography>
-                                    </div>
+                                    </Box>
                                     <Divider sx={{ my: 1.5 }} />
-                                    <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
                                             Total Supply
                                         </Typography>
-                                        <Typography variant="h6" className={styles.statValue}>
+                                        <Typography variant="h6" sx={{ 
+                                            fontSize: theme.typography.body2.fontSize,
+                                            fontWeight: 600,
+                                            color: theme.palette.text.primary
+                                        }}>
                                             {farm.totalTokenSupply.toLocaleString()} tokens
                                         </Typography>
-                                    </div>
+                                    </Box>
                                     <Divider sx={{ my: 1.5 }} />
-                                    <div className={styles.farmStat}>
-                                        <Typography color="text.secondary" className={styles.statLabel}>
+                                    <Box sx={{ 
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'center',
+                                        padding: '0.25rem 0'
+                                    }}>
+                                        <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
                                             Token Address
                                         </Typography>
                                         <Link
@@ -271,9 +357,9 @@ export default function Marketplace() {
                                         >
                                             <Typography 
                                                 variant="h6" 
-                                                className={styles.statValue}
                                                 sx={{ 
-                                                    fontSize: '0.8rem',
+                                                    fontSize: theme.typography.body2.fontSize,
+                                                    fontWeight: 600,
                                                     '&:hover': {
                                                         textDecoration: 'underline'
                                                     }
@@ -282,13 +368,19 @@ export default function Marketplace() {
                                                 {`${farm.token.slice(0, 6)}...${farm.token.slice(-6)}`}
                                             </Typography>
                                         </Link>
-                                    </div>
+                                    </Box>
                                 </Box>
 
                                 <Button
                                     variant="contained"
                                     fullWidth
-                                    className={styles.buyButton}
+                                    sx={{
+                                        marginTop: theme.spacing(2),
+                                        '&:disabled': {
+                                            backgroundColor: theme.palette.action.disabledBackground,
+                                            opacity: 0.7
+                                        }
+                                    }}
                                     disabled={!farm.isActive || !safeAddress}
                                     onClick={() => handleBuyClick(farm)}
                                 >
@@ -302,7 +394,12 @@ export default function Marketplace() {
             </Grid>
 
             {filteredFarms.length === 0 && (
-                <Typography className={styles.noResults}>
+                <Typography sx={{
+                    textAlign: 'center',
+                    color: '#5C745D',
+                    padding: '3rem',
+                    fontSize: '1.1rem'
+                }}>
                     No farms match your search criteria.
                 </Typography>
             )}

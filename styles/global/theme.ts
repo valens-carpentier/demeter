@@ -10,13 +10,14 @@ const theme = createTheme({
       light: '#81C784',
     },
     secondary: {
-      main: '#2775CA',
-      dark: '#1E5C9E',
-      light: '#5C9EE1',
+      main: '#2C3E2D',
+      dark: '#1B2A1E',
+      light: '#5C745D',
     },
     text: {
       primary: '#2C3E2D',
       secondary: '#5C745D',
+      disabled: '#A8B5A9',
     },
     background: {
       default: '#F5F2EA',
@@ -28,40 +29,43 @@ const theme = createTheme({
     error: {
       main: '#D32F2F',
     },
+    divider: 'rgba(0, 0, 0, 0.12)',
   },
   typography: {
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      'sans-serif'
-    ].join(','),
+    fontFamily: 'SF Pro Text, sans-serif',
+    
+    allVariants: {
+      color: '#2C3E2D',
+    },
     h1: {
       fontWeight: 700,
-      letterSpacing: '-0.025em',
       fontSize: '2.5rem',
+      letterSpacing: '-0.025em',
     },
     h2: {
       fontWeight: 700,
-      letterSpacing: '-0.025em',
       fontSize: '2rem',
+      letterSpacing: '-0.025em',
     },
     h3: {
       fontWeight: 700,
-      letterSpacing: '-0.025em',
       fontSize: '1.75rem',
+      letterSpacing: '-0.025em',
     },
     h4: {
-      fontWeight: 600,
-      letterSpacing: '-0.025em',
+      fontWeight: 700,
       fontSize: '1.5rem',
+      letterSpacing: '-0.025em',
+      color: '#2C3E2D',
     },
     h5: {
       fontWeight: 600,
-      letterSpacing: '-0.025em',
       fontSize: '1.25rem',
+      letterSpacing: '-0.025em',
     },
     h6: {
       fontWeight: 600,
+      fontSize: '1rem',
       letterSpacing: '-0.025em',
     },
     body1: {
@@ -77,18 +81,37 @@ const theme = createTheme({
       fontWeight: 600,
     },
     caption: {
-      fontWeight: 400,
+      fontSize: '0.75rem',
     },
     overline: {
-      fontWeight: 500,
-    }
+      fontSize: '0.625rem',
+      textTransform: 'uppercase',
+    },
   },
   components: {
     MuiButton: {
       styleOverrides: {
-        root: {
+        contained: {
+          backgroundColor: '#4CAF50',
+          color: 'white',
           borderRadius: '6px',
           padding: '12px 24px',
+          fontWeight: 600,
+          textTransform: 'none',
+          '&:hover': {
+            backgroundColor: '#2E7D32',
+          },
+        },
+        outlined: {
+          color: '#4CAF50',
+          border: '2px solid #4CAF50',
+          fontWeight: 600,
+          textTransform: 'none',
+          padding: '8px 16px',
+          '&:hover': {
+            backgroundColor: '#4CAF50',
+            color: '#FFFFFF',
+          },
         },
       },
     },
@@ -97,6 +120,11 @@ const theme = createTheme({
         root: {
           borderRadius: '8px',
           boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)',
+          transition: 'all 0.2s ease-in-out',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+          },
         },
       },
     },
@@ -117,6 +145,57 @@ const theme = createTheme({
           },
         },
       },
+    },
+    MuiTable: {
+      styleOverrides: {
+        root: {
+          '& .MuiTableCell-root': {
+            padding: '16px',
+          },
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          color: '#4CAF50',
+          textDecoration: 'none',
+          '&:hover': {
+            textDecoration: 'underline',
+          },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          transition: 'all 0.2s ease',
+          margin: '4px 0',
+          '&:hover': {
+            backgroundColor: '#F5F2EA',
+            color: '#2C3E2D',
+          },
+          '&.active': {
+            backgroundColor: '#F5F2EA',
+            color: '#2C3E2D',
+            fontWeight: 600,
+            '& .MuiListItemIcon-root': {
+              color: '#4CAF50',
+            },
+          },
+        },
+      },
+    },
+  },
+  shape: {
+    borderRadius: 8,
+  },
+  transitions: {
+    easing: {
+      easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    },
+    duration: {
+      standard: 300,
     },
   },
 });

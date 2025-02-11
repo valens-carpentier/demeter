@@ -1,9 +1,5 @@
 import { ThemeProvider } from '@mui/material/styles'
-import { Inter } from 'next/font/google'
 import theme from '@/styles/global/theme'
-import '@/styles/global/global.css'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'Demeter',
@@ -17,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body suppressHydrationWarning={true}>
         <ThemeProvider theme={theme}>
           <div>
             {children}

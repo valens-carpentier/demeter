@@ -19,7 +19,6 @@ import {
 import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import { loadTransactions, Transaction } from '../../../lib/transactionUtils'
 import { useRouter } from 'next/navigation'
-import styles from '@/styles/pages/transaction.module.css'
 
 export default function Transactions() {
     const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([])
@@ -74,9 +73,23 @@ export default function Transactions() {
 
     if (loading) {
         return (
-            <Box className={styles.transactionContainer}>
+            <Box sx={{
+                padding: 3,
+                backgroundColor: '#FFFFFF',
+                maxWidth: 1200,
+                margin: '32px auto',
+                borderRadius: 2,
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)',
+                marginLeft: '2%',
+                marginRight: '2%'
+            }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                    <Typography className={styles.transactionTitle} variant="h4">
+                    <Typography variant="h4" sx={{
+                        color: '#2C3E2D',
+                        fontWeight: 700,
+                        fontSize: '2rem',
+                        letterSpacing: '-0.025em'
+                    }}>
                         Transactions
                     </Typography>
                 </Box>
@@ -98,22 +111,73 @@ export default function Transactions() {
     }
 
     return (
-        <Box className={styles.transactionContainer}>
+        <Box sx={{
+            padding: 3,
+            backgroundColor: '#FFFFFF',
+            maxWidth: 1200,
+            margin: '32px auto',
+            borderRadius: 2,
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)',
+            marginLeft: '2%',
+            marginRight: '2%',
+            overflowX: 'auto'
+        }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-                <Typography className={styles.transactionTitle} variant="h4">
+                <Typography variant="h4" sx={{
+                    color: '#2C3E2D',
+                    fontWeight: 700,
+                    fontSize: '2rem',
+                    letterSpacing: '-0.025em'
+                }}>
                     Transactions
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                    <Button className={`${styles.transactionButton} ${styles.outlined}`} variant="outlined" disabled={true}>
+                    <Button
+                        variant="outlined"
+                        disabled={true}
+                        sx={{
+                            borderRadius: '6px',
+                            padding: '12px 24px',
+                            fontWeight: 600,
+                            textTransform: 'none',
+                            border: '2px solid #4CAF50',
+                            color: '#4CAF50',
+                            '&:hover': {
+                                backgroundColor: '#F5F2EA',
+                                border: '2px solid #4CAF50'
+                            }
+                        }}
+                    >
                         Filter
                     </Button>
-                    <Button className={`${styles.transactionButton} ${styles.outlined}`} variant="outlined" disabled={true}>
+                    <Button
+                        variant="outlined"
+                        disabled={true}
+                        sx={{
+                            borderRadius: '6px',
+                            padding: '12px 24px',
+                            fontWeight: 600,
+                            textTransform: 'none',
+                            border: '2px solid #4CAF50',
+                            color: '#4CAF50',
+                            '&:hover': {
+                                backgroundColor: '#F5F2EA',
+                                border: '2px solid #4CAF50'
+                            }
+                        }}
+                    >
                         Export
                     </Button>
                 </Box>
             </Box>
 
-            <TableContainer component={Paper} className={styles.transactionTable}>
+            <TableContainer component={Paper} sx={{
+                width: '95%',
+                borderRadius: '8px',
+                overflow: 'hidden',
+                minWidth: '800px',
+                backgroundColor: '#F5F2EA'
+            }}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -123,43 +187,115 @@ export default function Transactions() {
                                     onChange={handleSelectAll}
                                 />
                             </TableCell>
-                            <TableCell>Type</TableCell>
-                            <TableCell>Number of Tokens</TableCell>
-                            <TableCell>Price</TableCell>
-                            <TableCell>Farm</TableCell>
-                            <TableCell>Transaction Details</TableCell>
-                            <TableCell>Date</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Type</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Number of Tokens</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Price</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Farm</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Transaction Details</TableCell>
+                            <TableCell sx={{
+                                color: '#5C745D',
+                                fontSize: '14px',
+                                fontWeight: 600,
+                                padding: '16px'
+                            }}>Date</TableCell>
                             <TableCell></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {filteredTransactions.map((tx) => (
-                            <TableRow key={tx.hash}>
+                            <TableRow key={tx.hash} sx={{
+                                '&:hover': {
+                                    backgroundColor: '#F5F2EA'
+                                }
+                            }}>
                                 <TableCell padding="checkbox">
                                     <Checkbox
                                         checked={selected.includes(tx.hash)}
                                         onChange={() => handleSelectOne(tx.hash)}
                                     />
                                 </TableCell>
-                                <TableCell>{tx.type}</TableCell>
-                                <TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>{tx.type}</TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>
                                     {tx.amount}
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>
                                     ${(tx.price * tx.amount / 100).toFixed(2)}
                                 </TableCell>
-                                <TableCell>{tx.farmName}</TableCell>
-                                <TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>{tx.farmName}</TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>
                                     <Link
                                         href={`https://sepolia.basescan.org/tx/${tx.hash}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className={styles.transactionLink}
+                                        sx={{
+                                            color: '#4CAF50',
+                                            textDecoration: 'none',
+                                            fontFamily: 'monospace',
+                                            fontSize: '14px',
+                                            '&:hover': {
+                                                textDecoration: 'underline'
+                                            }
+                                        }}
                                     >
                                         {`${tx.hash.slice(0,6)}...${tx.hash.slice(-4)}`}
                                     </Link>
                                 </TableCell>
-                                <TableCell>
+                                <TableCell sx={{
+                                    color: '#2C3E2D',
+                                    fontSize: '14px',
+                                    padding: '16px',
+                                    fontWeight: 500
+                                }}>
                                     {new Date(tx.date).toLocaleDateString()}
                                 </TableCell>
                                 <TableCell align="right">
@@ -172,7 +308,12 @@ export default function Transactions() {
             </TableContainer>
 
             {filteredTransactions.length === 0 && (
-                <Typography className={styles.noTransactionsMessage}>
+                <Typography sx={{
+                    textAlign: 'center',
+                    color: '#5C745D',
+                    padding: '32px',
+                    fontSize: '16px'
+                }}>
                     No transactions found.
                 </Typography>
             )}

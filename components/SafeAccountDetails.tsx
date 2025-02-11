@@ -5,14 +5,14 @@ import {
   Paper,
   Stack,
   Tooltip,
-  Typography
+  Typography,
+  Box
 } from '@mui/material'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { Safe4337Pack } from '@safe-global/relay-kit'
 import { useCallback, useEffect, useState } from 'react'
 import { BUNDLER_URL, PAYMASTER_URL, RPC_URL } from '@/lib/constants'
 import { executeSafeDeployment } from '@/lib/deployment'
-import styles from './SafeAccountDetails.module.css'
 import { getUSDCBalance } from '@/lib/balanceUtils'
 import { InfoOutlined } from '@mui/icons-material'
 
@@ -127,44 +127,77 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
   }, [safeAddress])
 
   return (
-    <Paper className={styles.container}>
-      <Stack className={styles.stack}>
-        <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-          <Typography className={styles.balanceTitle}>
+    <Paper sx={{
+      padding: 3,
+      backgroundColor: '#FFFFFF',
+      borderRadius: 2,
+      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)',
+      alignItems: 'center',
+    }}>
+      <Stack spacing={1} direction="column" alignItems="center" justifyContent="space-between">
+        <Stack direction="row" spacing={0.5} alignItems="center" justifyContent="center">
+           <Typography variant="body1" sx={{
+            color: '#2C3E2D',
+            fontSize: 14,
+            fontWeight: 600,
+            letterSpacing: '-0.01em'
+          }}>
             Balance
           </Typography>
-          <Tooltip title={
-            <span>
-              Your USDC balance available to buy farm tokens. <br/>
-              Get free USDC from the <a href="https://faucet.circle.com/" target="_blank" rel="noopener noreferrer" style={{ color: 'primary.main', textDecoration: 'underline' }}>Circle Faucet</a>.
-            </span>
-          }>
-            <InfoOutlined sx={{ fontSize: 16, color: '#5C745D' }} />
-          </Tooltip>
         </Stack>
 
         {isLoading || balanceLoading ? (
-          <CircularProgress size={12} className={styles.loading}/>
+          <CircularProgress size={12} sx={{ 
+            margin: '4px auto',
+            color: '#5C745D',
+            alignSelf: 'center'
+          }} />
         ) : (
           <>
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
-              <Typography className={styles.balanceValue}>
+              <Typography sx={{
+                color: '#2C3E2D',
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: '-0.01em',
+                lineHeight: '28px',
+                mb: 0.5
+              }}>
                 ${usdcBalance || '0.00'}
               </Typography>
+                    <Tooltip title={
+                  <span>
+                    Your USDC balance available to buy farm tokens. <br/>
+                    Get free USDC from the <Link 
+                      href="https://faucet.circle.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      sx={{ color: 'primary.main', textDecoration: 'underline' }}
+                    >
+                      Circle Faucet
+                    </Link>.
+                  </span>
+                    }>
+                  <InfoOutlined sx={{ fontSize: 16, color: 'text.secondary' }} />
+                </Tooltip>
             </Stack>
 
-            <Typography textAlign={'center'} fontSize="0.875rem">
+            <Typography textAlign="center" fontSize="0.875rem">
               <Link
                 href={safeLink}
                 target="_blank"
                 underline="hover"
-                color="text"
+                color="text.secondary"
                 textTransform="lowercase"
               >
                 <Tooltip title={safeAddress}>
-                  <span className={styles.addressContainer}>
+                  <Box component="span" sx={{
+                    fontFamily: 'monospace',
+                    color: '#5C745D',
+                    fontSize: 12
+                  }}>
                     {splitAddress(safeAddress || '')}
-                  </span>
+                  </Box>
                 </Tooltip>
               </Link>
             </Typography>
@@ -175,7 +208,30 @@ function SafeAccountDetails({ passkey, onSafeAddress }: props) {
                   variant="contained"
                   onClick={handleDeploy}
                   disabled={isDeploying}
-                  className={styles.deployButton}
+                  sx={{
+                    backgroundColor: '#4CAF50',
+                    color: 'white',
+                    textTransform: 'none',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    padding: '12px 24px',
+                    borderRadius: '6px',
+                    minWidth: 150,
+                    height: 48,
+                    transition: 'all 0.2s ease',
+                    '&:hover': {
+                      backgroundColor: '#2E7D32',
+                      transform: 'translateY(-1px)',
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#81C784',
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      cursor: 'not-allowed',
+                      transform: 'none',
+                      boxShadow: 'none'
+                    }
+                  }}
                 >
                   {isDeploying ? (
                     <>

@@ -3,13 +3,11 @@
 import React, { ReactNode, useEffect, useState } from 'react'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { loadPasskeysFromLocalStorage } from '@/lib/passkeys'
-import SafeAccountDetails from '@/components/SafeAccountDetails/SafeAccountDetails'
-import SideBar from '@/components/SideBar/SideBar'
-import styles from '@/components/SideBar/SideBar.module.css'
+import SideBar from '@/components/SideBar'
 import { useRouter } from 'next/navigation'
-import '@/styles/global/global.css'
 import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
-
+import { Box } from '@mui/material'
+import theme from '@/styles/global/theme'
 export default function DashboardLayout({
   children
 }: {
@@ -46,21 +44,42 @@ export default function DashboardLayout({
   return (
     <PasskeyContext.Provider value={passkey}>
       <SafeAddressContext.Provider value={safeAddress}>
-        <div className={styles.layoutWrapper}>
-          <div className={styles.sidebarContainer}>
-            <SideBar>
-              <SafeAccountDetails 
-                passkey={passkey} 
-                onSafeAddress={(address) => {
-                  setSafeAddress(address)
-                }}
-              />
-            </SideBar>
-          </div>
-          <div className={styles.mainContent}>
+        <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+          {/* Sidebar Container */}
+          <Box
+            component="aside"
+            sx={{
+              width: 280,
+              borderRight: '1px solid rgba(0, 0, 0, 0.12)',
+              backgroundColor: '#FFFFFF',
+              position: 'fixed',
+              height: '100vh',
+              left: 0,
+              top: 0,
+              padding: '32px 20px',
+              boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)'
+            }}
+          >
+            <SideBar 
+              passkey={passkey} 
+              onSafeAddress={(address) => setSafeAddress(address)}
+            />
+          </Box>
+
+          {/* Main Content Container */}
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              padding: '32px',
+              backgroundColor: theme.palette.background.paper,
+              marginLeft: '280px', // To account for fixed sidebar width
+              width: 'calc(100% - 280px)' // Add this to prevent overflow
+            }}
+          >
             {children}
-          </div>
-        </div>
+          </Box>
+        </Box>
       </SafeAddressContext.Provider>
     </PasskeyContext.Provider>
   )
