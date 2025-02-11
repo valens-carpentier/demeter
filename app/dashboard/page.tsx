@@ -1,12 +1,12 @@
 'use client'
 
 import { useContext, useEffect } from 'react'
-import FarmList from '@/components/FarmList/FarmList'
-import HoldingList from '@/components/HoldingList/HoldingList'
-import styles from '@/styles/pages/dashboard.module.css'
+import FarmList from '@/components/FarmList'
+import HoldingList from '@/components/HoldingList'
 import { PasskeyContext } from '@/app/contexts/SafeContext'
 import { useRouter } from 'next/navigation'
-
+import { Stack } from '@mui/material'
+import theme from '@/styles/global/theme'
 export default function DashboardPage() {
   const passkey = useContext(PasskeyContext)
   const router = useRouter()
@@ -18,15 +18,14 @@ export default function DashboardPage() {
   }, [passkey, router])
   
   return (
-    <div className={styles.dashboardContainer}>
-      <div className={styles.dashboardStack}>
-        <section className={styles.holdingsSection}>
-          <HoldingList />
-        </section>
-        <section className={styles.farmsSection}>
-          <FarmList />
-        </section>
-      </div>
-    </div>
+      <Stack spacing={3} sx={{ 
+        width: '95%',
+        height: '100%',
+        padding: 3,
+        backgroundColor: theme.palette.background.paper,
+      }}>
+        <HoldingList />
+        <FarmList />
+      </Stack>
   )
 }

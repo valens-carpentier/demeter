@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { createPasskey, storePasskeyInLocalStorage } from '@/lib/passkeys'
-import SignUpWithPasskeys from '@/components/SignUp/SignUpwithPasskeys'
-import TestNetworkBanner from '@/components/TestNetworkBanner/TestNetworkBanner'
+import SignUpWithPasskeys from '@/components/SignUpwithPasskeys'
+import TestNetworkBanner from '@/components/TestNetworkBanner'
 
 export default function SignupPage() {
   const router = useRouter()

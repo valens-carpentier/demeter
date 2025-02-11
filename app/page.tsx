@@ -4,10 +4,10 @@ import { PasskeyArgType } from '@safe-global/protocol-kit'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import LoginWithPasskey from '../components/Login/LoginwithPasskey'
-import SafeAccountDetails from '../components/SafeAccountDetails/SafeAccountDetails'
+import LoginWithPasskey from '../components/LoginwithPasskey'
+import SafeAccountDetails from '../components/SafeAccountDetails'
 import { createPasskey, storePasskeyInLocalStorage } from '../lib/passkeys'
-import TestNetworkBanner from '@/components/TestNetworkBanner/TestNetworkBanner'
+import TestNetworkBanner from '@/components/TestNetworkBanner'
 
 function Create4337SafeAccount() {
   const router = useRouter()

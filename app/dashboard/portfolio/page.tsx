@@ -4,10 +4,10 @@ import { useContext, useEffect, useState } from 'react'
 import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import { getUserHoldings } from '../../../lib/holdingsUtils'
 import { useRouter } from 'next/navigation'
-import styles from '@/styles/pages/portfolio.module.css'
-import SellModal from '../../../components/SellModal/SellModal'
-import BuyFarmModal from '../../../components/BuyFarmModal/BuyFarmModal'
+import SellModal from '../../../components/SellModal'
+import BuyFarmModal from '../../../components/BuyFarmModal'
 import { buyFarmTokensWithUSDC } from '../../../lib/tokenUtils'
+import { Typography, Box, Card, CardContent, Link, Divider, Button } from '@mui/material'
 
 interface UserHolding {
   farmName: string;
@@ -84,102 +84,281 @@ export default function Portfolio() {
   }
 
   return (
-    <div className={styles.portfolioContainer}>
-      <h1 className={styles.portfolioTitle}>
+    <Box sx={{
+      padding: 3,
+      backgroundColor: '#FFFFFF',
+      maxWidth: 1200,
+      marginLeft: '5%',
+      marginRight: '5%',
+      borderRadius: 2,
+      boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.05)'
+    }}>
+      <Typography variant="h4" sx={{ 
+        color: '#2C3E2D',
+        fontWeight: 700,
+        mb: 3,
+        letterSpacing: '-0.025em'
+      }}>
         Portfolio
-      </h1>
+      </Typography>
 
-      <h2 className={styles.title}>Wallets</h2>
-      <div className={styles.walletCard}>
-        <div className={styles.walletContainer}>
+      <Typography variant="h5" sx={{ 
+        color: '#2C3E2D',
+        fontWeight: 600,
+        letterSpacing: '-0.025em',
+        mb: 3
+      }}>
+        Wallets
+      </Typography>
+      <Card sx={{ 
+        mb: 3,
+        borderRadius: 2,
+        transition: 'all 0.2s ease-in-out',
+        '&:hover': {
+          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)'
+        }
+      }}>
+        <CardContent sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center'
+        }}>
           {loading ? (
-            <div className={styles.loadingContainer}>
-              <div className={styles.spinner} />
-              <span className={styles.walletAddress}>
+            <Box sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1
+            }}>
+              <Box sx={{
+                width: 20,
+                height: 20,
+                border: '2px solid #5C745D',
+                borderTop: '2px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                '@keyframes spin': {
+                  '0%': { transform: 'rotate(0deg)' },
+                  '100%': { transform: 'rotate(360deg)' }
+                }
+              }} />
+              <Typography sx={{ 
+                fontFamily: 'monospace',
+                color: '#5C745D',
+                fontSize: 14,
+                px: 1.5,
+                py: 1,
+                backgroundColor: '#F5F2EA',
+                borderRadius: 1
+              }}>
                 Loading address...
-              </span>
-            </div>
+              </Typography>
+            </Box>
           ) : (
-            <span className={styles.walletAddress}>
+            <Typography sx={{ 
+              fontFamily: 'monospace',
+              color: '#5C745D',
+              fontSize: 14,
+              px: 1.5,
+              py: 1,
+              backgroundColor: '#F5F2EA',
+              borderRadius: 1
+            }}>
               Base Sepolia: {safeAddress}
-            </span>
+            </Typography>
           )}
-          <div className={styles.walletLinks}>
-            <a 
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <Link
               href={`https://app.safe.global/base-sepolia:${safeAddress}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.walletLink}
+              sx={{ 
+                color: '#4CAF50',
+                textDecoration: 'none',
+                fontSize: 14,
+                fontWeight: 500,
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              }}
             >
               Link to Safe Wallet
-            </a>
-            <div className={styles.divider} />
-            <a 
+            </Link>
+            <Divider orientation="vertical" flexItem />
+            <Link
               href={`https://sepolia.basescan.org/address/${safeAddress}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={styles.walletLink}
+              sx={{ 
+                color: '#4CAF50',
+                textDecoration: 'none',
+                fontSize: 14,
+                fontWeight: 500,
+                '&:hover': {
+                  textDecoration: 'underline'
+                }
+              }}
             >
               Link to Base Scan
-            </a>
-          </div>
-        </div>
-      </div>
+            </Link>
+          </Box>
+        </CardContent>
+      </Card>
 
-      <h2 className={styles.title}>Your Holdings</h2>
-      <div className={styles.assetsCard}>
-        <div className={styles.assetsHeader}>
-          <span className={styles.headerCell}>Farm Name</span>
-          <span className={styles.headerCell}>Token Price</span>
-          <span className={styles.headerCell}>Number of Tokens</span>
-          <span className={styles.headerCell}>Your Holdings</span>
-          <span className={styles.headerCell}></span>
-        </div>
-        
-        {loading ? (
-          <div className={styles.loadingContainer}>
-            <div className={styles.spinner} />
-          </div>
-        ) : (
-          holdings.length > 0 ? (
+      <Typography variant="h5" sx={{ 
+        color: '#2C3E2D',
+        fontWeight: 600,
+        letterSpacing: '-0.025em',
+        mt: 3,
+        mb: 2
+      }}>
+        Your Holdings
+      </Typography>
+      <Card sx={{ 
+        mt: 3,
+        borderRadius: 2
+      }}>
+        <CardContent>
+          <Box sx={{ 
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr) 2fr',
+            p: 2,
+            borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+            backgroundColor: '#F5F2EA',
+            borderRadius: '8px 8px 0 0'
+          }}>
+            {['Farm Name', 'Token Price', 'Number of Tokens', 'Your Holdings', ''].map((header, index) => (
+              <Typography key={index} sx={{ 
+                color: '#5C745D',
+                fontSize: 14,
+                fontWeight: 600,
+                p: 1
+              }}>
+                {header}
+              </Typography>
+            ))}
+          </Box>
+          
+          {loading ? (
+            <Box sx={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              alignItems: 'center', 
+              p: 2,
+              gap: 1
+            }}>
+              <Box sx={{
+                width: 20,
+                height: 20,
+                border: '2px solid #5C745D',
+                borderTop: '2px solid transparent',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite',
+                '@keyframes spin': {
+                  '0%': { transform: 'rotate(0deg)' },
+                  '100%': { transform: 'rotate(360deg)' }
+                }
+              }} />
+            </Box>
+          ) : holdings.length > 0 ? (
             holdings.map((holding, index) => (
-              <div key={index} className={styles.assetRow}>
-                <span className={styles.assetCell}>{holding.farmName}</span>
-                <span className={styles.assetCell}>
+              <Box key={index} sx={{ 
+                display: 'grid',
+                gridTemplateColumns: 'repeat(4, 1fr) 2fr',
+                p: 2,
+                borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+                transition: 'background-color 0.2s ease',
+                alignItems: 'center',
+                '&:hover': {
+                  backgroundColor: '#F5F2EA'
+                }
+              }}>
+                <Typography sx={{ 
+                  color: '#2C3E2D',
+                  fontSize: 14,
+                  p: 1,
+                  fontWeight: 500
+                }}>
+                  {holding.farmName}
+                </Typography>
+                <Typography sx={{ 
+                  color: '#4CAF50',
+                  fontSize: 14,
+                  p: 1,
+                  fontWeight: 600
+                }}>
                   ${holding.tokenPrice}
-                </span>
-                <span className={`${styles.assetCell} ${styles.tokenBalance}`}>
+                </Typography>
+                <Typography sx={{ 
+                  fontFamily: 'monospace',
+                  fontSize: 14,
+                  p: 1,
+                  fontWeight: 500
+                }}>
                   {holding.tokenBalance}
-                </span>
-                <span className={`${styles.assetCell} ${styles.holdingsValue}`}>
+                </Typography>
+                <Typography sx={{ 
+                  fontWeight: 600,
+                  color: '#2C3E2D',
+                  fontSize: 14,
+                  p: 1
+                }}>
                   ${holding.userShare.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2
                   })}
-                </span>
-                <div className={styles.buttonContainer}>
-                  <button 
-                    className={styles.sellButton}
+                </Typography>
+                <Box sx={{ 
+                  display: 'flex', 
+                  gap: 1, 
+                  justifyContent: 'flex-end'
+                }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      minWidth: 80,
+                      '&:hover': {
+                        backgroundColor: '#2E7D32'
+                      }
+                    }}
                     onClick={() => handleSellClick(holding)}
                   >
                     Sell
-                  </button>
-                  <button 
-                    className={styles.buyButton}
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: '#4CAF50',
+                      color: 'white',
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      minWidth: 80,
+                      '&:hover': {
+                        backgroundColor: '#2E7D32'
+                      }
+                    }}
                     onClick={() => handleBuyClick(holding)}
                   >
                     Buy
-                  </button>
-                </div>
-              </div>
+                  </Button>
+                </Box>
+              </Box>
             ))
           ) : (
-            <p className={styles.noAssetsMessage}>
+            <Typography sx={{ 
+              textAlign: 'center',
+              color: '#5C745D',
+              p: 4,
+              fontSize: 16
+            }}>
               No assets found in your portfolio
-            </p>
-          )
-        )}
-      </div>
+            </Typography>
+          )}
+        </CardContent>
+      </Card>
 
       <BuyFarmModal
         open={openBuyModal}
@@ -208,6 +387,6 @@ export default function Portfolio() {
         passkey={passkey!}
       />
 
-    </div>
+    </Box>
   )
 }

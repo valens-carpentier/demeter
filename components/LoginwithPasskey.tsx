@@ -1,11 +1,10 @@
 import FingerprintIcon from '@mui/icons-material/Fingerprint'
 import { Button, Paper, Stack, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material'
 import { PasskeyArgType } from '@safe-global/protocol-kit'
-import { loadPasskeysFromLocalStorage } from '../../lib/passkeys'
+import { loadPasskeysFromLocalStorage } from '../lib/passkeys'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import styles from './Login.module.css'
-
+import theme from '@/styles/global/theme'
 type props = {
   handleCreatePasskey: () => Promise<void>
   handleSelectPasskey: (passkey: PasskeyArgType) => void
@@ -28,15 +27,25 @@ function LoginWithPasskey({ handleSelectPasskey }: props) {
   }
 
   return (
-    <Paper className={styles.paperContainer} elevation={3}>
-      <Stack className={styles.stackContainer} spacing={4}>
+    <Paper sx={{
+      position: 'absolute',
+      top: '30%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      width: '100%',
+      maxWidth: 500,
+      padding: 4,
+      margin: '32px auto 0'
+    }}>
+      <Stack spacing={4} sx={{ padding: 4 }}>
         <Typography 
           variant="h1" 
-          className={styles.title}
           sx={{ 
             color: 'text.primary',
             fontWeight: 700,
-            letterSpacing: '-0.025em'
+            letterSpacing: '-0.025em',
+            textAlign: 'center',
+            mb: 3
           }}
         >
           Connect to your account
@@ -81,9 +90,9 @@ function LoginWithPasskey({ handleSelectPasskey }: props) {
               onClick={handleLogin}
               disabled={!selectedPasskeyId}
               fullWidth
-              className={styles.loginButton}
               sx={{
                 backgroundColor: 'primary.main',
+                mt: 3,
                 '&:hover': {
                   backgroundColor: 'primary.dark'
                 }
@@ -94,22 +103,31 @@ function LoginWithPasskey({ handleSelectPasskey }: props) {
           </>
         ) : (
           <Typography 
-            className={styles.noPasskeysText}
-            sx={{ color: 'text.secondary' }}
+            sx={{ 
+              color: 'text.secondary',
+              textAlign: 'center',
+              my: 3
+            }}
           >
             No passkeys found. Please create an account first.
           </Typography>
         )}
 
         <Typography 
-          className={styles.signupText}
-          sx={{ color: 'text.secondary' }}
+          variant="body2" 
+          sx={{
+            textAlign: 'center',
+            color: theme.palette.text.secondary
+          }}
         >
           Don&apos;t have an account?{' '}
           <Link 
             href="/signup" 
-            className={styles.signupLink}
-            style={{ color: 'primary.main' }}
+            style={{ 
+              color: theme.palette.primary.main,
+              cursor: 'pointer',
+              textDecoration: 'underline'
+            }}
           >
             Sign up
           </Link>
