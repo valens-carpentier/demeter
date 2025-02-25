@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@mui/material/styles'
 import theme from '@/styles/global/theme'
 import { Metadata } from 'next'
+import { Analytics } from "@vercel/analytics/react"
 
 export const metadata: Metadata = {
   title: 'Demeter',
@@ -23,6 +24,7 @@ export default function RootLayout({
             {children}
           </div>
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   )
