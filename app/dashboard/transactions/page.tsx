@@ -14,7 +14,8 @@ import {
     Checkbox,
     Paper,
     Button,
-    CircularProgress
+    CircularProgress,
+    TablePagination
 } from '@mui/material'
 import { SafeAddressContext, PasskeyContext } from '@/app/contexts/SafeContext'
 import { loadTransactions, Transaction } from '../../../lib/transactionUtils'
@@ -28,6 +29,8 @@ export default function Transactions() {
     
     const safeAddress = useContext(SafeAddressContext)
     const [selected, setSelected] = useState<string[]>([])
+    const [page, setPage] = useState(0)
+    const [rowsPerPage, setRowsPerPage] = useState(10)
 
     useEffect(() => {
         if (passkey) {
@@ -69,6 +72,15 @@ export default function Transactions() {
         }
 
         setSelected(newSelected)
+    }
+
+    const handleChangePage = (event: unknown, newPage: number) => {
+        setPage(newPage)
+    }
+
+    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRowsPerPage(parseInt(event.target.value, 15))
+        setPage(0)
     }
 
     if (loading) {
@@ -227,85 +239,110 @@ export default function Transactions() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {filteredTransactions.map((tx) => (
-                            <TableRow key={tx.hash} sx={{
-                                '&:hover': {
-                                    backgroundColor: '#F5F2EA'
-                                }
-                            }}>
-                                <TableCell padding="checkbox">
-                                    <Checkbox
-                                        checked={selected.includes(tx.hash)}
-                                        onChange={() => handleSelectOne(tx.hash)}
-                                    />
-                                </TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
-                                }}>{tx.type}</TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
+                        {filteredTransactions
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((tx) => (
+                                <TableRow key={tx.hash} sx={{
+                                    '&:hover': {
+                                        backgroundColor: '#F5F2EA'
+                                    }
                                 }}>
-                                    {tx.amount}
-                                </TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
-                                }}>
-                                    ${(tx.price * tx.amount / 100).toFixed(2)}
-                                </TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
-                                }}>{tx.farmName}</TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
-                                }}>
-                                    <Link
-                                        href={`https://sepolia.basescan.org/tx/${tx.hash}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        sx={{
-                                            color: '#4CAF50',
-                                            textDecoration: 'none',
-                                            fontFamily: 'monospace',
-                                            fontSize: '14px',
-                                            '&:hover': {
-                                                textDecoration: 'underline'
-                                            }
-                                        }}
-                                    >
-                                        {`${tx.hash.slice(0,6)}...${tx.hash.slice(-4)}`}
-                                    </Link>
-                                </TableCell>
-                                <TableCell sx={{
-                                    color: '#2C3E2D',
-                                    fontSize: '14px',
-                                    padding: '16px',
-                                    fontWeight: 500
-                                }}>
-                                    {new Date(tx.date).toLocaleDateString()}
-                                </TableCell>
-                                <TableCell align="right">
-                                    {/* Add your action buttons/menu here */}
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                    <TableCell padding="checkbox">
+                                        <Checkbox
+                                            checked={selected.includes(tx.hash)}
+                                            onChange={() => handleSelectOne(tx.hash)}
+                                        />
+                                    </TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>{tx.type}</TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>
+                                        {tx.amount}
+                                    </TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>
+                                        ${(tx.price * tx.amount / 100).toFixed(2)}
+                                    </TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>{tx.farmName}</TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>
+                                        <Link
+                                            href={`https://sepolia.basescan.org/tx/${tx.hash}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            sx={{
+                                                color: '#4CAF50',
+                                                textDecoration: 'none',
+                                                fontFamily: 'monospace',
+                                                fontSize: '14px',
+                                                '&:hover': {
+                                                    textDecoration: 'underline'
+                                                }
+                                            }}
+                                        >
+                                            {`${tx.hash.slice(0,6)}...${tx.hash.slice(-4)}`}
+                                        </Link>
+                                    </TableCell>
+                                    <TableCell sx={{
+                                        color: '#2C3E2D',
+                                        fontSize: '14px',
+                                        padding: '16px',
+                                        fontWeight: 500
+                                    }}>
+                                        {new Date(tx.date).toLocaleDateString()}
+                                    </TableCell>
+                                    <TableCell align="right">
+                                        {/* Add your action buttons/menu here */}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredTransactions.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                    sx={{
+                        '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+                            color: '#5C745D',
+                        },
+                        '& .MuiSelect-select': {
+                            color: '#4CAF50',
+                        },
+                        '& .MuiSvgIcon-root': {
+                            color: '#4CAF50',
+                        }
+                    }}
+                />
+            </Box>
 
             {filteredTransactions.length === 0 && (
                 <Typography sx={{
