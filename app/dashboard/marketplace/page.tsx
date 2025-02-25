@@ -329,14 +329,14 @@ export default function Marketplace() {
                                         padding: '0.25rem 0'
                                     }}>
                                         <Typography color="text.secondary" sx={{ fontSize: theme.typography.body2.fontSize }}>
-                                            Total Supply
+                                            Tokens Available
                                         </Typography>
                                         <Typography variant="h6" sx={{ 
                                             fontSize: theme.typography.body2.fontSize,
                                             fontWeight: 600,
                                             color: theme.palette.text.primary
                                         }}>
-                                            {farm.totalTokenSupply.toLocaleString()} tokens
+                                            {farm.availableTokens.toLocaleString()} / {farm.totalTokenSupply.toLocaleString()}
                                         </Typography>
                                     </Box>
                                     <Divider sx={{ my: 1.5 }} />
