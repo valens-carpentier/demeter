@@ -28,8 +28,9 @@ type Farm = {
     valuation: number, 
     expectedOutcomePercentage: number,
     pricePerToken: number,
-    isActive: boolean
-    timestamp: number
+    isActive: boolean,
+    timestamp: number,
+    availableTokens: number
 }
 
 export default function FarmList() {
@@ -57,7 +58,8 @@ export default function FarmList() {
                     expectedOutcomePercentage: farm.expectedOutcomePercentage,
                     pricePerToken: farm.pricePerToken,
                     isActive: farm.isActive,
-                    timestamp: farm.timestamp
+                    timestamp: farm.timestamp,
+                    availableTokens: farm.availableTokens
                 }))
                 setFarms(formattedFarms)
             } catch (error) {
@@ -178,6 +180,15 @@ export default function FarmList() {
                                                 ${farm.pricePerToken}
                                             </Typography>
                                         </div>
+                                    </Box>
+                                    
+                                    <Box sx={{ mt: 1 }}>
+                                        <Typography sx={{ fontSize: 12, color: '#5C745D' }}>
+                                            Tokens Available
+                                        </Typography>
+                                        <Typography sx={{ fontSize: 16, fontWeight: 600, color: '#2C3E2D' }}>
+                                            {farm.availableTokens.toLocaleString()} / {farm.totalTokenSupply.toLocaleString()}
+                                        </Typography>
                                     </Box>
                                     
                                     <Box sx={{ mt: 'auto' }}>

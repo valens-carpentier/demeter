@@ -9,4 +9,5 @@ export type Farm = {
     pricePerToken: number
     isActive: boolean
     timestamp: number
+    availableTokens: number
 }
