@@ -20,7 +20,7 @@ async function loadFarms() {
             const farmId = await farmFactory.allFarmIds(i)
             const farmData = await farmFactory.getFarm(farmId)
             
-            // Properly destructure the farm data from the Proxy object
+            
             const farm = {
                 token: farmData[0],
                 owner: farmData[1],
@@ -33,17 +33,28 @@ async function loadFarms() {
                 timestamp: Number(farmData[8])
             }
             
-            // Get token price
             const tokenContract = new ethers.Contract(
                 farm.token,
-                ['function pricePerToken() view returns (uint256)'],
+                [
+                    'function pricePerToken() view returns (uint256)',
+                    'function balanceOf(address) view returns (uint256)',
+                    'function decimals() view returns (uint8)'
+                ],
                 provider
             )
-            const pricePerToken = await tokenContract.pricePerToken()
+
+            const [pricePerToken, ownerBalance, decimals] = await Promise.all([
+                tokenContract.pricePerToken(),
+                tokenContract.balanceOf(FARM_FACTORY_ADDRESS),
+                tokenContract.decimals()
+            ])
+
+            const availableTokens = Number(ethers.formatUnits(ownerBalance, decimals))
 
             farms.push({
                 ...farm,
-                pricePerToken: Number(pricePerToken) / 100
+                pricePerToken: Number(pricePerToken) / 100,
+                availableTokens
             })
         }
 
