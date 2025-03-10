@@ -18,7 +18,7 @@ export default function TestNetworkBanner() {
         alignItems: 'center'
       }}
     >
-      The app is currently waiting on Safe Transaction API service to be running again to be usable. This is a test website running on Base Sepolia. Use test USDC from the{' '}
+      This is a test website running on Base Sepolia. Use test USDC from the{' '}
       <Link 
         href="https://faucet.circle.com/" 
         target="_blank" 
