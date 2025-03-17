@@ -3,10 +3,12 @@
 import { useContext, useEffect } from 'react'
 import FarmList from '@/components/FarmList'
 import HoldingList from '@/components/HoldingList'
+import TransactionModule from '@/components/TransactionModule'
 import { PasskeyContext } from '@/app/contexts/SafeContext'
 import { useRouter } from 'next/navigation'
 import { Stack } from '@mui/material'
 import theme from '@/styles/global/theme'
+
 export default function DashboardPage() {
   const passkey = useContext(PasskeyContext)
   const router = useRouter()
@@ -25,6 +27,7 @@ export default function DashboardPage() {
         backgroundColor: theme.palette.background.paper,
       }}>
         <HoldingList />
+        <TransactionModule />
         <FarmList />
       </Stack>
   )
